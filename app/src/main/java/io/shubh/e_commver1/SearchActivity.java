@@ -3,6 +3,8 @@ package io.shubh.e_commver1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatDrawableManager;
+import androidx.appcompat.widget.SearchView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -18,11 +20,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
 import com.google.firebase.ml.custom.FirebaseModelDataType;
@@ -35,6 +39,10 @@ import com.google.firebase.ml.custom.FirebaseModelOutputs;
 import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
 import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
 import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 
 import java.io.BufferedReader;
@@ -50,10 +58,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-public class Main2Activity extends AppCompatActivity {
 
+public class SearchActivity extends AppCompatActivity {
+
+    int pageNoForMlFeature;
     private FirebaseModelInterpreter mInterpreter;
-    String TAG = "Main2Activity";
+    String TAG = "SearchActivity";
 
     /**
      * Name of the model file hosted with Firebase.
@@ -111,6 +121,9 @@ public class Main2Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        SearchViewInit();
+
+
         mSelectedImage =getBitmapFromAsset(this, "tennis.jpg");
 
         initViews();
@@ -121,11 +134,47 @@ public class Main2Activity extends AppCompatActivity {
 
     }
 
+    private void SearchViewInit() {
+        SearchView searchView =(SearchView)findViewById(R.id.searchview);
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                startActivity(new Intent(SearchActivity.this, SearchResultsActivity.class));
+                finish();
+
+                Intent i = new Intent(SearchActivity.this, SearchResultsActivity.class);
+                String strName = null;
+                i.putExtra("string", query);
+                startActivity(i);
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+
+
+        });
+//----------------------------------------------------------------
+
+        CustomPagerAdapter adapter = new CustomPagerAdapter();
+        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+        pager.setAdapter(adapter);
+
+
+    }
+
     private void initViews() {
-        ImageView iv =(ImageView)findViewById(R.id.iv);
-        Button bt_cmaera =(Button)findViewById(R.id.bt_camera);
-        Button bt_gallery =(Button)findViewById(R.id.bt_gallery);
-        tv_output =(TextView)findViewById(R.id.tv_output);
+
+        LinearLayout bt_cmaera =(LinearLayout)findViewById(R.id.bt_camera);
+        LinearLayout bt_gallery =(LinearLayout)findViewById(R.id.bt_gallery);
+
 
         bt_cmaera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +182,8 @@ public class Main2Activity extends AppCompatActivity {
 
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, 0);
+
+                pageNoForMlFeature = 1;
             }
         });
 
@@ -145,8 +196,43 @@ public class Main2Activity extends AppCompatActivity {
                 pickIntent.setType("image/*");
 
                 startActivityForResult(pickIntent, 1);
+
+                pageNoForMlFeature = 1;
             }
         });
+
+ //======================================================================================================
+        //page 2 views initialisation
+        LinearLayout bt_cmaera2 =(LinearLayout)findViewById(R.id.bt_camera2);
+        LinearLayout bt_gallery2 =(LinearLayout)findViewById(R.id.bt_gallery2);
+
+
+        bt_cmaera2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, 2);
+
+                 pageNoForMlFeature = 2;
+            }
+        });
+
+        bt_gallery2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                // pickIntent.setType("image/* video/*");
+                pickIntent.setType("image/*");
+
+                startActivityForResult(pickIntent, 3);
+
+                pageNoForMlFeature = 2;
+            }
+        });
+
+
     }
 
     private void initCustomModel() {
@@ -235,20 +321,50 @@ public class Main2Activity extends AppCompatActivity {
                             new Continuation<FirebaseModelOutputs, List<String>>() {
                                 @Override
                                 public List<String> then(Task<FirebaseModelOutputs> task) {
+
+
                                     byte[][] labelProbArray = task.getResult()
                                             .<byte[][]>getOutput(0);
                                     List<String> topLabels = getTopLabels(labelProbArray);
+                                    if(pageNoForMlFeature==1){
+                                    // startActivity(new Intent(SearchActivity.this, SearchResultsActivity.class));
 
-                                    tv_output.setText(topLabels.toString());
-                                   // showToast(topLabels.toString());
 
+                                    Log.i("&&&&", topLabels.get(topLabels.size() - 1));
+                                    String name = extractTheNamesWithoutProbabilityScoreFromTheList(topLabels);
+                                    Log.i("&&&& name extracting", name);
+
+                                    Intent ii = new Intent(SearchActivity.this, SearchResultsActivity.class);
+
+                                    ii.putExtra("string", name);
+                                    //page no indicates the ml kit feature
+                                    ii.putExtra("page no", 1);
+                                    startActivity(ii);
+
+                                }
                                     return topLabels;
+
                                 }
                             });
         } catch (FirebaseMLException e) {
             e.printStackTrace();
             showToast("Error running model inference");
         }
+
+    }
+
+    private String extractTheNamesWithoutProbabilityScoreFromTheList(List<String> labels) {
+
+        String stringContainingAllLabels="";
+        for(int i=0 ; i<labels.size() ; i++) {
+            int iend = labels.get(i).indexOf(":"); //this finds the first occurrence of ":"
+
+         stringContainingAllLabels=stringContainingAllLabels+"," + labels.get(i).substring(0 , iend);
+
+        }
+        Log.i("&&&&&", "Super string containing all labels : " +stringContainingAllLabels);
+
+       return      stringContainingAllLabels;
 
     }
 
@@ -327,7 +443,7 @@ public class Main2Activity extends AppCompatActivity {
         switch (requestCode) {
             case 0:
                 if (resultCode == Activity.RESULT_OK) {
-                    ImageView imageView = (ImageView) findViewById(R.id.iv);
+
 
                     Bitmap bitmap = null;
                     try {
@@ -337,7 +453,7 @@ public class Main2Activity extends AppCompatActivity {
 
                         runModelInference();
 
-                        imageView.setImageBitmap(bitmap);
+                  //      imageView.setImageBitmap(bitmap);
 
                     } catch (Exception e) {
                         Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
@@ -347,17 +463,61 @@ public class Main2Activity extends AppCompatActivity {
                 }
             case 1:
                 if (resultCode == Activity.RESULT_OK) {
-                    ImageView imageView = (ImageView) findViewById(R.id.iv);
 
                     Bitmap bitmap = null;
                     try {
-                        Uri selectedMediaUri = data.getData();
+                        Uri imageUri = data.getData();
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
                         mSelectedImage = bitmap;
 
                         runModelInference();
 
-                        imageView.setImageBitmap(bitmap);
+                   //     imageView.setImageBitmap(bitmap);
+
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                                .show();
+                        Log.e("Camera", e.toString());
+                    }
+                }
+
+                //--==================================================
+
+                //Page 2 views initialisation
+            case 2:
+                if (resultCode == Activity.RESULT_OK) {
+
+
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = (Bitmap) data.getExtras().get("data");
+
+                        mSelectedImage = bitmap;
+
+                        runImgTextDetection(bitmap);
+
+                        //      imageView.setImageBitmap(bitmap);
+
+                    } catch (Exception e) {
+                        Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
+                                .show();
+                        Log.e("Camera", e.toString());
+                    }
+                }
+            case 3:
+                if (resultCode == Activity.RESULT_OK) {
+
+                    Bitmap bitmap = null;
+                    try {
+                        Uri imageUri = data.getData();
+                        bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+
+                        mSelectedImage = bitmap;
+
+                        runImgTextDetection(bitmap);
+
+                        //     imageView.setImageBitmap(bitmap);
 
                     } catch (Exception e) {
                         Toast.makeText(this, "Failed to load", Toast.LENGTH_SHORT)
@@ -366,6 +526,69 @@ public class Main2Activity extends AppCompatActivity {
                     }
                 }
         }
+
+
+
     }
 
+
+    private void runImgTextDetection(Bitmap bitmap) {
+
+
+            FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+            FirebaseVisionTextRecognizer textRecognizer =
+                    FirebaseVision.getInstance().getOnDeviceTextRecognizer();
+            textRecognizer.processImage(image).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                @Override
+                public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                    if (pageNoForMlFeature == 2) {
+                        processTxt(firebaseVisionText);
+
+                        //   startActivity(new Intent(SearchActivity.this, SearchResultsActivity.class));
+
+
+                        Log.i("&&&&&&&&", "got firebaseVisiontext ");
+                        Log.i("&&&&&&&&", firebaseVisionText.getText());
+
+             /*       Log.i("&&&&",topLabels.get(topLabels.size()-1) );
+                    String name= extractTheNamesWithoutProbabilityScoreFromTheList(topLabels);
+                    Log.i("&&&&",name);*/
+
+                        Intent i = new Intent(SearchActivity.this, SearchResultsActivity.class);
+                        String strName = null;
+                        i.putExtra("string", firebaseVisionText.getText());
+                        //page no indicates the ml kit feature
+                        i.putExtra("page no", 2);
+                        startActivity(i);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                }
+            });
+
+
+
+
+    }
+
+    private void processTxt(FirebaseVisionText firebaseVisionText) {
+        Log.d("&&&&&&&&", "got firebaseVisiontext ");
+        Log.d("&&&&&&&&", firebaseVisionText.getText());
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        Intent in = new Intent(SearchActivity.this, MainActivity.class);
+        startActivity(in);
+
+
+        //just adding an animatiion here whic makes it go with animation sliding to right
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+
+    }
 }

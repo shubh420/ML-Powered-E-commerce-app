@@ -4,14 +4,11 @@ package io.shubh.e_commver1;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -38,7 +35,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import 	androidx.appcompat.app.ActionBarDrawerToggle;
 import 	androidx.appcompat.widget.SearchView;
-import 	androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -357,16 +353,21 @@ set_up_the_recycler_grid_view(list_of_data_objects__for_adapter);
 
     private void setSearchViewWork() {
 
-        //SearchView searchView = (SearchView)findViewById(R.id.searchview);
+
  CardView cv_search =(CardView)findViewById(R.id.cv_search);
  cv_search.setOnClickListener(new View.OnClickListener() {
      @Override
      public void onClick(View view) {
-         startActivity(new Intent(MainActivity.this, Main2Activity.class));
+         startActivity(new Intent(MainActivity.this, SearchActivity.class));
          finish();
 
      }
  });
+
+
+
+
+
 
       /*  String suggestWord = intent.getDataString();
         searchView.clearFocus()*/;

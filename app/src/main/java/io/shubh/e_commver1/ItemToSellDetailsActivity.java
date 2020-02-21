@@ -696,7 +696,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
                         DocumentSnapshot doc = task.getResult();
                         //adding the information of the user to the static class
                         //  int Order_id = ( doc.get("id no")).intValue();
-                        int Order_id = ((Long) (doc.get("id no"))).intValue();
+                        int Order_id = Integer.valueOf((String) doc.get("id no"));
 
                         /*   Log.i("######################", String.valueOf(Order_id));*/
                         Order_id++;
@@ -806,7 +806,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
 
     void update_the_latest_id_no(int Order_id) {
         Map<String, Object> user_node_data = new HashMap<>();
-        user_node_data.put("id no", Integer.valueOf(Order_id));
+        user_node_data.put("id no", String.valueOf(Order_id));
 
 
         int finalOrder_id = Order_id;

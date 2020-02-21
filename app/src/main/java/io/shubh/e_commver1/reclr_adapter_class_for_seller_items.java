@@ -66,7 +66,7 @@ public class reclr_adapter_class_for_seller_items extends RecyclerView.Adapter<r
         holder.tv_item_Title.setText(dataForItemArrayList.get(position).getItem_title());
         holder.tv_item_desc.setText(dataForItemArrayList.get(position).getItem_Descrp());
 
-        Log.d("&&&&&&&&&&3", dataForItemArrayList.get(position).getItem_Descrp());
+     //   Log.d("&&&&&&&&&&3", dataForItemArrayList.get(position).getItem_Descrp());
 
         holder.tv_item_catgr.setText(dataForItemArrayList.get(position).getItem_ctgr());
         //     holder.iv_item_image.setText(dataForItemArrayList.get(position).getvid_time());

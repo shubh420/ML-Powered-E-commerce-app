@@ -16,7 +16,7 @@
         <activity android:name=".SearchResultsActivity"></activity>
         <activity android:name=".SearchActivity" />
         <activity android:name=".CategoryItemsActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".Splash.View.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
         <activity android:name=".seller_items_list" />
         <activity android:name=".seller_confirmation_activity" />
         <activity android:name=".SignupActivity" />
-        <activity android:name=".WelcomeActivity" />
+        <activity android:name=".Welcome.View.WelcomeActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
 

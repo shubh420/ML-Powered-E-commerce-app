@@ -85,7 +85,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
 
 //getting all the documents whose have a feild 'seller id' as this seller id
             db.collection("items for sale")
-                    .whereEqualTo(key,value ) // <-- This line
+                    .whereEqualTo(key,value ) // <-- This    line
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

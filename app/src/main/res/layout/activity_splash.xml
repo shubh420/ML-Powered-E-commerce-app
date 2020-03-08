@@ -5,7 +5,7 @@
     android:id="@+id/layoutsplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashActivity"
+    tools:context=".Splash.View.SplashActivity"
     android:background="#8BC34A"
     android:orientation="vertical">
 

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_container_of_vertical_tv"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <io.shubh.e_commver1.Utils.VerticalTextView
+        android:id="@+id/vertical_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="hbkbbkvgvjj"
+        android:textColor="#000"
+        android:textSize="25sp" />
+
+</RelativeLayout>
+
+

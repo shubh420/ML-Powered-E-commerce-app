@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".SearchResultsActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_search"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:elevation="50dp"
+        app:cardElevation="50dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="15dp"
+        app:cardCornerRadius="10dp"
+        android:layout_marginBottom="8dp">
+
+        <!--   <androidx.appcompat.widget.SearchView
+               android:id="@+id/searchview"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:elevation="0dp"
+               app:queryHint="Search a product"
+               android:iconifiedByDefault="false"
+               app:defaultQueryHint="hint"
+/>-->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="5dp"
+            android:gravity="center_vertical"
+            >
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/ic_search_white"
+                android:clickable="false"/>
+
+            <TextView
+                android:id="@+id/edt_search_text"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+
+                android:text="Search a product "
+                android:gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:clickable="false"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"/>
+
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_search_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:text="Search text "
+        android:layout_margin="10dp"
+        android:clickable="false"
+        android:textSize="18sp"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/id_fr_recycler_view_search_items_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+   />
+</LinearLayout>

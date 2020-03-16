@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
     tools:context=".CategoryItemsActivity">
 
 
@@ -176,19 +177,6 @@
 
                 </com.google.android.material.appbar.AppBarLayout>
 
-                <LinearLayout
-                android:id="@+id/container_fr_ctgr"
-                android:layout_width="50dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:background="#fff"
-
-                android:paddingLeft="6dp"
-                android:paddingTop="0dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-                </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/id_fr_recycler_view_ctgr_items_list"
@@ -198,7 +186,26 @@
 
                 android:paddingLeft="50dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+
+
                 />
+                <LinearLayout
+                    android:id="@+id/container_fr_ctgr"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="#80C96E"
+
+                    android:paddingLeft="6dp"
+                    android:paddingTop="0dp"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+
+
+
+                </LinearLayout>
+
 
 
 

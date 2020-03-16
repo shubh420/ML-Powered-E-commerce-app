@@ -8,15 +8,16 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     private CategoryItemsView categoryItemsView;
     private CategoryItemsInteractor mInteractor;
 
-    String categoryNameOrPath;
-    int categoryLevel;
+    String categoryName;
+    String categoryPath;
 
 
-    public CategoryItemsPresenterImplt(CategoryItemsView categoryItemsView , CategoryItemsInteractor mSplashInteractor , String category , int categoryLevel) {
+
+    public CategoryItemsPresenterImplt(CategoryItemsView categoryItemsView , CategoryItemsInteractor mSplashInteractor , String category , String categoryPath) {
        this.categoryItemsView =categoryItemsView;
        this.mInteractor = mSplashInteractor;
-       this.categoryNameOrPath=category;
-        this.categoryLevel =categoryLevel;
+       this.categoryName=category;
+        this.categoryPath =categoryPath;
 
        mInteractor.init(this);
 
@@ -29,9 +30,9 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     public void LoginRelatedWork() {
 
 
-        mInteractor.checkSomethingInDatabaseWithArgAsCallbackFunction( new CategoryItemsInteractor.SeparateCallbackToPresnterForSystemUpdate(){
+       /* mInteractor.getItemsFromFirebaseWithArgAsCallbackFunction(new CategoryItemsInteractor.SeparateCallbackToPresnterAfterGettingItemsForRclrView(){
             @Override
-            public void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck) {
+            public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
 
               if(callbackResultOfTheCheck==true){
                   //system upadte available ..so throw a dialog asking to download update
@@ -39,7 +40,19 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
                   //system upadte not available ..so continue
               }
             }
-        });
+        });*/
+    }
+
+    @Override
+    public void getItemsFromFirebase(String mParam2CategoryPath) {
+
+        mInteractor.getItemsFromFirebaseWithArgAsCallbackFunction(new CategoryItemsInteractor.SeparateCallbackToPresnterAfterGettingItemsForRclrView() {
+            @Override
+            public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
+
+
+            }
+        } , mParam2CategoryPath);
     }
 
 

@@ -1,12 +1,30 @@
 package io.shubh.e_commver1;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +56,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_items);
 
-       /* db = FirebaseFirestore.getInstance();
+        db = FirebaseFirestore.getInstance();
 
         //category = StaticClassForGlobalInfo.categories_names.get(1);
         Intent intent = getIntent();
@@ -48,10 +66,10 @@ public class CategoryItemsActivity extends AppCompatActivity {
 
         handle_the_category_verticle_bar_and_top_banners();
 
-        get_the_category_data_and_load_into_grid_view(true,false,false ,category);*/
+        get_the_category_data_and_load_into_grid_view(true,false,false ,category);
     }
 
-  /*  private void get_the_category_data_and_load_into_grid_view(Boolean load_only_root_ctgr,Boolean load_sub_ctgr ,boolean load_sub_sub_ctgr ,String value) {
+    private void get_the_category_data_and_load_into_grid_view(Boolean load_only_root_ctgr,Boolean load_sub_ctgr ,boolean load_sub_sub_ctgr ,String value) {
 
         recyclerView = (RecyclerView) findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
         recyclerView.removeAllViewsInLayout();
@@ -292,8 +310,8 @@ public class CategoryItemsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.removeAllViews();
 
-      *//*  RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CategoryItemsActivity.this);
-        recyclerView.setLayoutManager(layoutManager);*//*
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CategoryItemsActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
 
         // set a GridLayoutManager with 2 number of columns
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
@@ -319,9 +337,9 @@ public class CategoryItemsActivity extends AppCompatActivity {
             key2 = images_url.get(i);
             j = i - 1;
 
-        *//* Move elements of arr[0..i-1], that are
+         Move elements of arr[0..i-1], that are
         greater than key, to one position ahead
-        of their current position *//*
+        of their current position
             while (j >= 0 && imagesorder.get(j) > key) {
                 imagesorder.set(j + 1, imagesorder.get(j));
                 images_url.set(j + 1, images_url.get(j));
@@ -422,8 +440,8 @@ public class CategoryItemsActivity extends AppCompatActivity {
         final RelativeLayout.LayoutParams lp_for_tv = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         lp_for_rl_row.addRule(RelativeLayout.CENTER_VERTICAL);
 
-      *//*  final RelativeLayout.LayoutParams lp_for_iv = new RelativeLayout.LayoutParams((int) (25 * scale + 0.5f), (int) (25 * scale + 0.5f));
-        lp_for_iv.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);*//*
+        final RelativeLayout.LayoutParams lp_for_iv = new RelativeLayout.LayoutParams((int) (25 * scale + 0.5f), (int) (25 * scale + 0.5f));
+        lp_for_iv.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         for (int i = 0; i < sub_categories_size; i++) {
 
@@ -524,13 +542,13 @@ public class CategoryItemsActivity extends AppCompatActivity {
 
 
                         get_the_category_data_and_load_into_grid_view(false,true,false,StaticClassForGlobalInfo.super_nested_list_of_categories.get(index_root).get(finalI).categoryNmae);
-                      *//*  rl_row_container_sub_categories[finalI].setBackgroundColor(Color.parseColor("#A88BC34A"));
+                        rl_row_container_sub_categories[finalI].setBackgroundColor(Color.parseColor("#A88BC34A"));
                         //removing the green backgrnd clolr if anyone other had
                         for(int j=0;j<sub_categories_size;j++){
                             if(j!=finalI){
                                 rl_row_container_sub_categories[finalI].setBackgroundColor(Color.parseColor("#ffffff"));
                             }
-                        }*//*
+                        }
 
                     }
                 });
@@ -551,7 +569,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
             //   add_press_effect_button_to_dialog_elements(ll_row_container[i] ,iv_[i],tv_of_bookmarked_url[i]);
         }
 
-  *//*      //--------------------------handling Bottom sheet header work
+        //--------------------------handling Bottom sheet header work
         ImageButton bt_for_back = (ImageButton) findViewById(R.id.id_fr_bt_bottom_sheet_back);
         bt_for_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -574,7 +592,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
                     }
                 });
             }
-        });*//*
+        });
 
 
         //adding a godamn animation to tv as well
@@ -604,8 +622,8 @@ public class CategoryItemsActivity extends AppCompatActivity {
         final RelativeLayout.LayoutParams lp_for_tv = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         lp_for_rl_row.addRule(RelativeLayout.CENTER_IN_PARENT);
 
-      *//*  final RelativeLayout.LayoutParams lp_for_iv = new RelativeLayout.LayoutParams((int) (25 * scale + 0.5f), (int) (25 * scale + 0.5f));
-        lp_for_iv.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);*//*
+        final RelativeLayout.LayoutParams lp_for_iv = new RelativeLayout.LayoutParams((int) (25 * scale + 0.5f), (int) (25 * scale + 0.5f));
+        lp_for_iv.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 
         for (int i = 0; i < sub_sub_categories_size; i++) {
 
@@ -655,13 +673,13 @@ public class CategoryItemsActivity extends AppCompatActivity {
 
 
                         get_the_category_data_and_load_into_grid_view(false,false,true,StaticClassForGlobalInfo.super_nested_list_of_categories.get(index_root).get(index_root_sub).getListOfsubCategory().get(finalI));
-                      *//*  tv_of_sub_sub_category[finalI].setTextColor(Color.parseColor("#8BC34A"));
+                        tv_of_sub_sub_category[finalI].setTextColor(Color.parseColor("#8BC34A"));
                         //removing the green backgrnd clolr if anyone other had
                         for(int j=0;j<sub_sub_categories_size;j++){
                             if(j!=finalI){
                                 tv_of_sub_sub_category[finalI].setTextColor(Color.parseColor("#A60C0C0C"));
                             }
-                        }*//*
+                        }
                     }
                 });
             }
@@ -673,12 +691,12 @@ public class CategoryItemsActivity extends AppCompatActivity {
 //----------------------------------------------------------------------------
             //   add_press_effect_button_to_dialog_elements(ll_row_container[i] ,iv_[i],tv_of_bookmarked_url[i]);
         }
-*//*
+
         ImageButton back_bt =(ImageButton) findViewById(R.id.id_fr_bt_bottom_sheet_back);
         back_bt.setVisibility(View.GONE);
-        overridePendingTransition(R.anim.right_in, R.anim.left_out);*//*
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-     *//*   //--------------------------handling Bottom sheet header work
+        //--------------------------handling Bottom sheet header work
         ImageButton bt_for_back = (ImageButton) findViewById(R.id.id_fr_bt_bottom_sheet_back);
         bt_for_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -701,7 +719,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
                     }
                 });
             }
-        });*//*
-    }*/
+        });
+    }
 }
 

@@ -213,7 +213,7 @@ android:id="@+id/id_fr_tv_first_slash"
                 android:background="#fff"
                 >-->
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:id="@+id/container_fr_ctgr"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -224,7 +224,7 @@ android:id="@+id/id_fr_tv_first_slash"
                     android:paddingTop="0dp">
 
 
-                </LinearLayout>
+                </LinearLayout>-->
         <!--    </androidx.cardview.widget.CardView>-->
 
 

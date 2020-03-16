@@ -9,9 +9,9 @@ public interface CategoryItemsInteractor {
         void onFinishedCheckingSomething2();
 
     }
-    interface SeparateCallbackToPresnterForSystemUpdate {
+    interface SeparateCallbackToPresnterAfterGettingItemsForRclrView {
 
-        void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck);
+        void onFinishedGettingItems(boolean callbackResultOfTheCheck);
     }
 
     void init(CallbacksToPresnter mPresenter);
@@ -19,6 +19,6 @@ public interface CategoryItemsInteractor {
 
     void checkSomethingInDatabase();
 
-    void checkSomethingInDatabaseWithArgAsCallbackFunction(CategoryItemsInteractor.SeparateCallbackToPresnterForSystemUpdate l);
+    void getItemsFromFirebaseWithArgAsCallbackFunction(SeparateCallbackToPresnterAfterGettingItemsForRclrView l , String  ctgrPath);
 }
 

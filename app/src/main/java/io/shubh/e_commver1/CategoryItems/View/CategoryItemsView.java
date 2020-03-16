@@ -15,10 +15,7 @@ public interface CategoryItemsView {
 
     void showToast(String msg);
 
-    //level of catgr
-    //1->ctgr
-    //2->sub-ctgr
-    //3->sub-sub-ctgr
-    void onCategoryButtonsClicked(int levelOfCategory , String name);
+
+    //void onCategoryButtonsClicked(int levelOfCategory , String name);
 
 }

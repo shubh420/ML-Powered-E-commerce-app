@@ -104,10 +104,10 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
     }
 
     @Override
-    public void checkSomethingInDatabaseWithArgAsCallbackFunction(SeparateCallbackToPresnterForSystemUpdate l) {
+    public void getItemsFromFirebaseWithArgAsCallbackFunction(SeparateCallbackToPresnterForSystemUpdate l) {
 
         //after checking something ..communicating the results back to presenter ..we have a call back
-        l.onFinishedCheckingSystemUpdate(true);
+        l.onFinishedGettingItems(true);
     }
 */
 

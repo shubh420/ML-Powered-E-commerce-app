@@ -43,7 +43,7 @@ public class SplashInteractorImplt implements SplashInteractor {
                     if (document != null) {
 
                         boolean b =  document.getBoolean("system update available");
-                        l.onFinishedCheckingSystemUpdate(b);
+                        l.onFinishedGettingItems(b);
                         Log.d("&&&", "system update is : " + b);
 
                     } else {

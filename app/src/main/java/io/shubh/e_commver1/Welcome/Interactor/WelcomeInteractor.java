@@ -15,7 +15,7 @@ public interface WelcomeInteractor {
     }
  /*   interface SeparateCallbackToPresnterForSystemUpdate {
 
-        void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck);
+        void onFinishedGettingItems(boolean callbackResultOfTheCheck);
     }*/
 
     void init(CallbacksToPresnter mPresenter);
@@ -23,7 +23,7 @@ public interface WelcomeInteractor {
 
   /*  void checkSomethingInDatabase();
 
-    void checkSomethingInDatabaseWithArgAsCallbackFunction(WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate l);
+    void getItemsFromFirebaseWithArgAsCallbackFunction(WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate l);
 */
 }
 

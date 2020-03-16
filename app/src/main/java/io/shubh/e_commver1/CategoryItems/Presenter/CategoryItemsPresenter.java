@@ -9,4 +9,6 @@ public interface CategoryItemsPresenter {
    // void onGettingThegoogleSignInResult(int code, int requestCode, Intent data);
 
      void LoginRelatedWork();
+
+    void getItemsFromFirebase(String mParam2CategoryPath);
 }

@@ -135,9 +135,9 @@ welcomeView.showProgressBar(false);
     public void LoginRelatedWork() {
 
 
-        mInteractor.checkSomethingInDatabaseWithArgAsCallbackFunction( new WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate(){
+        mInteractor.getItemsFromFirebaseWithArgAsCallbackFunction( new WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate(){
             @Override
-            public void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck) {
+            public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
 
               if(callbackResultOfTheCheck==true){
                   //system upadte available ..so throw a dialog asking to download update

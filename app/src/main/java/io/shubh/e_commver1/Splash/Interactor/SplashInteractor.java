@@ -10,7 +10,7 @@ public interface SplashInteractor {
 /*
     interface SeparateCallbackToPresnterForSystemUpdate {
 
-        void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck);
+        void onFinishedGettingItems(boolean callbackResultOfTheCheck);
     }
 
     void init(CallbacksToPresnter mPresenter);

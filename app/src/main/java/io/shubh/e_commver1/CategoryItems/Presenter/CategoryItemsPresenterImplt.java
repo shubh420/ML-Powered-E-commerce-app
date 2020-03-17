@@ -1,7 +1,12 @@
 package io.shubh.e_commver1.CategoryItems.Presenter;
 
+import android.util.Log;
+
+import java.util.List;
+
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractor;
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsView;
+import io.shubh.e_commver1.Models.ItemsForSale;
 
 public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, CategoryItemsInteractor.CallbacksToPresnter {
 
@@ -30,7 +35,7 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     public void LoginRelatedWork() {
 
 
-       /* mInteractor.getItemsFromFirebaseWithArgAsCallbackFunction(new CategoryItemsInteractor.SeparateCallbackToPresnterAfterGettingItemsForRclrView(){
+       /* mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(new CategoryItemsInteractor.SeparateCallbackToPresnterAfterGettingItemsForRclrView(){
             @Override
             public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
 
@@ -44,15 +49,11 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void getItemsFromFirebase(String mParam2CategoryPath) {
+    public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath) {
 
-        mInteractor.getItemsFromFirebaseWithArgAsCallbackFunction(new CategoryItemsInteractor.SeparateCallbackToPresnterAfterGettingItemsForRclrView() {
-            @Override
-            public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
+        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath);
 
-
-            }
-        } , mParam2CategoryPath);
+     //   mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(mParam1CategoryName , mParam2CategoryPath);
     }
 
 
@@ -62,8 +63,19 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void onFinishedCheckingSomething2() {
+    public void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty) {
 
-        //this is call from interactor
+        if(listNotEmpty==true){
+            for(int i=0;i<itemList.size();i++){
+                Log.i("****", String.valueOf(itemList.get(i).getOrder_id()));
+            }
+
+            categoryItemsView.onGettingCtgrItemsFromPrsntr(itemList,listNotEmpty);
+        }else{
+            Log.i("****", "List is empty");
+        }
+
     }
+
+
 }

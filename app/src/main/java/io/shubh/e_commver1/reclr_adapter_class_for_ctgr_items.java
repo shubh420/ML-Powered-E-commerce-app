@@ -1,7 +1,6 @@
 package io.shubh.e_commver1;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,14 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.shubh.e_commver1.Models.ItemsForSale;
 
 public class reclr_adapter_class_for_ctgr_items extends RecyclerView.Adapter<reclr_adapter_class_for_ctgr_items.ViewHolder> {
-    private ArrayList<ClassForCategoryItemReclrDATAObject> dataForItemArrayList;
+    private List<ItemsForSale> dataForItemArrayList;
     private Context context;
 
 
 
-    public reclr_adapter_class_for_ctgr_items(Context context, ArrayList<ClassForCategoryItemReclrDATAObject> dataForItems) {
+    public reclr_adapter_class_for_ctgr_items(Context context, List<ItemsForSale> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
 
@@ -57,13 +59,15 @@ public class reclr_adapter_class_for_ctgr_items extends RecyclerView.Adapter<rec
     @Override
     public void onBindViewHolder(@NonNull reclr_adapter_class_for_ctgr_items.ViewHolder holder, int position) {
 
-        holder.tv_item_Title.setText(dataForItemArrayList.get(position).getItem_title());
+        holder.tv_item_Title.setText(dataForItemArrayList.get(position).getName());
         holder.tv_item_price.setText("₹"+dataForItemArrayList.get(position).getItem_price());
 
      //   Log.d("&&&&&&&&&&3", dataForItemArrayList.get(position).getItem_Descrp());
+/*
 
         Picasso.get().load(dataForItemArrayList.get(position).getItem_image_url()).placeholder(R.drawable.ring)
                 .resize(300, 300).centerCrop().into(holder.iv_item_image);
+*/
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -10,7 +10,7 @@ public interface WelcomeInteractor {
     interface CallbacksToPresnter {
         void onFinishedPushingTheUidToUsersNode();
 
-       // void onFinishedCheckingSomething2();
+       // void onFinishedGettingItems();
 
     }
  /*   interface SeparateCallbackToPresnterForSystemUpdate {
@@ -23,7 +23,7 @@ public interface WelcomeInteractor {
 
   /*  void checkSomethingInDatabase();
 
-    void getItemsFromFirebaseWithArgAsCallbackFunction(WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate l);
+    void getItemsFromFirebaseWithResultsOnSeparateCallback(WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate l);
 */
 }
 

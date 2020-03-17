@@ -290,8 +290,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(SearchResultsActivity.this, list_of_data_objects__for_adapter);
-        recyclerView.setAdapter(adapter);
+     //   reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(SearchResultsActivity.this, list_of_data_objects__for_adapter);
+      //  recyclerView.setAdapter(adapter);
 
 
         if (list_of_data_objects__for_adapter.size() == 0) {

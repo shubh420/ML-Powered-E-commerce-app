@@ -63,13 +63,13 @@ public class CategoryItemsActivity extends AppCompatActivity {
         category= intent.getStringExtra("name");
 
 
-
+/*
         handle_the_category_verticle_bar_and_top_banners();
 
-        get_the_category_data_and_load_into_grid_view(true,false,false ,category);
+        get_the_category_data_and_load_into_grid_view(true,false,false ,category);*/
     }
 
-    private void get_the_category_data_and_load_into_grid_view(Boolean load_only_root_ctgr,Boolean load_sub_ctgr ,boolean load_sub_sub_ctgr ,String value) {
+  /*  private void get_the_category_data_and_load_into_grid_view(Boolean load_only_root_ctgr,Boolean load_sub_ctgr ,boolean load_sub_sub_ctgr ,String value) {
 
         recyclerView = (RecyclerView) findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
         recyclerView.removeAllViewsInLayout();
@@ -303,7 +303,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
                 });
 
     }
-
+*/
     private void set_up_the_recycler_grid_view(ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter) {
         //now executing the UI part
         recyclerView = (RecyclerView) findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
@@ -319,8 +319,8 @@ public class CategoryItemsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(CategoryItemsActivity.this, list_of_data_objects__for_adapter);
-        recyclerView.setAdapter(adapter);
+    //    reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(CategoryItemsActivity.this, list_of_data_objects__for_adapter);
+     //   recyclerView.setAdapter(adapter);
 
 
         if (list_of_data_objects__for_adapter.size() == 0) {
@@ -329,7 +329,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
 
     }
 
-    private ArrayList<String> sort_the_url_into_order(ArrayList<String> images_url, ArrayList<Integer> imagesorder) {
+/*    private ArrayList<String> sort_the_url_into_order(ArrayList<String> images_url, ArrayList<Integer> imagesorder) {
         int i, key, j;
         String key2;
         for (i = 1; i < imagesorder.size(); i++) {
@@ -349,10 +349,10 @@ public class CategoryItemsActivity extends AppCompatActivity {
             images_url.set(j + 1, key2);
         }
         return images_url;
-    }
+    }*/
 
 
-    private void handle_the_category_verticle_bar_and_top_banners() {
+  /*  private void handle_the_category_verticle_bar_and_top_banners() {
 
         //  container_for_directory_tvs =(LinearLayout)findViewById(R.id.id_fr_ll_container_fr_categories);
         tv_catgr_dierctory = (TextView) findViewById(R.id.id_fr_tv_catgr_directory);
@@ -720,6 +720,6 @@ public class CategoryItemsActivity extends AppCompatActivity {
                 });
             }
         });
-    }
+    }*/
 }
 

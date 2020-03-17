@@ -10,7 +10,7 @@ public interface MainInteractor {
     interface CallbacksToPresnter {
         void onFinishedCheckingSomething1();
 
-        //void onFinishedCheckingSomething2();
+        //void onFinishedGettingItems();
 
     }
     interface SeparateCallbackToPresnterAfterGettingcategories {

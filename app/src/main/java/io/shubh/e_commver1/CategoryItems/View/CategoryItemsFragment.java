@@ -12,15 +12,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractorImplt;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenter;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenterImplt;
+import io.shubh.e_commver1.CategoryItemsActivity;
 import io.shubh.e_commver1.Models.Category;
+import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.reclr_adapter_class_for_ctgr_items;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,7 +63,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
     TextView tv_second_slash_directry;
 
     LayoutInflater inflater;
-
+    RecyclerView recyclerView;
 
     public CategoryItemsFragment() {
         // Required empty public constructor
@@ -97,6 +104,8 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         attachOnBackBtPressedlistener();
 
         DoUiWork();
+
+        callForPresenterToGetCtgrItems();
         
 
         // Inflate the layout for this fragment
@@ -126,6 +135,12 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         tv_header = (TextView) containerViewGroup.findViewById(R.id.id_fr_tv_header);
 
 
+        recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
+        recyclerView.setLayoutManager(gridLayoutManager);
 //-------------------------------------------------------------------------------------------------
 
         updateHeaderTvAndCtgrStrip();
@@ -179,10 +194,10 @@ loadCategorylayoutsInTheSidebar();
 
                                         loadCategorylayoutsInTheSidebar();
                                         //load the recyclr grid view below
-                                        getTheCtgrDataAndLoadIntoGridView();
+                                        callForPresenterToGetCtgrItems();
                                         updateHeaderTvAndCtgrStrip();
                                     }else{
-                                        getTheCtgrDataAndLoadIntoGridView();
+                                        callForPresenterToGetCtgrItems();
                               //          loadCategorylayoutsInTheSidebar();
                                         updateHeaderTvAndCtgrStrip();
                                     }
@@ -229,7 +244,7 @@ loadCategorylayoutsInTheSidebar();
 
 
                                         loadCategorylayoutsInTheSidebar();
-                                        getTheCtgrDataAndLoadIntoGridView();
+                                        callForPresenterToGetCtgrItems();
                                         updateHeaderTvAndCtgrStrip();
                                     }
                                 });
@@ -292,10 +307,17 @@ loadCategorylayoutsInTheSidebar();
 
     }
 
-    private void getTheCtgrDataAndLoadIntoGridView() {
+    private void callForPresenterToGetCtgrItems() {
 
-        mPresenter.getItemsFromFirebase(mParam2CategoryPath);
+        mPresenter.getItemsFromFirebase(mParam1CategoryName,mParam2CategoryPath);
     }
+
+    @Override
+    public void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> itemList, Boolean listNotEmpty) {
+        reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(getContext(), itemList);
+        recyclerView.setAdapter(adapter);
+    }
+
 
 
    /* @Override
@@ -359,6 +381,7 @@ loadCategorylayoutsInTheSidebar();
         Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show    ();
 
     }
+
 
     //below function is for catching back button pressed
     private void attachOnBackBtPressedlistener() {

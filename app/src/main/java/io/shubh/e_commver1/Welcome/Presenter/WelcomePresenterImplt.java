@@ -135,7 +135,7 @@ welcomeView.showProgressBar(false);
     public void LoginRelatedWork() {
 
 
-        mInteractor.getItemsFromFirebaseWithArgAsCallbackFunction( new WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate(){
+        mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback( new WelcomeInteractor.SeparateCallbackToPresnterForSystemUpdate(){
             @Override
             public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
 

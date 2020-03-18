@@ -10,7 +10,7 @@ public interface CategoryItemsInteractor {
     interface CallbacksToPresnter {
         void onFinishedCheckingSomething1();
 
-        void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty);
+        void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName);
 
     }
    /* interface SeparateCallbackToPresnterAfterGettingItemsForRclrView {
@@ -23,7 +23,7 @@ public interface CategoryItemsInteractor {
 
     void checkSomethingInDatabase();
 
-    void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgr , String  ctgrPath);
+    void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgr , String  ctgrPath ,boolean ifItsALoadMorecall);
 
     void getItemsFromFirebaseWithResultsOnSeparateCallback( String ctgr, String  ctgrPath);
 }

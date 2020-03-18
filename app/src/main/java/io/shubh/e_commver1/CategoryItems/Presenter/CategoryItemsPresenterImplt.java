@@ -49,7 +49,7 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath) {
+    public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath ,boolean ifItsALoadMorecall) {
 
         mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath);
 
@@ -63,14 +63,14 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty) {
+    public void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName) {
 
         if(listNotEmpty==true){
-            for(int i=0;i<itemList.size();i++){
+           /* for(int i=0;i<itemList.size();i++){
                 Log.i("****", String.valueOf(itemList.get(i).getOrder_id()));
             }
-
-            categoryItemsView.onGettingCtgrItemsFromPrsntr(itemList,listNotEmpty);
+*/
+            categoryItemsView.onGettingCtgrItemsFromPrsntr(itemList,listNotEmpty ,ctgrName);
         }else{
             Log.i("****", "List is empty");
         }

@@ -19,7 +19,7 @@ public interface CategoryItemsView {
 
     void showToast(String msg);
 
-    void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> itemList, Boolean listNotEmpty);
+    void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName);
 
 
    // void onCategoryButtonsClicked(int levelOfCategory , String name);

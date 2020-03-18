@@ -15,7 +15,7 @@ public class ItemsForSale implements Serializable {
 
 
 
-    List<String> listOfImageURLs = new ArrayList<String>();
+   // List<String> listOfImageURLs = new ArrayList<String>();
 
     public ItemsForSale() {
     }
@@ -122,12 +122,12 @@ public class ItemsForSale implements Serializable {
         this.listOfImageURLs = listOfImageURLs;
     }*/
 
-   // @PropertyName("uploaded images urls")
+  /* // @PropertyName("uploaded images urls")
     public List<String> getListOfImageURLs() {
         return listOfImageURLs;
     }
     //@PropertyName("uploaded images urls")
     public void setListOfImageURLs(List<String> listOfImageURLs) {
         this.listOfImageURLs = listOfImageURLs;
-    }
+    }*/
 }

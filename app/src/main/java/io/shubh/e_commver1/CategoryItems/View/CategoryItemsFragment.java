@@ -22,7 +22,6 @@ import java.util.List;
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractorImplt;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenter;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenterImplt;
-import io.shubh.e_commver1.CategoryItemsActivity;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
@@ -64,6 +63,15 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
     LayoutInflater inflater;
     RecyclerView recyclerView;
+    GridLayoutManager gridLayoutManager;
+    ArrayList<ItemsForSale> itemsList;
+    reclr_adapter_class_for_ctgr_items adapter;
+    String nameOfCtgrforWhichDataIsDetected;
+
+    String rootCtgr ;
+    String subCtgr;
+    String subSubCtgr;
+
 
     public CategoryItemsFragment() {
         // Required empty public constructor
@@ -86,6 +94,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
             mParam1CategoryName = getArguments().getString(ARG_PARAM1_Category_Name);
             mParam2CategoryPath = getArguments().getString(ARG_PARAM2_Category_Path);
            // mParam2 = getArguments().getString(ARG_PARAM2);
+            rootCtgr=mParam1CategoryName;
 
 
             //always do presenter related work at last in Oncreate
@@ -105,8 +114,8 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
         DoUiWork();
 
+        nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
         callForPresenterToGetCtgrItems();
-        
 
         // Inflate the layout for this fragment
         return containerViewGroup;
@@ -138,9 +147,14 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+         gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
+
+         itemsList = new ArrayList<>();
+         adapter = new reclr_adapter_class_for_ctgr_items(getContext(), itemsList);
+        recyclerView.setAdapter(adapter);
+
 //-------------------------------------------------------------------------------------------------
 
         updateHeaderTvAndCtgrStrip();
@@ -187,19 +201,32 @@ loadCategorylayoutsInTheSidebar();
                                 @Override
                                 public void onClick(View view) {
 
+                                    subCtgr= subCategoriesList.get(finalJ).getName();
+                                    if(mParam2CategoryPath.indexOf(subCategoriesList.get(finalJ).getName())==-1) {
+                                        // above if is to check if the same ctgr is clicked twice or not...because if it is...then the ctgrpath will already have the string i am adding below
+                                        mParam2CategoryPath = rootCtgr + "/" + subCtgr;
+                                        mParam1CategoryName = subCategoriesList.get(finalJ).getName();
+                                    }
+
                                     if(subCategoriesList.get(finalJ).isHaveSubSubCatgr()) {
 
-                                        mParam2CategoryPath= mParam2CategoryPath+"/"+subCategoriesList.get(finalJ).getName();
-                                        mParam1CategoryName = subCategoriesList.get(finalJ).getName();
 
                                         loadCategorylayoutsInTheSidebar();
-                                        //load the recyclr grid view below
-                                        callForPresenterToGetCtgrItems();
                                         updateHeaderTvAndCtgrStrip();
+                                        //load the recyclr grid view below
+                                        emptyTheRecyclerView();
+
+                                        nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
+                                        callForPresenterToGetCtgrItems();
+
                                     }else{
+                                        updateHeaderTvAndCtgrStrip();
+                                        emptyTheRecyclerView();
+
+                                        nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
                                         callForPresenterToGetCtgrItems();
                               //          loadCategorylayoutsInTheSidebar();
-                                        updateHeaderTvAndCtgrStrip();
+
                                     }
 
                                 }
@@ -239,13 +266,18 @@ loadCategorylayoutsInTheSidebar();
                                     @Override
                                     public void onClick(View view) {
 
-                                        mParam2CategoryPath= mParam2CategoryPath+"//"+subsubCategoriesList.get(finalK).getName();
-                                        mParam1CategoryName =subsubCategoriesList.get(finalK).getName();
+                                       subSubCtgr= subsubCategoriesList.get(finalK).getName();
+                                            mParam2CategoryPath = rootCtgr + "/" + subCtgr+"//"+subSubCtgr;
+                                            mParam1CategoryName = subsubCategoriesList.get(finalK).getName();
 
 
                                         loadCategorylayoutsInTheSidebar();
-                                        callForPresenterToGetCtgrItems();
                                         updateHeaderTvAndCtgrStrip();
+
+                                        emptyTheRecyclerView();
+                                        nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
+                                        callForPresenterToGetCtgrItems();
+
                                     }
                                 });
                             }
@@ -267,6 +299,12 @@ loadCategorylayoutsInTheSidebar();
             tv_header.setText(mParam1CategoryName.substring(index2+1));*/
         }
 
+    }
+
+    private void emptyTheRecyclerView() {
+
+        itemsList.clear();
+        adapter.notifyDataSetChanged();
     }
 
     private void updateHeaderTvAndCtgrStrip() {
@@ -313,9 +351,28 @@ loadCategorylayoutsInTheSidebar();
     }
 
     @Override
-    public void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> itemList, Boolean listNotEmpty) {
-        reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(getContext(), itemList);
-        recyclerView.setAdapter(adapter);
+    public void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> retrivedShorterItemList, Boolean listNotEmpty, String ctgrName) {
+
+        if(nameOfCtgrforWhichDataIsDetected==ctgrName) {
+
+            this.itemsList.addAll(retrivedShorterItemList);
+            adapter.notifyDataSetChanged();
+
+
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                    if (itemsList.isEmpty() == false && itemsList.size()>6) {
+                        //below is done because this
+                        if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == itemsList.size() - 1) {
+                            //bottom of list!
+                            callForPresenterToGetCtgrItems();
+                        }
+                    }
+                }
+            });
+        }
     }
 
 

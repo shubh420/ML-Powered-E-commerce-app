@@ -15,7 +15,6 @@
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
 
-
             >
 
                 <com.google.android.material.appbar.AppBarLayout
@@ -188,25 +187,36 @@
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
 
-
                 />
-                <LinearLayout
-                    android:id="@+id/container_fr_ctgr"
-                    android:layout_width="50dp"
+                <RelativeLayout
+                    android:id="@+id/rl_root_container_of_side_strip"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="#80C96E"
+                    android:elevation="20dp"
 
-                    android:paddingLeft="6dp"
-                    android:paddingTop="0dp"
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_marginTop="5dp"
 
+                    >
 
+                        <ScrollView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                                <LinearLayout
+                                    android:id="@+id/container_fr_ctgr"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
 
+                                  >
+                                        <include
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            layout="@layout/vertical_textviews_for_to_be_inflated" />
 
-                </LinearLayout>
-
-
+                                </LinearLayout>
+                        </ScrollView>
+                </RelativeLayout>
 
 
 

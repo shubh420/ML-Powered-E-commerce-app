@@ -5,34 +5,50 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.view.Gravity;
 
 import androidx.appcompat.widget.AppCompatTextView;
 
-public class VerticalTextView  extends AppCompatTextView {
-    private Rect bounds = new Rect();
-    private TextPaint textPaint;
-    private int color;
+public class VerticalTextView  extends AppCompatTextView{
+    final boolean topDown;
 
-    public VerticalTextView(Context context) {
-        super(context);
-    }
-
-    public VerticalTextView(Context context, AttributeSet attrs) {
+    public VerticalTextView(Context context, AttributeSet attrs){
         super(context, attrs);
-        color = getCurrentTextColor();
+        final int gravity = getGravity();
+        if(Gravity.isVertical(gravity) && (gravity&Gravity.VERTICAL_GRAVITY_MASK) == Gravity.BOTTOM) {
+            setGravity((gravity&Gravity.HORIZONTAL_GRAVITY_MASK) | Gravity.TOP);
+            topDown = false;
+        }else
+            topDown = true;
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        textPaint = getPaint();
-        textPaint.getTextBounds((String) getText(), 0, getText().length(), bounds);
-        setMeasuredDimension((int) (bounds.height() + textPaint.descent()), bounds.width());
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
+        super.onMeasure(heightMeasureSpec, widthMeasureSpec);
+        setMeasuredDimension(getMeasuredHeight(), getMeasuredWidth());
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        textPaint.setColor(color);
-        canvas.rotate(-90, bounds.width(), 0);
-        canvas.drawText((String) getText(), 0, -bounds.width() + bounds.height(), textPaint);
+    protected void onDraw(Canvas canvas){
+        TextPaint textPaint = getPaint();
+        textPaint.setColor(getCurrentTextColor());
+        textPaint.drawableState = getDrawableState();
+
+        canvas.save();
+
+        if(topDown){
+            canvas.translate(0, getHeight());
+            canvas.rotate(-90);
+
+        }else {
+            canvas.translate(getWidth(), 0);
+            canvas.rotate(90);
+        }
+
+
+        canvas.translate(getCompoundPaddingLeft(), getExtendedPaddingTop());
+
+        getLayout().draw(canvas);
+        canvas.restore();
     }
 }

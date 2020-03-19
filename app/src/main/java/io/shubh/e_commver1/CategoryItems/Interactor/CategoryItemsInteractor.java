@@ -25,6 +25,6 @@ public interface CategoryItemsInteractor {
 
     void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgr , String  ctgrPath ,boolean ifItsALoadMorecall);
 
-    void getItemsFromFirebaseWithResultsOnSeparateCallback( String ctgr, String  ctgrPath);
+    void getItemsFromFirebaseWithResultsOnSeparateCallback( String ctgr, String  ctgrPath ,boolean ifItsALoadMorecall);
 }
 

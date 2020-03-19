@@ -1,20 +1,30 @@
 package io.shubh.e_commver1.CategoryItems.View;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +36,7 @@ import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.VerticalTextView;
 import io.shubh.e_commver1.reclr_adapter_class_for_ctgr_items;
 
 /**
@@ -115,7 +126,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         DoUiWork();
 
         nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
-        callForPresenterToGetCtgrItems();
+        callForPresenterToGetCtgrItems(false);
 
         // Inflate the layout for this fragment
         return containerViewGroup;
@@ -125,6 +136,8 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
 
     private void DoUiWork() {
+
+
 
         //  container_for_directory_tvs =(LinearLayout)findViewById(R.id.id_fr_ll_container_fr_categories);
         tv_catgr_dierctory = (TextView) containerViewGroup.findViewById(R.id.id_fr_tv_catgr_directory);
@@ -144,6 +157,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         tv_header = (TextView) containerViewGroup.findViewById(R.id.id_fr_tv_header);
 
 
+
         recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
@@ -155,10 +169,26 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
          adapter = new reclr_adapter_class_for_ctgr_items(getContext(), itemsList);
         recyclerView.setAdapter(adapter);
 
+        setUpCtgrSideBar();
 //-------------------------------------------------------------------------------------------------
 
         updateHeaderTvAndCtgrStrip();
 loadCategorylayoutsInTheSidebar();
+    }
+
+    private void setUpCtgrSideBar() {
+       /* RelativeLayout rlContainer = (RelativeLayout)containerViewGroup.findViewById(R.id.rl_root_container_of_side_strip);
+
+        final ViewTreeObserver observer= rlContainer.getViewTreeObserver();
+        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                rlContainer.getWidth();
+                Log.i("######", "width "+rlContainer.getWidth());
+              //  observer.removeGlobalOnLayoutListener(this);
+            }
+        });*/
+
     }
 
     private void loadCategorylayoutsInTheSidebar() {
@@ -217,14 +247,14 @@ loadCategorylayoutsInTheSidebar();
                                         emptyTheRecyclerView();
 
                                         nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
-                                        callForPresenterToGetCtgrItems();
+                                        callForPresenterToGetCtgrItems(false);
 
                                     }else{
                                         updateHeaderTvAndCtgrStrip();
                                         emptyTheRecyclerView();
 
                                         nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
-                                        callForPresenterToGetCtgrItems();
+                                        callForPresenterToGetCtgrItems(false);
                               //          loadCategorylayoutsInTheSidebar();
 
                                     }
@@ -263,20 +293,24 @@ loadCategorylayoutsInTheSidebar();
 
                                 int finalK = k;
                                 inflated.setOnClickListener(new View.OnClickListener() {
+
                                     @Override
                                     public void onClick(View view) {
+
+                                        removeColorFromOtherCtgrTvsInSideBarIfAny(tv ,ll_container_side_bar);
+                                        tv.setTextColor(getResources().getColor(R.color.colorSecondary));
 
                                        subSubCtgr= subsubCategoriesList.get(finalK).getName();
                                             mParam2CategoryPath = rootCtgr + "/" + subCtgr+"//"+subSubCtgr;
                                             mParam1CategoryName = subsubCategoriesList.get(finalK).getName();
 
 
-                                        loadCategorylayoutsInTheSidebar();
+                                        //loadCategorylayoutsInTheSidebar();
                                         updateHeaderTvAndCtgrStrip();
 
                                         emptyTheRecyclerView();
                                         nameOfCtgrforWhichDataIsDetected=mParam1CategoryName;
-                                        callForPresenterToGetCtgrItems();
+                                        callForPresenterToGetCtgrItems(false);
 
                                     }
                                 });
@@ -298,6 +332,19 @@ loadCategorylayoutsInTheSidebar();
             /*int index2 =mParam1CategoryName.indexOf("//");
             tv_header.setText(mParam1CategoryName.substring(index2+1));*/
         }
+
+    }
+
+
+    private void removeColorFromOtherCtgrTvsInSideBarIfAny(TextView tv, LinearLayout ll_container_side_bar) {
+
+        final int childCount = ll_container_side_bar.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            RelativeLayout rlContainingOtherTv = (RelativeLayout) ll_container_side_bar.getChildAt(i);
+            TextView otherTv = (TextView)rlContainingOtherTv.findViewById(R.id.vertical_tv);
+            otherTv.setTextColor(getResources().getColor(R.color.colorLightGrayForTextViews));
+        }
+
 
     }
 
@@ -345,9 +392,9 @@ loadCategorylayoutsInTheSidebar();
 
     }
 
-    private void callForPresenterToGetCtgrItems() {
+    private void callForPresenterToGetCtgrItems(boolean ifItsALoadMorecall) {
 
-        mPresenter.getItemsFromFirebase(mParam1CategoryName,mParam2CategoryPath);
+        mPresenter.getItemsFromFirebase(mParam1CategoryName,mParam2CategoryPath ,ifItsALoadMorecall);
     }
 
     @Override
@@ -363,11 +410,11 @@ loadCategorylayoutsInTheSidebar();
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
 
-                    if (itemsList.isEmpty() == false && itemsList.size()>6) {
+                    if (itemsList.isEmpty() == false && itemsList.size()>5) {
                         //below is done because this
                         if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == itemsList.size() - 1) {
                             //bottom of list!
-                            callForPresenterToGetCtgrItems();
+                            callForPresenterToGetCtgrItems(true);
                         }
                     }
                 }

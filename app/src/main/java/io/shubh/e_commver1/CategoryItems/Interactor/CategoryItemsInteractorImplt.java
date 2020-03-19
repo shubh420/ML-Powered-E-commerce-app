@@ -20,7 +20,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
 
     FirebaseFirestore db ;
     CallbacksToPresnter mPresenter;
-    int noOfItemsRetrivedTillNo=0;
+    //int noOfItemsRetrivedTillNo=0;
     ArrayList<ItemsForSale> itemsList = new ArrayList<>();
     int idodLastItemRetrived=0;
     String  ctgrPath= null;
@@ -49,11 +49,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
         Log.i("******", "first call is made here for: "+ctgrPath+"-------------------------");
         itemsList.clear();
 
-        if(idodLastItemRetrived==0 || this.ctgrPath != ctgrPath )  {
-            //the above if determines if its the first page of the recycler view. Or if call is amde for new ctgr
-            if(this.ctgrPath == null || this.ctgrPath != ctgrPath  ) {
-                //the above if determines if a new call is made for different ctgr
-                this.ctgrPath=  ctgrPath ;
+        if(ifItsALoadMorecall==false){
+              //  this.ctgrPath=  ctgrPath ;
 
                 Query query = null;
                 if (ctgrPath.indexOf('/') == -1) {
@@ -101,7 +98,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                                             //adding image urls maually now -TODO make a arraylist field for it in firestore document later
 
 
-                                            getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath);
+                                            getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath,false);
                                         } else {
                                             //TODO-show toast of no items found
                                             Log.i("***", "first call result has 0 size ");
@@ -123,19 +120,21 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
 
                             }
                         });
-            }
+
         }else{
-            getItemsFromFirebaseWithResultsOnSeparateCallback( ctgrName ,ctgrPath);
+            getItemsFromFirebaseWithResultsOnSeparateCallback( ctgrName ,ctgrPath ,true);
         }
     }
 
     @Override
-    public void getItemsFromFirebaseWithResultsOnSeparateCallback( String  ctgrName, String  ctgrPath) {
+    public void getItemsFromFirebaseWithResultsOnSeparateCallback( String  ctgrName, String  ctgrPath,boolean ifItsALoadMorecall) {
 
        // ArrayList<ItemsForSale> list_of_data_objects__for_adapter = new ArrayList<>();
         Log.i("****", "2ndcall is made for:"+ctgrPath+"------------------------");
 
                 this.ctgrPath = ctgrPath;
+                int pageSize=0;
+                if(ifItsALoadMorecall==true){pageSize=6;}else{pageSize=5;}
 
                 Query query = null;
                 if (ctgrPath.indexOf('/') == -1) {
@@ -147,7 +146,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                     //for first time I will pass it the very first function,after that the last document i have
                             //Also the field of orderBy and startafter should be same
-                            .limit(5);
+                            .limit(pageSize);
 
                 } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") == -1) {
                     //means ctgrpath has subctgr no subsubctgr
@@ -157,7 +156,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                             .orderBy("order id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                             //for first time I will pass it the very first function,after that the last document i have
-                            .limit(5);
+                            .limit(pageSize);
                 } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") != -1) {
                     //means ctgrpath has subsubctgr
                     //this means we need to get all documents which belong to this subsubctgr
@@ -166,7 +165,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                             .orderBy("order id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                             //for first time I will pass it the very first function,after that the last document i have
-                            .limit(5);
+                            .limit(pageSize);
                 }
 
                 query

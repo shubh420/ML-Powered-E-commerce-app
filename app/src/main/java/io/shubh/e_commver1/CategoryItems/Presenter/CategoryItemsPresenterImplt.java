@@ -51,7 +51,7 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     @Override
     public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath ,boolean ifItsALoadMorecall) {
 
-        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath);
+        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath ,ifItsALoadMorecall);
 
      //   mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(mParam1CategoryName , mParam2CategoryPath);
     }

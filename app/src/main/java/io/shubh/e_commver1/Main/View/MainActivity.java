@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     //below is the loading placeholder view
     ShimmerFrameLayout mShimmerViewContainer;
+     DrawerLayout drawerLayout;
 
 
     @Override
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
 
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+    drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         final CoordinatorLayout content = (CoordinatorLayout) findViewById(R.id.content);
 
 
@@ -339,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        reclr_adapter_class_for_main_activity_items adapter = new reclr_adapter_class_for_main_activity_items(MainActivity.this, listOfDataObjectsForAdapter);
+        reclr_adapter_class_for_main_activity_items adapter = new reclr_adapter_class_for_main_activity_items(MainActivity.this, listOfDataObjectsForAdapter ,drawerLayout);
         recyclerView.setAdapter(adapter);
 
 
@@ -382,4 +383,44 @@ public class MainActivity extends AppCompatActivity implements MainView {
             iv_icon_bt_drwr_switch_to_seller.setVisibility(View.VISIBLE);
         }
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+
+    public void lockDrawer() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+
+    public void unlockDrawer() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+  /*  @Override
+    protected void onStop() {
+        super.onStop();
+        //the activty is not visible ..means an activity/fragment has opened over it
+        //and the drawer still opens on sliding in rhe fragment ..so deisabling it
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        //the activty is not visible ..means an activity/fragment has opened over it
+        //and the drawer still opens on sliding in rhe fragment ..so deisabling it
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+    }*/
 }

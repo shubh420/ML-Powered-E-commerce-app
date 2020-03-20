@@ -21,7 +21,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
     FirebaseFirestore db ;
     CallbacksToPresnter mPresenter;
     //int noOfItemsRetrivedTillNo=0;
-    ArrayList<ItemsForSale> itemsList = new ArrayList<>();
+
     int idodLastItemRetrived=0;
     String  ctgrPath= null;
 
@@ -45,9 +45,9 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
     }
 
     @Override
-    public void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String  ctgrName, String  ctgrPath ,boolean ifItsALoadMorecall) {
+    public void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgrName, String ctgrPath, boolean ifItsALoadMorecall) {
         Log.i("******", "first call is made here for: "+ctgrPath+"-------------------------");
-        itemsList.clear();
+        ArrayList<ItemsForSale> itemsList = new ArrayList<>();
 
         if(ifItsALoadMorecall==false){
               //  this.ctgrPath=  ctgrPath ;
@@ -98,10 +98,12 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                                             //adding image urls maually now -TODO make a arraylist field for it in firestore document later
 
 
-                                            getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath,false);
+                                            getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath,false  ,itemsList);
                                         } else {
                                             //TODO-show toast of no items found
                                             Log.i("***", "first call result has 0 size ");
+                                            mPresenter.onFinishedGettingItems(itemsList, false, ctgrName ,ifItsALoadMorecall);
+
                                         }
 
 
@@ -122,12 +124,12 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                         });
 
         }else{
-            getItemsFromFirebaseWithResultsOnSeparateCallback( ctgrName ,ctgrPath ,true);
+            getItemsFromFirebaseWithResultsOnSeparateCallback( ctgrName ,ctgrPath ,true ,itemsList);
         }
     }
 
     @Override
-    public void getItemsFromFirebaseWithResultsOnSeparateCallback( String  ctgrName, String  ctgrPath,boolean ifItsALoadMorecall) {
+    public void getItemsFromFirebaseWithResultsOnSeparateCallback( String  ctgrName, String  ctgrPath,boolean ifItsALoadMorecall , ArrayList<ItemsForSale> itemsList ) {
 
        // ArrayList<ItemsForSale> list_of_data_objects__for_adapter = new ArrayList<>();
         Log.i("****", "2ndcall is made for:"+ctgrPath+"------------------------");
@@ -190,7 +192,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                                                 Log.i("******name", itemsList.get(i).getName());
                                             }
                                             idodLastItemRetrived=itemsList.get(itemsList.size()-1).getOrder_id();
-                                            mPresenter.onFinishedGettingItems(itemsList ,true, ctgrName);
+                                            mPresenter.onFinishedGettingItems(itemsList ,true, ctgrName,ifItsALoadMorecall);
 
 
                                             //adding image urls maually now -TODO make a arraylist field for it in firestore document later
@@ -198,10 +200,13 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                                         } else {
 
                                             if(itemsList.isEmpty()){
-                                                //TODO-showToast..of No items found
+                                                if(ifItsALoadMorecall==true){
+                                                    //TODO-showToast..of No more items found  ..after scrolling to bottom
+                                                    mPresenter.showToast("No more Items found");
+                                                }
                                             }else {
                                                 Log.i("****", "Size is 0 of 2nd call ,but it has reached the 2nd call so so it has one item so display it");
-                                                mPresenter.onFinishedGettingItems(itemsList, true, ctgrName);
+                                                mPresenter.onFinishedGettingItems(itemsList, true, ctgrName ,ifItsALoadMorecall);
                                             }
                                         }
 

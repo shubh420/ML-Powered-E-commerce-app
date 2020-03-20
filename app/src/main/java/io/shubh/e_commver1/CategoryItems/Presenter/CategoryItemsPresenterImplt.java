@@ -49,9 +49,9 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath ,boolean ifItsALoadMorecall) {
+    public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath, boolean ifItsALoadMorecall) {
 
-        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath ,ifItsALoadMorecall);
+        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath ,ifItsALoadMorecall );
 
      //   mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(mParam1CategoryName , mParam2CategoryPath);
     }
@@ -63,18 +63,24 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName) {
+    public void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName ,boolean ifItsALoadMoreCallResult) {
 
         if(listNotEmpty==true){
-           /* for(int i=0;i<itemList.size();i++){
-                Log.i("****", String.valueOf(itemList.get(i).getOrder_id()));
-            }
-*/
-            categoryItemsView.onGettingCtgrItemsFromPrsntr(itemList,listNotEmpty ,ctgrName);
+
+            categoryItemsView.onGettingCtgrItemsFromPrsntr(itemList,listNotEmpty ,ctgrName ,ifItsALoadMoreCallResult);
         }else{
-            Log.i("****", "List is empty");
+            //tell the fragment to show no results found
+            categoryItemsView.showToast("No items Found");
+
+            //tell the fragment to show no results found
+            categoryItemsView.onNoItemsFoundResult(ctgrName , ifItsALoadMoreCallResult) ;
         }
 
+    }
+
+    @Override
+    public void showToast(String no_more_items_found) {
+        categoryItemsView.showToast("No More Items Found");
     }
 
 

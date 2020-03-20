@@ -10,5 +10,5 @@ public interface CategoryItemsPresenter {
 
      void LoginRelatedWork();
 
-    void getItemsFromFirebase(String mParam1CategoryName,String mParam2CategoryPath,boolean ifItsALoadMorecall);
+    void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath, boolean ifItsALoadMorecall);
 }

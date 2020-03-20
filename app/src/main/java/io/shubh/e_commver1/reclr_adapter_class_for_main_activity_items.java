@@ -10,25 +10,34 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
+import io.shubh.e_commver1.Main.View.MainActivity;
 
-public class reclr_adapter_class_for_main_activity_items extends RecyclerView.Adapter<reclr_adapter_class_for_main_activity_items.ViewHolder> {
+public class reclr_adapter_class_for_main_activity_items extends RecyclerView.Adapter<reclr_adapter_class_for_main_activity_items.ViewHolder>
+      {
+
     private ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItemArrayList;
     private Context context;
+    private DrawerLayout drawerLayoutForTpBePassedToFragments;
 
 
-
-    public reclr_adapter_class_for_main_activity_items(Context context, ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItems) {
+    public reclr_adapter_class_for_main_activity_items(Context context, ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItems, DrawerLayout drawerLayout) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
-
+        drawerLayoutForTpBePassedToFragments=drawerLayout;
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView tv_item_Title;
@@ -71,8 +80,13 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
                 ((AppCompatActivity )context).getSupportFragmentManager().beginTransaction()
 
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title() , dataForItemArrayList.get(position).getItem_title()))
+                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title() , dataForItemArrayList.get(position).getItem_title(),drawerLayoutForTpBePassedToFragments) )
                         .commit();
+
+                drawerLayoutForTpBePassedToFragments.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+
+
                /* Intent myIntent = new Intent(context, CategoryItemsActivity.class);
                 myIntent.putExtra("name" ,dataForItemArrayList.get(position).getItem_title() );
                 context.startActivity(myIntent);
@@ -112,6 +126,17 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
         return dataForItemArrayList.size();
     }
 
+
+/*    @Override
+    public void onFragmentClosingCheckIfItsTheOnlyOneToEnableDrawrOPenOnSwipe() {
+
+        //check if the fragment which has called
+        FragmentManager fragmentManager = ((AppCompatActivity )context).getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
+        if(fragments.isEmpty()){
+            drawerLayoutForTpBePassedToFragments
+        }
+    }*/
 
 
 }

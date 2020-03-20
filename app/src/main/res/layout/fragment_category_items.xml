@@ -88,30 +88,35 @@
                 <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:animateLayoutChanges="true">
-                <TextView
-                android:id="@+id/id_fr_tv_header"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Category"
-                android:textColor="#A60C0C0C"
-                android:layout_gravity="center"
-                android:textSize="28sp"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp"
 
-                android:ellipsize="end"
-                android:maxLines="1"
-                />
+                        <TextView
+                            android:id="@+id/id_fr_tv_header"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:ellipsize="end"
+                            android:fontFamily="@font/adamina"
+                            android:maxLines="1"
+                            android:paddingLeft="15dp"
+                            android:paddingTop="20dp"
+                            android:paddingRight="15dp"
+                            android:text="Category"
+                            android:textColor="#A60C0C0C"
+                            android:textSize="35sp" />
                 </LinearLayout>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
                 <LinearLayout
                 android:id="@+id/id_fr_ll_fr_directory_tvs"
                 android:layout_width="match_parent"
                 android:layout_height="23dp"
                 android:orientation="horizontal"
                 android:animateLayoutChanges="true"
-                android:layout_marginTop="4dp">
+                android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp">
 
                 <TextView
                 android:id="@+id/id_fr_tv_catgr_directory"
@@ -121,31 +126,28 @@
                 android:paddingLeft="15dp"
                 android:text="Category"
                 android:textAllCaps="false"
-                android:textColor="#A60C0C0C"
-                android:textSize="17sp"
-
-                android:textStyle="italic" />
+                android:textColor="#A6222222"
+                android:textSize="15sp"
+                    />
                 <TextView
                 android:id="@+id/id_fr_tv_first_slash"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="/"
-                android:textColor="#A60C0C0C"
+                android:textColor="#A6222222"
                 android:layout_gravity="center"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textStyle="italic"
                 />
                 <TextView
                 android:id="@+id/id_fr_tv_sub_catgr_directory"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Sub-Category"
-                android:textColor="#A60C0C0C"
+                android:textColor="#A6222222"
                 android:layout_gravity="center"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textStyle="italic"
                 />
 
                 <TextView
@@ -155,9 +157,9 @@
                 android:layout_gravity="center"
                 android:paddingLeft="5dp"
                 android:text="/"
-                android:textColor="#A60C0C0C"
-                android:textSize="17sp"
-                android:textStyle="italic"
+                android:textColor="#A6222222"
+                android:textSize="15sp"
+
 
                 />
                 <TextView
@@ -165,16 +167,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="Sub-Sub-Category"
-                android:textColor="#A60C0C0C"
+                android:textColor="#A6222222"
                 android:layout_gravity="center"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:paddingLeft="5dp"
-                android:textStyle="italic"
+
 
                 />
                 </LinearLayout>
-
+</LinearLayout>
                 </com.google.android.material.appbar.AppBarLayout>
+
+
+                <include
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    layout="@layout/shimmer_layout_file_fr_include_in_ctgr_items_frag"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    android:layout_marginLeft="45dp"/>
 
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -186,13 +196,13 @@
                 android:paddingLeft="50dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
-
+android:paddingBottom="50dp"
                 />
                 <RelativeLayout
                     android:id="@+id/rl_root_container_of_side_strip"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:elevation="20dp"
+                    android:elevation="0dp"
 
                     app:layout_behavior="@string/appbar_scrolling_view_behavior"
                     android:layout_marginTop="5dp"

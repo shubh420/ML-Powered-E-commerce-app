@@ -11,4 +11,6 @@
     <color name="colorPrimaryLightPix">#80075e54</color>
 
     <color name="colorShimmerLoading">#dddddd</color>
+    <color name="colorTransparent">#00ffffff</color>
+
 </resources>

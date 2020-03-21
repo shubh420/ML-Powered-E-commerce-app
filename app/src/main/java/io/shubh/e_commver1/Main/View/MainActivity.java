@@ -30,12 +30,14 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
+import io.shubh.e_commver1.SellerConfirmationFragment;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 import io.shubh.e_commver1.reclr_adapter_class_for_main_activity_items;
@@ -261,14 +263,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
             startActivity(in);
         } else if(i==2){
 
-            Intent in = new Intent(MainActivity.this, seller_items_list.class);
-            startActivity(in);
+          /*  Intent in = new Intent(MainActivity.this, seller_items_list.class);
+            startActivity(in);*/
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.drawerLayout,new SellerConfirmationFragment() )
+                    .commit();
 
             //animation for sliding activity
           //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if(i==3){
-            Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
-            startActivity(in);
+    /*        Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
+            startActivity(in);*/
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.drawerLayout,new SellerConfirmationFragment() )
+                    .commit();
+
 
             //animation for sliding activity
             //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -384,7 +393,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
     }
 
-    @Override
+/*    @Override
     protected void onStart() {
         super.onStart();
 
@@ -405,7 +414,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     public void unlockDrawer() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
+    }*/
   /*  @Override
     protected void onStop() {
         super.onStop();

@@ -364,7 +364,7 @@ static DrawerLayout drawerLayoutSttatic;
         for (int i = 0; i < childCount; i++) {
             RelativeLayout rlContainingOtherTv = (RelativeLayout) ll_container_side_bar.getChildAt(i);
             TextView otherTv = (TextView) rlContainingOtherTv.findViewById(R.id.vertical_tv);
-            otherTv.setTextColor(getResources().getColor(R.color.colorLightGrayForTextViews));
+            otherTv.setTextColor(getResources().getColor(R.color.colorLightGrayForSubSubHeaderTvs));
         }
 
 

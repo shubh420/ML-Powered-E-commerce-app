@@ -1,8 +1,8 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.SellerDashboard.View;
+
 
 import android.os.Bundle;
 
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.KeyEvent;
@@ -11,48 +11,47 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.List;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
-import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
+import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
+import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.SellerConfirmationFragment;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class SellerConfirmationFragment extends Fragment {
-//this fragment doesnt have factory methods like ''newinstance' method ..and bundle args passed
-View containerViewGroup;
+public class SellerDashboardFragment extends Fragment {
 
-    public SellerConfirmationFragment() {
+    View containerViewGroup;
+
+    public SellerDashboardFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        containerViewGroup =inflater.inflate(R.layout.fragment_seller_confirmation, container, false);
 
+         containerViewGroup= inflater.inflate(R.layout.fragment_seller_dashboard, container, false);
+
+ //------------------------------------
         attachOnBackBtPressedlistener();
 
-
-        Button btLater =(Button)containerViewGroup.findViewById(R.id.bt_later);
-        btLater.setOnClickListener(new View.OnClickListener() {
+        Button btAddImages = (Button) containerViewGroup.findViewById(R.id.bt_later);
+        btAddImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //TODO- change the below drawer layout to the root layout of this fragment ..and do this same changes
+                // in all the fragments which are opening other fragments
+
                 getFragmentManager().beginTransaction()
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, new SellerDashboardFragment())
+                        .add(R.id.drawerLayout, new ItemsDetailsTakingFragment())
                         .commit();
-
             }
         });
-
-
-
+        // Inflate the layout for this fragment
         return containerViewGroup;
     }
 
@@ -84,7 +83,7 @@ View containerViewGroup;
         }*/
 
         //now closing this activty
-        getFragmentManager().beginTransaction().remove(SellerConfirmationFragment.this).commit();
+        getFragmentManager().beginTransaction().remove(SellerDashboardFragment.this).commit();
     }
 
 }

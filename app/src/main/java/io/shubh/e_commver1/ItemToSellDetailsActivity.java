@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.fxn.pix.Options;
 import com.fxn.pix.Pix;
 import com.fxn.utility.ImageQuality;
@@ -78,12 +79,12 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_to_sell_details);
 
-      /*  progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
 
         db = FirebaseFirestore.getInstance();
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
-        Button bt_fr_choose_images = (Button) findViewById(R.id.id_fr_bt_choose_images);
+      /*  Button bt_fr_choose_images = (Button) findViewById(R.id.id_fr_bt_choose_images);
 
 
         bt_fr_choose_images.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +124,8 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
 
 
     }
-
-   /* private void setupCategorySelectionStuff() {
+/*
+    private void setupCategorySelectionStuff() {
 
         Button selectCatgr = (Button) findViewById(R.id.id_fr_bt_selct_catgr);
 
@@ -326,7 +327,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
                 });
 
 
-             *//*ll_container_parent.animate()
+             ll_container_parent.animate()
                      .translationX(ll_container_parent.getWidth())
                      .alpha(0.0f)
                      .setDuration(450)
@@ -346,7 +347,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
                              ll_container_parent.animate().translationX(0);
 
                          }
-                     });*//*
+                     });
 
             }
         });
@@ -608,11 +609,11 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
 //----------------------------------------------------------------------------
             //   add_press_effect_button_to_dialog_elements(ll_row_container[i] ,iv_[i],tv_of_bookmarked_url[i]);
         }
-*//*
+
         ImageButton back_bt =(ImageButton) findViewById(R.id.id_fr_bt_bottom_sheet_back);
 
         back_bt.setVisibility(View.GONE);
-        overridePendingTransition(R.anim.right_in, R.anim.left_out);*//*
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
         //--------------------------handling Bottom sheet header work
         ImageButton bt_for_back = (ImageButton) findViewById(R.id.id_fr_bt_bottom_sheet_back);
@@ -698,7 +699,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
                         //  int Order_id = ( doc.get("id no")).intValue();
                         int Order_id = Integer.valueOf((String) doc.get("id no"));
 
-                        *//*   Log.i("######################", String.valueOf(Order_id));*//*
+                           Log.i("######################", String.valueOf(Order_id));
                         Order_id++;
 
                         //since id is retrieved and incremented ..now uploading all the details
@@ -966,7 +967,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
                 array_whether_image_view_have_image[return_the_available_imageview_index()] = true;
 
                 Log.i("%%%%%%%%%%%%%%%%", returnValue.get(0));
-                       *//* // Load the image into image view
+                        // Load the image into image view
                         Glide.with(ItemToSellDetailsActivity.this)
                                 //.load(mImageUri) // Load image from assets
                                 .load(mImageUri) // Image URL
@@ -975,7 +976,7 @@ public class ItemToSellDetailsActivity extends AppCompatActivity {
                                 .override(140,140) // Resize image
                                 .placeholder(R.drawable.ic_launcher_foreground) // Place holder image
                                 .error(R.drawable.ic_launcher_foreground) // On error image
-                                .into(iv[0]); // ImageView to display image*//*
+                                .into(iv[0]); // ImageView to display image
 
             } else if (returnValue.size() == 2) {
                 iv[return_the_available_imageview_index()].setVisibility(View.VISIBLE);

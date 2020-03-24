@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.ClassForMainActvityItemReclrDATAObject;
+import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
@@ -68,11 +70,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         DoUiWork();
 
-
         mPresenter = new MainPresenterImplt(this, new MainInteractorImplt());
 
 
     }
+
 
     private void DoUiWork() {
 
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
     }
+
 
 
     private void setSearchViewWork() {
@@ -133,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             public void onClick(View view) {
 
                 mPresenter.checkIfUserIsASellerOrNot();
+
             }
         });
 //------------------------------------
@@ -263,6 +267,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             startActivity(in);
         } else if(i==2){
 
+            drawerLayout.closeDrawer(Gravity.LEFT);
           /*  Intent in = new Intent(MainActivity.this, seller_items_list.class);
             startActivity(in);*/
             getSupportFragmentManager().beginTransaction()

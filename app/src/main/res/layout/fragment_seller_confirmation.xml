@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".SellerConfirmationFragment"
 android:background="@color/colorPrimary"
-
+    android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <View
         android:id="@+id/iv_center"
         android:layout_width="500dp"
-        android:layout_height="250dp"
+        android:layout_height="200dp"
 
         android:layout_weight="1"
 
@@ -22,10 +22,33 @@ android:background="@color/colorPrimary"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_marginRight="-40dp"
-        android:layout_marginTop="-50dp"
+        android:layout_marginTop="-40dp"
+
         android:background="@drawable/bg_gradient2_fr_seller_confirm_frag"
-        android:rotation="150"
+        android:rotation="160"
+        android:alpha=".5   "
         />
+    <View
+    android:layout_width="500dp"
+    android:layout_height="200dp"
+
+    android:layout_weight="1"
+
+
+    android:layout_gravity="left"
+
+
+    android:layout_alignParentTop="true"
+    android:layout_alignParentRight="true"
+    android:layout_marginRight="-40dp"
+    android:layout_marginTop="-20dp"
+    android:background="@drawable/bg_gradient2_fr_seller_confirm_frag"
+    android:rotation="10"
+    android:alpha=".5   "
+    />
+
+
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -95,14 +118,14 @@ android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
+        android:layout_below="@id/Header"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/alice"
+        android:paddingLeft="15dp"
         android:text="Have The Following Available"
         android:textAlignment="viewStart"
-        android:textSize="20sp"
-        android:paddingLeft="15dp"
-        android:layout_marginTop="5dp"
-        android:textColor="@color/colorGrayForHeaderTvs"
-       android:layout_below="@id/Header"
-        />
+        android:textColor="@color/colorLightGrayForSubHeaderTvs"
+        android:textSize="18sp" />
 
 <ScrollView
     android:layout_width="match_parent"
@@ -131,17 +154,17 @@ android:background="@color/colorPrimary"
             android:scaleType="centerInside"
             android:layout_weight="1"
             />
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/adamina"
-            android:textSize="20dp"
-android:textColor="@color/colorBlackForSubHeaderTvs"
-            android:text="Business Name and Address"
-android:layout_gravity="center_vertical"
-            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            />
+            android:layout_weight="2"
+            android:fontFamily="@font/arimo"
+            android:text="Business Name and Address"
+            android:textColor="@color/colorBlackForSubHeaderTvs"
+            android:textSize="20dp" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -152,7 +175,7 @@ android:layout_gravity="center_vertical"
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/adamina"
+            android:fontFamily="@font/arimo"
             android:textSize="20dp"
             android:textColor="@color/colorBlackForSubHeaderTvs"
             android:text="Mobile or Telephone No"
@@ -188,7 +211,7 @@ android:layout_weight="1"
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/adamina"
+            android:fontFamily="@font/arimo"
             android:textSize="20dp"
             android:textColor="@color/colorBlackForSubHeaderTvs"
             android:text="Valid Bank Account"
@@ -206,7 +229,7 @@ android:layout_weight="1"
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/adamina"
+                android:fontFamily="@font/arimo"
                 android:textSize="20dp"
                 android:textColor="@color/colorBlackForSubHeaderTvs"
                 android:text="Tax Information"
@@ -226,7 +249,7 @@ android:layout_weight="1"
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="100dp"/>
+            android:layout_height="200dp"/>
     </LinearLayout>
 
 </ScrollView>

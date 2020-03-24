@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ItemToSellDetailsActivity" />
+
         <activity android:name=".seller_items_list" />
         <activity android:name=".seller_confirmation_activity" />
         <activity android:name=".SignupActivity" />

@@ -230,7 +230,7 @@ android:animateLayoutChanges="true"
 <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+ >
     <LinearLayout
         android:id="@+id/id_fr_ll_bottom_sheet_list_items_container"
 

@@ -48,6 +48,7 @@ public class MainPresenterImplt implements MainPresenter, MainInteractor.Callbac
         getAllCatgrFromFirestoreAndStoreItInStaticGlobalInfoClass();
 
 
+
     }
 
     private void getAllCatgrFromFirestoreAndStoreItInStaticGlobalInfoClass() {

@@ -1,6 +1,7 @@
 package io.shubh.e_commver1.ItemsDetailsTakingFragment.View;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 
 public interface ItemsDetailsTakingView {
 
@@ -14,4 +15,14 @@ public interface ItemsDetailsTakingView {
     void ShowSnackBarWithAction(String msg, String actionName);
 
     void showToast(String msg);
+
+    void decrementAllowedImagesPickUpAmount(int decrmntThisAmount);
+
+    void makeNewImageViewAndSetImageToIt(Bitmap imgBitmap );
+
+    void removeIvAtThisIndex(int index);
+
+    void incrementAllowedImagesPickUpAmount(int i);
+
+    void replaceBitmapOnThisPosition(int indexOfIvOfWhichEditBtWasClicked, Bitmap singleImageBitmap);
 }

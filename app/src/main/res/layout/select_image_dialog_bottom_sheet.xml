@@ -11,6 +11,7 @@
     app:behavior_peekHeight="0dp"
 
     android:background="@color/colorTransparent"
+    android:clickable="true"
    >
 
 <androidx.cardview.widget.CardView

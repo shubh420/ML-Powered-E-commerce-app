@@ -222,7 +222,7 @@ android:paddingBottom="50dp"
                                         <include
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
-                                            layout="@layout/vertical_textviews_for_to_be_inflated" />
+                                            layout="@layout/infalte_vertical_textviews_for_ctgr_vertical_strip" />
 
                                 </LinearLayout>
                         </ScrollView>

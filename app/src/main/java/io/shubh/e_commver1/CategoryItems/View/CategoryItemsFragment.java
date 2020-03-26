@@ -222,7 +222,7 @@ static DrawerLayout drawerLayoutSttatic;
                         ll_container_side_bar.removeAllViews();
                         for (int j = 0; j < subCategoriesList.size(); j++) {
 
-                            View inflated = inflater.inflate(R.layout.vertical_textviews_for_to_be_inflated, ll_container_side_bar, false);
+                            View inflated = inflater.inflate(R.layout.infalte_vertical_textviews_for_ctgr_vertical_strip, ll_container_side_bar, false);
                             ll_container_side_bar.addView(inflated);
 
                             TextView tv = (TextView) inflated.findViewById(R.id.vertical_tv);
@@ -292,7 +292,7 @@ static DrawerLayout drawerLayoutSttatic;
                             ll_container_side_bar.removeAllViews();
                             for (int k = 0; k < subsubCategoriesList.size(); k++) {
 
-                                View inflated = inflater.inflate(R.layout.vertical_textviews_for_to_be_inflated, ll_container_side_bar, false);
+                                View inflated = inflater.inflate(R.layout.infalte_vertical_textviews_for_ctgr_vertical_strip, ll_container_side_bar, false);
                                 ll_container_side_bar.addView(inflated);
 
                                 TextView tv = (TextView) inflated.findViewById(R.id.vertical_tv);

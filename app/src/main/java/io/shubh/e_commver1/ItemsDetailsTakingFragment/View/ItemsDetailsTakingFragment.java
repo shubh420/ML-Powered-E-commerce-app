@@ -68,7 +68,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     String subCtgr;
     String subSubCtgr;
     //below level var is used for info on where in the multilevelctgr we are ..when we wnat to go backwards..by default we are always showing the lsit of ctgr..ie lvl1
-    int levelInMultiLvlCtgrSys =1;
+    int levelInMultiLvlCtgrSys = 1;
     String TAG = "!!!!!";
 
     public ItemsDetailsTakingFragment() {
@@ -97,7 +97,9 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         attachOnBackBtPressedlistener();
         setUpImagePickingDialogueBottomSheetAndImgBttnForIt();
         setUpCtgrSelectionBox();
+        setUpVarietyGivingOPtion();
     }
+
 
     private void setUpImagePickingDialogueBottomSheetAndImgBttnForIt() {
 
@@ -207,7 +209,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         ImageButton btRemove = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_remove);
         ImageButton btEdit = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_edit);
 
-       iv.setImageBitmap(imgBitmap);
+        iv.setImageBitmap(imgBitmap);
 
         btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,10 +289,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
         LinearLayout llContainerFrCtgr = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
 
-        //if ctgr path is equal to  "null initially" that means ctgr box havnt been touched  ..and The first thing I need to show is list of ctgr not subctgrs
-
-        if (mCategoryPath == "null initially") {
-            //levelInMultiLvlCtgrSys =
+        if (levelInMultiLvlCtgrSys == 1) {
 
             ArrayList<Category> categoriesList = StaticClassForGlobalInfo.categoriesList;
             llContainerFrCtgr.removeAllViews();
@@ -314,7 +313,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                 }
 
 
-
                 int finalI = i;
                 inflatedRow.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -331,11 +329,12 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                         }
 */
                         if (categoriesList.get(finalI).isHaveSubCatgr()) {
-                            //   updateCtgrBoxHeader();
+                            levelInMultiLvlCtgrSys = 2;
                             loadCategorylayoutsInTheSidebarWithAnimation();
 
                         } else {
-                             updateCtgrBoxHeader(mCategoryName);
+                            levelInMultiLvlCtgrSys = 1;
+                            updateCtgrBoxHeader(mCategoryName);
                             setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                             iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                             iv.setTag("ic_check_svg");
@@ -348,9 +347,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         }
 
 
-        //below if checks if path has the / and // char in it or not ...-1 means it doesnt ..so it checks if we
-        //are at level 1 ...that means we have selected a ctgr and now we have to show a list a subctgrs using below code
-        if (mCategoryPath.indexOf('/') == -1 && mCategoryPath.indexOf("//") == -1 && mCategoryPath != "null initially") {
+        if (levelInMultiLvlCtgrSys == 2) {
             //  tv_header.setText(mParam1CategoryName);
             //I have only have the name of the category and where it is on the ctgr level
             //since its at one ,I will just iterate through each ctgr at one level to find it
@@ -381,7 +378,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                         }
 
 
-
                         int finalJ = j;
                         inflatedRow.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -400,9 +396,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                 }
 */
                                 if (subCategoriesList.get(finalJ).isHaveSubSubCatgr()) {
-
+                                    levelInMultiLvlCtgrSys = 3;
                                     loadCategorylayoutsInTheSidebarWithAnimation();
                                 } else {
+                                    levelInMultiLvlCtgrSys = 2;
                                     setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                                     iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                                     iv.setTag("ic_check_svg");
@@ -416,7 +413,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
             }
         }
         //below if checks if we are at level 3 that is of subsubctgr..so it will show the subsubctgrlist
-        if (mCategoryPath.indexOf('/') != -1 && mCategoryPath.indexOf("//") == -1) {
+        if (levelInMultiLvlCtgrSys == 3) {
 
             //I have only have the name of the subcategory and where it is on the ctgr level
             //since its at two,first  ,I will just iterate through each ctgr at one level to find it whome it is subctgr of
@@ -480,10 +477,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                 @Override
                 public void onClick(View view) {
                     //below if means if the ctgr box is showing the subctgrlist
-                    if (mCategoryPath != "null initially" && mCategoryPath.indexOf("/") == -1) {
+                    if (levelInMultiLvlCtgrSys == 2) {
 
 
-                        mCategoryPath = "null initially";
+                        levelInMultiLvlCtgrSys = 1;
                         //showing rotation in baackward direction
                         LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
                         TranslateAnimation animate = new TranslateAnimation(0, ll_container_side_bar.getWidth(), 0, 0);
@@ -509,9 +506,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                         });
 
 
-                    } else  if ( mCategoryPath.indexOf("/") != -1) {
+                    } else if (levelInMultiLvlCtgrSys == 3) {
 
-                        mCategoryPath = rootCtgr ;
+                        levelInMultiLvlCtgrSys = 2;
+                        // mCategoryPath = rootCtgr ;
                         //showing rotation in baackward direction
                         LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
                         TranslateAnimation animate = new TranslateAnimation(0, ll_container_side_bar.getWidth(), 0, 0);
@@ -545,7 +543,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     }
 
     private void updateCtgrBoxHeader(String mCategoryNamee) {
-        TextView tvHeaderOfCtgrBox =(TextView)containerViewGroup.findViewById(R.id.id_br_bottom_sheet_tv_header);
+        TextView tvHeaderOfCtgrBox = (TextView) containerViewGroup.findViewById(R.id.id_br_bottom_sheet_tv_header);
         tvHeaderOfCtgrBox.setText(mCategoryNamee);
 
 
@@ -559,12 +557,26 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
             RelativeLayout rlContainingOtherTv = (RelativeLayout) llContainerForCtgrBox.getChildAt(i);
             ImageView iv = (ImageView) rlContainingOtherTv.findViewById(R.id.iv_ctgr_indicator);
             String imageName2 = (String) iv.getTag();
-            if(imageName2=="ic_check_svg"){
-                 iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+            if (imageName2 == "ic_check_svg") {
+                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
             }
         }
     }
 
+    //-----------------------------------Variety giving facuility------------------------------------------
+    private void setUpVarietyGivingOPtion() {
+        Button btAddVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
+        btAddVariety.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
+
+//-------------------------------------------------------------------
 
     //below function is for catching back button pressed
     private void attachOnBackBtPressedlistener() {

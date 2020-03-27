@@ -37,7 +37,7 @@
                                               <map>
                                                 <entry key="color" value="000000" />
                                                 <entry key="opacityPercent" value="80" />
-                                                <entry key="paddingPercent" value="-5" />
+                                                <entry key="paddingPercent" value="5" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -48,8 +48,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="D:\delete it later\shop_online.png" />
-                                      <entry key="outputName" value="ic_shop_online" />
+                                      <entry key="imageAsset" value="D:\delete it later\ic_check.png" />
+                                      <entry key="outputName" value="ic_check" />
                                       <entry key="theme" value="HOLO_DARK" />
                                       <entry key="themeColor" value="ffffff" />
                                     </map>

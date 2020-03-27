@@ -5,6 +5,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -66,6 +67,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     String rootCtgr;
     String subCtgr;
     String subSubCtgr;
+    //below level var is used for info on where in the multilevelctgr we are ..when we wnat to go backwards..by default we are always showing the lsit of ctgr..ie lvl1
+    int levelInMultiLvlCtgrSys =1;
     String TAG = "!!!!!";
 
     public ItemsDetailsTakingFragment() {
@@ -204,8 +207,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         ImageButton btRemove = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_remove);
         ImageButton btEdit = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_edit);
 
-        //TODO--use glide or piccasso below to set image ...so that quality can be changed to thumbnail level
-        iv.setImageBitmap(imgBitmap);
+       iv.setImageBitmap(imgBitmap);
 
         btRemove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,7 +288,9 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         LinearLayout llContainerFrCtgr = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
 
         //if ctgr path is equal to  "null initially" that means ctgr box havnt been touched  ..and The first thing I need to show is list of ctgr not subctgrs
+
         if (mCategoryPath == "null initially") {
+            //levelInMultiLvlCtgrSys =
 
             ArrayList<Category> categoriesList = StaticClassForGlobalInfo.categoriesList;
             llContainerFrCtgr.removeAllViews();
@@ -320,7 +324,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                         rootCtgr = mCategoryName;
                         mCategoryPath = rootCtgr;
 
-
                         /*if (categoriesList.get(i).isHaveSubCatgr()) {
                             // above if is to check if the same ctgr is clicked twice or not...because if it is...then the ctgrpath will already have the string i am adding below
                             mCategoryPath = rootCtgr + "/" + subCtgr;
@@ -332,10 +335,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                             loadCategorylayoutsInTheSidebarWithAnimation();
 
                         } else {
-                            // updateCtgrBoxHeader();
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                             updateCtgrBoxHeader(mCategoryName);
                             setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
-
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                            iv.setTag("ic_check_svg");
 
                         }
                     }
@@ -400,9 +403,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
                                     loadCategorylayoutsInTheSidebarWithAnimation();
                                 } else {
-
-                                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                                     setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
+                                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                                    iv.setTag("ic_check_svg");
+
                                 }
                             }
                         });
@@ -448,8 +452,9 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                         mCategoryPath = rootCtgr + "/" + subCtgr + "//" + subSubCtgr;
 
                                         updateCtgrBoxHeader(mCategoryName);
-                                        iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                                         setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
+                                        iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                                        iv.setTag("ic_check_svg");
 
                                     }
                                 });
@@ -547,6 +552,17 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     }
 
     private void setRadioBtToAllOtherRowsWhichHadThemOriginally(View inflatedRow) {
+
+        LinearLayout llContainerForCtgrBox = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+        final int childCount = llContainerForCtgrBox.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            RelativeLayout rlContainingOtherTv = (RelativeLayout) llContainerForCtgrBox.getChildAt(i);
+            ImageView iv = (ImageView) rlContainingOtherTv.findViewById(R.id.iv_ctgr_indicator);
+            String imageName2 = (String) iv.getTag();
+            if(imageName2=="ic_check_svg"){
+                 iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+            }
+        }
     }
 
 

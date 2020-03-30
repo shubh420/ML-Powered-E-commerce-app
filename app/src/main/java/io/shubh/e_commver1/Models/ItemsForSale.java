@@ -10,12 +10,14 @@ public class ItemsForSale implements Serializable {
 
 
     String category , description ,item_price , name ,root_category ,seller_id ,sub_category ,sub_sub_category ;
-    int order_id ;
+    String order_id ;
     long time_of_upload ;
+    String varietyName;
+    boolean visibility;
 
 
-
-   // List<String> listOfImageURLs = new ArrayList<String>();
+    List<String> listOfImageURLs = new ArrayList<String>();
+    List<String> varieies = new ArrayList<String>();
 
     public ItemsForSale() {
     }
@@ -93,11 +95,11 @@ public class ItemsForSale implements Serializable {
     }
 
     @PropertyName("order id")
-    public int getOrder_id() {
+    public String getOrder_id() {
         return order_id;
     }
     @PropertyName("order id")
-    public void setOrder_id(int order_id) {
+    public void setOrder_id(String order_id) {
         this.order_id = order_id;
     }
 
@@ -111,23 +113,39 @@ public class ItemsForSale implements Serializable {
     }
 
 
-    //TODO -change the method of storing images url in document..right now ,I store thrm inside of
-    // nested collection insdie a document..but change it to array field..and then uncommentize the below later
-  /*  @PropertyName("uploaded images urls")
+    @PropertyName("uploaded images urls")
     public List<String> getListOfImageURLs() {
         return listOfImageURLs;
     }
     @PropertyName("uploaded images urls")
     public void setListOfImageURLs(List<String> listOfImageURLs) {
         this.listOfImageURLs = listOfImageURLs;
-    }*/
-
-  /* // @PropertyName("uploaded images urls")
-    public List<String> getListOfImageURLs() {
-        return listOfImageURLs;
     }
-    //@PropertyName("uploaded images urls")
-    public void setListOfImageURLs(List<String> listOfImageURLs) {
-        this.listOfImageURLs = listOfImageURLs;
-    }*/
+
+    //the variety list is uploaded only when variety name is not null
+    @PropertyName("variety name")
+    public String getVarietyName() {
+        return varietyName;
+    }
+    @PropertyName("variety name")
+    public void setVarietyName(String varietyName) {
+        this.varietyName = varietyName;
+    }
+
+    @PropertyName("visibility")
+    public boolean isVisibility() {
+        return visibility;
+    }
+    @PropertyName("visibility")
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
+    }
+
+    @PropertyName("varieties")
+    public List<String> getVarieies() {
+        return varieies;
+    }
+    public void setVarieies(List<String> varieies) {
+        this.varieies = varieies;
+    }
 }

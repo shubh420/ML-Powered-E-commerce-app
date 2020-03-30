@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rl_container_of_bt_sheet_fr_infr"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    android:clickable="true"
+
+    >
+
+
+    <TextView
+        android:id="@+id/tv_infr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="sxnksak"
+        android:textSize="25dp"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

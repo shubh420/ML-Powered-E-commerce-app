@@ -5,7 +5,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -14,6 +14,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -48,9 +50,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     ItemsDetailsTakingPresenter mPresenter;
     View containerViewGroup;
     BottomSheetBehavior behavior_bttm_sheet_which_select_img;
+    BottomSheetBehavior behavior_bttm_sheet_which_shows_info;
     LayoutInflater inflater;
 
-
+    //----------------------------------------------------
     Bitmap singleImageBitmap;
     List<Bitmap> multipleImageBitmap;
     int allowedImagesAmountForPickup = 5;
@@ -61,7 +64,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     boolean isEditBtOnAnyImageViewIscalled = false;
     int indexOfIvOfWhichEditBtWasClicked = -1;
-
+    //------------------------------------------------------
     String mCategoryPath = "null initially";
     String mCategoryName = "null initially";
     String rootCtgr;
@@ -69,7 +72,12 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     String subSubCtgr;
     //below level var is used for info on where in the multilevelctgr we are ..when we wnat to go backwards..by default we are always showing the lsit of ctgr..ie lvl1
     int levelInMultiLvlCtgrSys = 1;
+    boolean isCtgrWithNosubCtgrIsSelected = false;
+    //--------------------------------------------------
     String TAG = "!!!!!";
+    //below is false by default because most items doesnt need Variety,Only items like clothes ,shoes have variety have of size
+    boolean isAddVarietyFeatureAlreadyEnabled = false;
+    boolean stateOfVisibility = true;
 
     public ItemsDetailsTakingFragment() {
         // Required empty public constructor
@@ -97,9 +105,12 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         attachOnBackBtPressedlistener();
         setUpImagePickingDialogueBottomSheetAndImgBttnForIt();
         setUpCtgrSelectionBox();
-        setUpVarietyGivingOPtion();
+        setUpVarietyGivingOPtionAndVisibilityOption();
+        setUpUploadBtUIAndLogicWork();
     }
 
+
+    //================================below functions are for Image selection related=======================================
 
     private void setUpImagePickingDialogueBottomSheetAndImgBttnForIt() {
 
@@ -113,7 +124,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 //---------------------------------------Bottom Sheet setup------------------
 
         CoordinatorLayout rootView = (CoordinatorLayout) containerViewGroup.findViewById(R.id.cl_root);
-        View inflatedBottomSheetdialog = inflater.inflate(R.layout.select_image_dialog_bottom_sheet, rootView, false);
+        View inflatedBottomSheetdialog = inflater.inflate(R.layout.bottom_sheet_select_image_dialog, rootView, false);
         rootView.addView(inflatedBottomSheetdialog);
 
         behavior_bttm_sheet_which_select_img = BottomSheetBehavior.from(inflatedBottomSheetdialog);
@@ -124,7 +135,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         dim_background_of_bottom_sheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 behavior_bttm_sheet_which_select_img.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
             }
         });
 
@@ -193,410 +207,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     }
 
     @Override
-    public void decrementAllowedImagesPickUpAmount(int decrmntThisAmount) {
-        allowedImagesAmountForPickup = allowedImagesAmountForPickup - decrmntThisAmount;
-    }
 
-    @Override
-    public void makeNewImageViewAndSetImageToIt(Bitmap imgBitmap) {
-        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
-
-
-        RelativeLayout inflatedIvRlContainer = (RelativeLayout) inflater.inflate(R.layout.inflate_relative_layouts_with_image_views, llContainerFrIvs, false);
-        llContainerFrIvs.addView(inflatedIvRlContainer);
-
-        ImageView iv = (ImageView) inflatedIvRlContainer.findViewById(R.id.id_fr_slected_image);
-        ImageButton btRemove = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_remove);
-        ImageButton btEdit = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_edit);
-
-        iv.setImageBitmap(imgBitmap);
-
-        btRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int indexOfThisRelativeView = llContainerFrIvs.indexOfChild(inflatedIvRlContainer);
-                mPresenter.removeIvAndItsDataAtThisIndex(indexOfThisRelativeView);
-            }
-        });
-
-        btEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int indexOfThisRelativeView = llContainerFrIvs.indexOfChild(inflatedIvRlContainer);
-                indexOfIvOfWhichEditBtWasClicked = indexOfThisRelativeView;
-                isEditBtOnAnyImageViewIscalled = true;
-                behavior_bttm_sheet_which_select_img.setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
-        });
-
-    }
-
-    @Override
-    public void removeIvAtThisIndex(int index) {
-        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
-        llContainerFrIvs.removeViewAt(index);
-    }
-
-    @Override
-    public void incrementAllowedImagesPickUpAmount(int i) {
-        allowedImagesAmountForPickup++;
-    }
-
-    @Override
-    public void replaceBitmapOnThisPosition(int indexOfIvOfWhichEditBtWasClicked, Bitmap singleImageBitmap) {
-        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
-        ImageView iv = (ImageView) llContainerFrIvs.getChildAt(indexOfIvOfWhichEditBtWasClicked).findViewById(R.id.id_fr_slected_image);
-        iv.setImageBitmap(singleImageBitmap);
-    }
-
-
-//========================================================
-
-
-    private void setUpCtgrSelectionBox() {
-        //  loadCategorylayoutsInTheSidebarWithAnimation();
-        loadCategorylayoutsInTheSidebar();
-    }
-
-    private void loadCategorylayoutsInTheSidebarWithAnimation() {
-        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
-        TranslateAnimation animate = new TranslateAnimation(0, -ll_container_side_bar.getWidth(), 0, 0);
-        animate.setDuration(300);
-        ll_container_side_bar.startAnimation(animate);
-        animate.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                loadCategorylayoutsInTheSidebar();
-
-                TranslateAnimation animate = new TranslateAnimation(ll_container_side_bar.getWidth(), 0, 0, 0);
-                animate.setDuration(300);
-                ll_container_side_bar.startAnimation(animate);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-            }
-        });
-
-    }
-
-    private void loadCategorylayoutsInTheSidebar() {
-
-
-        LinearLayout llContainerFrCtgr = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
-
-        if (levelInMultiLvlCtgrSys == 1) {
-
-            ArrayList<Category> categoriesList = StaticClassForGlobalInfo.categoriesList;
-            llContainerFrCtgr.removeAllViews();
-            setUpTheHeaderBackbutton(true);
-            updateCtgrBoxHeader("Select a Category");
-
-            for (int i = 0; i < categoriesList.size(); i++) {
-
-                View inflatedRow = inflater.inflate(R.layout.infalte_vertical_rows_fr_ctgr_box_of_item_details_taking_frag, llContainerFrCtgr, false);
-                llContainerFrCtgr.addView(inflatedRow);
-
-                TextView tv = (TextView) inflatedRow.findViewById(R.id.tv_ctgr_name);
-                ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
-
-                tv.setText(categoriesList.get(i).getName());
-                //making the iv with arrows if the ctgr have subctgrs
-                if (categoriesList.get(i).isHaveSubCatgr()) {
-                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_svg));
-                } else {
-                    iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
-                }
-
-
-                int finalI = i;
-                inflatedRow.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        mCategoryName = categoriesList.get(finalI).getName();
-                        rootCtgr = mCategoryName;
-                        mCategoryPath = rootCtgr;
-
-                        /*if (categoriesList.get(i).isHaveSubCatgr()) {
-                            // above if is to check if the same ctgr is clicked twice or not...because if it is...then the ctgrpath will already have the string i am adding below
-                            mCategoryPath = rootCtgr + "/" + subCtgr;
-                            mParam1CategoryName = subCategoriesList.get(finalJ).getName();
-                        }
-*/
-                        if (categoriesList.get(finalI).isHaveSubCatgr()) {
-                            levelInMultiLvlCtgrSys = 2;
-                            loadCategorylayoutsInTheSidebarWithAnimation();
-
-                        } else {
-                            levelInMultiLvlCtgrSys = 1;
-                            updateCtgrBoxHeader(mCategoryName);
-                            setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
-                            iv.setTag("ic_check_svg");
-
-                        }
-                    }
-                });
-            }
-
-        }
-
-
-        if (levelInMultiLvlCtgrSys == 2) {
-            //  tv_header.setText(mParam1CategoryName);
-            //I have only have the name of the category and where it is on the ctgr level
-            //since its at one ,I will just iterate through each ctgr at one level to find it
-            //after finding it i will hust load the subctgr under it
-
-            for (int i = 0; i < StaticClassForGlobalInfo.categoriesList.size(); i++) {
-                if (StaticClassForGlobalInfo.categoriesList.get(i).getName() == rootCtgr) {
-
-                    ArrayList<Category.SubCategory> subCategoriesList = StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList();
-                    llContainerFrCtgr.removeAllViews();
-                    setUpTheHeaderBackbutton(false);
-                    updateCtgrBoxHeader(rootCtgr);
-
-                    for (int j = 0; j < subCategoriesList.size(); j++) {
-
-                        View inflatedRow = inflater.inflate(R.layout.infalte_vertical_rows_fr_ctgr_box_of_item_details_taking_frag, llContainerFrCtgr, false);
-                        llContainerFrCtgr.addView(inflatedRow);
-
-                        TextView tv = (TextView) inflatedRow.findViewById(R.id.tv_ctgr_name);
-                        ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
-
-                        tv.setText(subCategoriesList.get(j).getName());
-                        //making the iv with arrows if the subctgr have subsubctgrs
-                        if (subCategoriesList.get(j).isHaveSubSubCatgr()) {
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_svg));
-                        } else {
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
-                        }
-
-
-                        int finalJ = j;
-                        inflatedRow.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-
-                                mCategoryName = subCategoriesList.get(finalJ).getName();
-                                subCtgr = mCategoryName;
-                                mCategoryPath = rootCtgr + "/" + subCtgr;
-
-                                updateCtgrBoxHeader(mCategoryName);
-
-                              /*  if (mCategoryPath.indexOf(subCategoriesList.get(finalJ).getName()) == -1) {
-                                    // above if is to check if the same ctgr is clicked twice or not...because if it is...then the ctgrpath will already have the string i am adding below
-                                    mCategoryPath = rootCtgr + "/" + subCtgr;
-                                    mParam1CategoryName = subCategoriesList.get(finalJ).getName();
-                                }
-*/
-                                if (subCategoriesList.get(finalJ).isHaveSubSubCatgr()) {
-                                    levelInMultiLvlCtgrSys = 3;
-                                    loadCategorylayoutsInTheSidebarWithAnimation();
-                                } else {
-                                    levelInMultiLvlCtgrSys = 2;
-                                    setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
-                                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
-                                    iv.setTag("ic_check_svg");
-
-                                }
-                            }
-                        });
-                    }
-
-                }
-            }
-        }
-        //below if checks if we are at level 3 that is of subsubctgr..so it will show the subsubctgrlist
-        if (levelInMultiLvlCtgrSys == 3) {
-
-            //I have only have the name of the subcategory and where it is on the ctgr level
-            //since its at two,first  ,I will just iterate through each ctgr at one level to find it whome it is subctgr of
-            //after finding it i will hust load the subsubctgr under it
-            for (int i = 0; i < StaticClassForGlobalInfo.categoriesList.size(); i++) {
-                if (StaticClassForGlobalInfo.categoriesList.get(i).isHaveSubCatgr() == true) {
-
-                    for (int j = 0; j < StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList().size(); j++) {
-                        if (subCtgr == StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList().get(j).getName()) {
-                            //we have got the subctgr in the ctgrpath
-                            ArrayList<Category.SubCategory.SubSubCategory> subsubCategoriesList = StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList().get(j).getSubSubCategoryList();
-                            llContainerFrCtgr.removeAllViews();
-                            setUpTheHeaderBackbutton(false);
-                            updateCtgrBoxHeader(subCtgr);
-
-                            for (int k = 0; k < subsubCategoriesList.size(); k++) {
-                                View inflatedRow = inflater.inflate(R.layout.infalte_vertical_rows_fr_ctgr_box_of_item_details_taking_frag, llContainerFrCtgr, false);
-                                llContainerFrCtgr.addView(inflatedRow);
-
-                                TextView tv = (TextView) inflatedRow.findViewById(R.id.tv_ctgr_name);
-                                ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
-
-                                tv.setText(subsubCategoriesList.get(k).getName());
-                                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
-
-
-                                int finalK = k;
-                                inflatedRow.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        mCategoryName = subsubCategoriesList.get(finalK).getName();
-                                        subSubCtgr = mCategoryName;
-                                        mCategoryPath = rootCtgr + "/" + subCtgr + "//" + subSubCtgr;
-
-                                        updateCtgrBoxHeader(mCategoryName);
-                                        setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
-                                        iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
-                                        iv.setTag("ic_check_svg");
-
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void setUpTheHeaderBackbutton(boolean makeThehdrBtVisiblityGone) {
-//        makeThehdrBtVisiblityGone is true when the list of ctgr is shown ..so logically we cant go back than that
-
-        ImageButton btGoBackwards = (ImageButton) containerViewGroup.findViewById(R.id.id_fr_bt_bottom_sheet_back);
-        if (makeThehdrBtVisiblityGone == true) {
-            btGoBackwards.setVisibility(View.GONE);
-        } else {
-            btGoBackwards.setVisibility(View.VISIBLE);
-
-            btGoBackwards.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //below if means if the ctgr box is showing the subctgrlist
-                    if (levelInMultiLvlCtgrSys == 2) {
-
-
-                        levelInMultiLvlCtgrSys = 1;
-                        //showing rotation in baackward direction
-                        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
-                        TranslateAnimation animate = new TranslateAnimation(0, ll_container_side_bar.getWidth(), 0, 0);
-                        animate.setDuration(300);
-                        ll_container_side_bar.startAnimation(animate);
-                        animate.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                loadCategorylayoutsInTheSidebar();
-
-                                TranslateAnimation animate = new TranslateAnimation(-ll_container_side_bar.getWidth(), 0, 0, 0);
-                                animate.setDuration(300);
-                                ll_container_side_bar.startAnimation(animate);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                        });
-
-
-                    } else if (levelInMultiLvlCtgrSys == 3) {
-
-                        levelInMultiLvlCtgrSys = 2;
-                        // mCategoryPath = rootCtgr ;
-                        //showing rotation in baackward direction
-                        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
-                        TranslateAnimation animate = new TranslateAnimation(0, ll_container_side_bar.getWidth(), 0, 0);
-                        animate.setDuration(300);
-                        ll_container_side_bar.startAnimation(animate);
-                        animate.setAnimationListener(new Animation.AnimationListener() {
-                            @Override
-                            public void onAnimationStart(Animation animation) {
-                            }
-
-                            @Override
-                            public void onAnimationEnd(Animation animation) {
-                                loadCategorylayoutsInTheSidebar();
-
-                                TranslateAnimation animate = new TranslateAnimation(-ll_container_side_bar.getWidth(), 0, 0, 0);
-                                animate.setDuration(300);
-                                ll_container_side_bar.startAnimation(animate);
-                            }
-
-                            @Override
-                            public void onAnimationRepeat(Animation animation) {
-                            }
-                        });
-
-
-                    }
-                }
-            });
-
-        }
-    }
-
-    private void updateCtgrBoxHeader(String mCategoryNamee) {
-        TextView tvHeaderOfCtgrBox = (TextView) containerViewGroup.findViewById(R.id.id_br_bottom_sheet_tv_header);
-        tvHeaderOfCtgrBox.setText(mCategoryNamee);
-
-
-    }
-
-    private void setRadioBtToAllOtherRowsWhichHadThemOriginally(View inflatedRow) {
-
-        LinearLayout llContainerForCtgrBox = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
-        final int childCount = llContainerForCtgrBox.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            RelativeLayout rlContainingOtherTv = (RelativeLayout) llContainerForCtgrBox.getChildAt(i);
-            ImageView iv = (ImageView) rlContainingOtherTv.findViewById(R.id.iv_ctgr_indicator);
-            String imageName2 = (String) iv.getTag();
-            if (imageName2 == "ic_check_svg") {
-                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
-            }
-        }
-    }
-
-    //-----------------------------------Variety giving facuility------------------------------------------
-    private void setUpVarietyGivingOPtion() {
-        Button btAddVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
-        btAddVariety.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-    }
-
-
-//-------------------------------------------------------------------
-
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
 //===================//now check if image is selected from storage/gallery amd the single and multiple img picking was allowed
@@ -672,6 +283,659 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void decrementAllowedImagesPickUpAmount(int decrmntThisAmount) {
+        allowedImagesAmountForPickup = allowedImagesAmountForPickup - decrmntThisAmount;
+    }
+
+    @Override
+    public void makeNewImageViewAndSetImageToIt(Bitmap imgBitmap) {
+        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
+
+
+        RelativeLayout inflatedIvRlContainer = (RelativeLayout) inflater.inflate(R.layout.inflate_relative_layouts_with_image_views, llContainerFrIvs, false);
+        llContainerFrIvs.addView(inflatedIvRlContainer);
+
+        ImageView iv = (ImageView) inflatedIvRlContainer.findViewById(R.id.id_fr_slected_image);
+        ImageButton btRemove = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_remove);
+        ImageButton btEdit = (ImageButton) inflatedIvRlContainer.findViewById(R.id.id_fr_bt_edit);
+
+        iv.setImageBitmap(imgBitmap);
+
+        btRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int indexOfThisRelativeView = llContainerFrIvs.indexOfChild(inflatedIvRlContainer);
+                mPresenter.removeIvAndItsDataAtThisIndex(indexOfThisRelativeView);
+            }
+        });
+
+        btEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int indexOfThisRelativeView = llContainerFrIvs.indexOfChild(inflatedIvRlContainer);
+                indexOfIvOfWhichEditBtWasClicked = indexOfThisRelativeView;
+                isEditBtOnAnyImageViewIscalled = true;
+                behavior_bttm_sheet_which_select_img.setState(BottomSheetBehavior.STATE_EXPANDED);
+            }
+        });
+
+    }
+
+    @Override
+    public void removeIvAtThisIndex(int index) {
+        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
+        llContainerFrIvs.removeViewAt(index);
+    }
+
+    @Override
+    public void incrementAllowedImagesPickUpAmount(int i) {
+        allowedImagesAmountForPickup++;
+    }
+
+    @Override
+    public void replaceBitmapOnThisPosition(int indexOfIvOfWhichEditBtWasClicked, Bitmap singleImageBitmap) {
+        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
+        ImageView iv = (ImageView) llContainerFrIvs.getChildAt(indexOfIvOfWhichEditBtWasClicked).findViewById(R.id.id_fr_slected_image);
+        iv.setImageBitmap(singleImageBitmap);
+    }
+
+
+//=====================================below functions are ctgr related functions=========================================
+
+
+    private void setUpCtgrSelectionBox() {
+        //  loadCategorylayoutsInTheSidebarWithAnimation();
+        loadCategorylayoutsInTheSidebar();
+    }
+
+    private void loadCategorylayoutsInTheSidebarWithAnimation() {
+        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+        TranslateAnimation animate = new TranslateAnimation(0, -ll_container_side_bar.getWidth(), 0, 0);
+        animate.setDuration(300);
+        ll_container_side_bar.startAnimation(animate);
+        animate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                loadCategorylayoutsInTheSidebar();
+
+                TranslateAnimation animate = new TranslateAnimation(ll_container_side_bar.getWidth(), 0, 0, 0);
+                animate.setDuration(300);
+                ll_container_side_bar.startAnimation(animate);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+    }
+
+    private void loadCategorylayoutsInTheSidebar() {
+
+
+        LinearLayout llContainerFrCtgr = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+
+        if (levelInMultiLvlCtgrSys == 1) {
+
+            ArrayList<Category> categoriesList = StaticClassForGlobalInfo.categoriesList;
+            llContainerFrCtgr.removeAllViews();
+            setUpTheHeaderBackbutton(true);
+            updateCtgrBoxHeader("Select a Category");
+
+            for (int i = 0; i < categoriesList.size(); i++) {
+
+                View inflatedRow = inflater.inflate(R.layout.infalte_rows_fr_ctgr_box_of_item_details_taking_frag, llContainerFrCtgr, false);
+                llContainerFrCtgr.addView(inflatedRow);
+
+                TextView tv = (TextView) inflatedRow.findViewById(R.id.tv_ctgr_name);
+                ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
+
+                tv.setText(categoriesList.get(i).getName());
+                //making the iv with arrows if the ctgr have subctgrs
+                if (categoriesList.get(i).isHaveSubCatgr()) {
+                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_svg));
+                } else {
+                    iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+                }
+
+
+                int finalI = i;
+                inflatedRow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        mCategoryName = categoriesList.get(finalI).getName();
+                        rootCtgr = mCategoryName;
+                        mCategoryPath = rootCtgr;
+
+
+                        /*if (categoriesList.get(i).isHaveSubCatgr()) {
+                            // above if is to check if the same ctgr is clicked twice or not...because if it is...then the ctgrpath will already have the string i am adding below
+                            mCategoryPath = rootCtgr + "/" + subCtgr;
+                            mParam1CategoryName = subCategoriesList.get(finalJ).getName();
+                        }
+*/
+                        if (categoriesList.get(finalI).isHaveSubCatgr()) {
+                            levelInMultiLvlCtgrSys = 2;
+                            loadCategorylayoutsInTheSidebarWithAnimation();
+
+                            isCtgrWithNosubCtgrIsSelected = false;
+                        } else {
+                            isCtgrWithNosubCtgrIsSelected = true;
+                            subCtgr="null";
+                            subSubCtgr="null";
+
+                            levelInMultiLvlCtgrSys = 1;
+                            updateCtgrBoxHeader(mCategoryName);
+                            setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                            iv.setTag("ic_check_svg");
+
+                        }
+                    }
+                });
+            }
+
+        }
+
+
+        if (levelInMultiLvlCtgrSys == 2) {
+            //  tv_header.setText(mParam1CategoryName);
+            //I have only have the name of the category and where it is on the ctgr level
+            //since its at one ,I will just iterate through each ctgr at one level to find it
+            //after finding it i will hust load the subctgr under it
+
+            for (int i = 0; i < StaticClassForGlobalInfo.categoriesList.size(); i++) {
+                if (StaticClassForGlobalInfo.categoriesList.get(i).getName() == rootCtgr) {
+
+                    ArrayList<Category.SubCategory> subCategoriesList = StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList();
+                    llContainerFrCtgr.removeAllViews();
+                    setUpTheHeaderBackbutton(false);
+                    updateCtgrBoxHeader(rootCtgr);
+
+                    for (int j = 0; j < subCategoriesList.size(); j++) {
+
+                        View inflatedRow = inflater.inflate(R.layout.infalte_rows_fr_ctgr_box_of_item_details_taking_frag, llContainerFrCtgr, false);
+                        llContainerFrCtgr.addView(inflatedRow);
+
+                        TextView tv = (TextView) inflatedRow.findViewById(R.id.tv_ctgr_name);
+                        ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
+
+                        tv.setText(subCategoriesList.get(j).getName());
+                        //making the iv with arrows if the subctgr have subsubctgrs
+                        if (subCategoriesList.get(j).isHaveSubSubCatgr()) {
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_svg));
+                        } else {
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+                        }
+
+
+                        int finalJ = j;
+                        inflatedRow.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+
+                                mCategoryName = subCategoriesList.get(finalJ).getName();
+                                subCtgr = mCategoryName;
+                                mCategoryPath = rootCtgr + "/" + subCtgr;
+
+                                updateCtgrBoxHeader(mCategoryName);
+
+                              /*  if (mCategoryPath.indexOf(subCategoriesList.get(finalJ).getName()) == -1) {
+                                    // above if is to check if the same ctgr is clicked twice or not...because if it is...then the ctgrpath will already have the string i am adding below
+                                    mCategoryPath = rootCtgr + "/" + subCtgr;
+                                    mParam1CategoryName = subCategoriesList.get(finalJ).getName();
+                                }
+*/
+                                if (subCategoriesList.get(finalJ).isHaveSubSubCatgr()) {
+                                    levelInMultiLvlCtgrSys = 3;
+                                    loadCategorylayoutsInTheSidebarWithAnimation();
+                                    isCtgrWithNosubCtgrIsSelected = false;
+                                } else {
+                                    levelInMultiLvlCtgrSys = 2;
+                                    subSubCtgr="null";
+
+                                    setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
+                                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                                    iv.setTag("ic_check_svg");
+                                    isCtgrWithNosubCtgrIsSelected = true;
+
+                                }
+                            }
+                        });
+                    }
+
+                }
+            }
+        }
+        //below if checks if we are at level 3 that is of subsubctgr..so it will show the subsubctgrlist
+        if (levelInMultiLvlCtgrSys == 3) {
+
+            //I have only have the name of the subcategory and where it is on the ctgr level
+            //since its at two,first  ,I will just iterate through each ctgr at one level to find it whome it is subctgr of
+            //after finding it i will hust load the subsubctgr under it
+            for (int i = 0; i < StaticClassForGlobalInfo.categoriesList.size(); i++) {
+                if (StaticClassForGlobalInfo.categoriesList.get(i).isHaveSubCatgr() == true) {
+
+                    for (int j = 0; j < StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList().size(); j++) {
+                        if (subCtgr == StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList().get(j).getName()) {
+                            //we have got the subctgr in the ctgrpath
+                            ArrayList<Category.SubCategory.SubSubCategory> subsubCategoriesList = StaticClassForGlobalInfo.categoriesList.get(i).getSubCategoriesList().get(j).getSubSubCategoryList();
+                            llContainerFrCtgr.removeAllViews();
+                            setUpTheHeaderBackbutton(false);
+                            updateCtgrBoxHeader(subCtgr);
+
+                            for (int k = 0; k < subsubCategoriesList.size(); k++) {
+                                View inflatedRow = inflater.inflate(R.layout.infalte_rows_fr_ctgr_box_of_item_details_taking_frag, llContainerFrCtgr, false);
+                                llContainerFrCtgr.addView(inflatedRow);
+
+                                TextView tv = (TextView) inflatedRow.findViewById(R.id.tv_ctgr_name);
+                                ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
+
+                                tv.setText(subsubCategoriesList.get(k).getName());
+                                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+
+
+                                int finalK = k;
+                                inflatedRow.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        mCategoryName = subsubCategoriesList.get(finalK).getName();
+                                        subSubCtgr = mCategoryName;
+                                        mCategoryPath = rootCtgr + "/" + subCtgr + "//" + subSubCtgr;
+
+                                        updateCtgrBoxHeader(mCategoryName);
+                                        setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
+                                        iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
+                                        iv.setTag("ic_check_svg");
+                                        isCtgrWithNosubCtgrIsSelected = true;
+                                    }
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private void setUpTheHeaderBackbutton(boolean makeThehdrBtVisiblityGone) {
+//        makeThehdrBtVisiblityGone is true when the list of ctgr is shown ..so logically we cant go back than that
+
+        ImageButton btGoBackwards = (ImageButton) containerViewGroup.findViewById(R.id.id_fr_bt_bottom_sheet_back);
+        if (makeThehdrBtVisiblityGone == true) {
+            btGoBackwards.setVisibility(View.GONE);
+        } else {
+            btGoBackwards.setVisibility(View.VISIBLE);
+
+            btGoBackwards.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //below if means if the ctgr box is showing the subctgrlist
+                    if (levelInMultiLvlCtgrSys == 2) {
+
+                        isCtgrWithNosubCtgrIsSelected = false;
+                        levelInMultiLvlCtgrSys = 1;
+                        //showing rotation in baackward direction
+                        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+                        TranslateAnimation animate = new TranslateAnimation(0, ll_container_side_bar.getWidth(), 0, 0);
+                        animate.setDuration(300);
+                        ll_container_side_bar.startAnimation(animate);
+                        animate.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                loadCategorylayoutsInTheSidebar();
+
+                                TranslateAnimation animate = new TranslateAnimation(-ll_container_side_bar.getWidth(), 0, 0, 0);
+                                animate.setDuration(300);
+                                ll_container_side_bar.startAnimation(animate);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+
+
+                    } else if (levelInMultiLvlCtgrSys == 3) {
+
+                        isCtgrWithNosubCtgrIsSelected = false;
+                        levelInMultiLvlCtgrSys = 2;
+                        // mCategoryPath = rootCtgr ;
+                        //showing rotation in baackward direction
+                        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+                        TranslateAnimation animate = new TranslateAnimation(0, ll_container_side_bar.getWidth(), 0, 0);
+                        animate.setDuration(300);
+                        ll_container_side_bar.startAnimation(animate);
+                        animate.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                loadCategorylayoutsInTheSidebar();
+
+                                TranslateAnimation animate = new TranslateAnimation(-ll_container_side_bar.getWidth(), 0, 0, 0);
+                                animate.setDuration(300);
+                                ll_container_side_bar.startAnimation(animate);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+                        });
+
+
+                    }
+                }
+            });
+
+        }
+    }
+
+    private void updateCtgrBoxHeader(String mCategoryNamee) {
+        TextView tvHeaderOfCtgrBox = (TextView) containerViewGroup.findViewById(R.id.id_br_bottom_sheet_tv_header);
+        tvHeaderOfCtgrBox.setText(mCategoryNamee);
+
+
+    }
+
+    private void setRadioBtToAllOtherRowsWhichHadThemOriginally(View inflatedRow) {
+
+        LinearLayout llContainerForCtgrBox = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+        final int childCount = llContainerForCtgrBox.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            RelativeLayout rlContainingOtherTv = (RelativeLayout) llContainerForCtgrBox.getChildAt(i);
+            ImageView iv = (ImageView) rlContainingOtherTv.findViewById(R.id.iv_ctgr_indicator);
+            String imageName2 = (String) iv.getTag();
+            if (imageName2 == "ic_check_svg") {
+                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+            }
+        }
+    }
+
+    //-----------------------------------Variety giving facuility------------------------------------------
+    private void setUpVarietyGivingOPtionAndVisibilityOption() {
+
+        Button btAddOrRemoveVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
+        LinearLayout llContainerFrVarities = (LinearLayout) containerViewGroup.findViewById(R.id.container_for_varieties);
+        EditText edNameOfVariety = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_variety);
+        Button btAdd = (Button) containerViewGroup.findViewById(R.id.btAdd_indivisual_variety);
+        btAddOrRemoveVariety.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isAddVarietyFeatureAlreadyEnabled == false) {
+                    btAddOrRemoveVariety.setText("HIDE");
+                    isAddVarietyFeatureAlreadyEnabled = true;
+                    edNameOfVariety.setVisibility(View.VISIBLE);
+                    llContainerFrVarities.setVisibility(View.VISIBLE);
+                    btAdd.setVisibility(View.VISIBLE);
+                    btAdd.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            View inflatedRow = inflater.inflate(R.layout.infalte_rows_fr_add_variety_box, llContainerFrVarities, false);
+                            llContainerFrVarities.addView(inflatedRow);
+
+                            EditText ed = (EditText) inflatedRow.findViewById(R.id.ed_name);
+                            ImageButton ibt_del = (ImageButton) inflatedRow.findViewById(R.id.bt_del);
+
+                            ibt_del.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    llContainerFrVarities.removeView(inflatedRow);
+
+                                }
+                            });
+                        }
+                    });
+
+                    btAdd.performClick();
+                    btAdd.performClick();
+
+                } else {
+                    btAddOrRemoveVariety.setText("SHOW");
+                    isAddVarietyFeatureAlreadyEnabled = false;
+                    llContainerFrVarities.setVisibility(View.GONE);
+                    edNameOfVariety.setVisibility(View.GONE);
+                    btAdd.setVisibility(View.GONE);
+                }
+
+            }
+        });
+
+//-------------------------------------setting the bottomSheet which gives explaination about this features
+
+        CoordinatorLayout rootView = (CoordinatorLayout) containerViewGroup.findViewById(R.id.cl_root);
+        View inflatedBottomSheetdialog = inflater.inflate(R.layout.bottom_sheet_fr_information, rootView, false);
+        rootView.addView(inflatedBottomSheetdialog);
+
+        behavior_bttm_sheet_which_shows_info = BottomSheetBehavior.from(inflatedBottomSheetdialog);
+
+        behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        View dim_background_of_bottom_sheet = (View) containerViewGroup.findViewById(R.id.touch_to_dismiss_bottom_sheet_dim_background);
+
+        behavior_bttm_sheet_which_shows_info.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                // React to state change
+                if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    dim_background_of_bottom_sheet.setVisibility(View.GONE);
+                    // is_bottom_sheet_expanded = false;
+                } else {
+                    dim_background_of_bottom_sheet.setVisibility(View.VISIBLE);
+                    // is_bottom_sheet_expanded = true;
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+                // React to dragging events
+            }
+        });
+//------------Todo - set content to below bottomshett later for both the below purposes
+        ImageButton btShowBttmSheetFrInfrOnVariety = (ImageButton) containerViewGroup.findViewById(R.id.bt_show_btm_sheet_fr_info);
+        btShowBttmSheetFrInfrOnVariety.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_EXPANDED);
+                //  Todo - change content of the bottom sheet to shoe thir releb]vent infor
+            }
+        });
+
+//---------------Visibility option work from here
+        Button btShowOrHideOfVisibiltyOption = (Button) containerViewGroup.findViewById(R.id.bt_show_or_hide);
+        btShowOrHideOfVisibiltyOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (stateOfVisibility == true) {
+                    btShowOrHideOfVisibiltyOption.setText("Hide");
+                    stateOfVisibility = false;
+                } else {
+                    stateOfVisibility = true;
+                    btShowOrHideOfVisibiltyOption.setText("Show");
+                }
+            }
+        });
+
+
+        ImageButton btShowBttmSheetFrInfrOnVisibilty = (ImageButton) containerViewGroup.findViewById(R.id.ibt_show_bttm_sheet_info);
+        btShowBttmSheetFrInfrOnVisibilty.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_EXPANDED);
+                //  Todo - change content of the bottom sheet to shoe thir releb]vent infor
+            }
+        });
+    }
+
+
+    //------------------------------------Upload data related function-------------------------------
+    private void setUpUploadBtUIAndLogicWork() {
+
+        Button btUploadData = (Button) containerViewGroup.findViewById(R.id.bt_upload_data);
+        btUploadData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //first check  if images have been selected
+                if (allowedImagesAmountForPickup != 5) {
+
+                    //second check  if inputs are given to edittexts
+                    EditText edName = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_item);
+                    EditText edPrice = (EditText) containerViewGroup.findViewById(R.id.ed_price_of_item);
+                    EditText edDescrpt = (EditText) containerViewGroup.findViewById(R.id.ed_descrp_of_item);
+
+                    String itemName = edName.getText().toString();
+                    String itemPrice = edPrice.getText().toString();
+                    String itemDescrp = edDescrpt.getText().toString();
+
+                    if (itemName.length() > 2 && itemName != null && itemPrice != null && itemDescrp.length() > 2 && itemDescrp != null) {
+
+                        //third - check  if Category have been selected
+                        if (isCtgrWithNosubCtgrIsSelected == true) {
+
+                            //fourth check-if addVariety is selected and their edittexts are not empty
+                            if (checkIfTheAddVarietyOptionIsReadyToUpload()) {
+                                //fifth check-of  visibilty ..but no matter its value things are gonna upload anyways ..but below if is for showing warning
+                                if (stateOfVisibility == false) {
+                                    showToast("Visiblity is turned off ,It wont appear in search,can be turned on later");
+                                }
+                                getAllDataFromAllFieldsAndSendToPresenter();
+
+                            } else {
+                                //this doesnt need to show toast here because the function in if statementwill do itself
+                            }
+
+                        } else {
+                            showToast("Select a Category for the Item");
+                        }
+
+                    } else {
+                        showToast("Any of the Field is empty OR text length is not much");
+                    }
+                } else {
+                    showToast("Select atleast 1 item image");
+                }
+            }
+        });
+    }
+
+    private boolean checkIfTheAddVarietyOptionIsReadyToUpload() {
+        Button btAddOrRemoveVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
+        LinearLayout llContainerFrVarities = (LinearLayout) containerViewGroup.findViewById(R.id.container_for_varieties);
+        EditText edNameOfVariety = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_variety);
+        Button btAdd = (Button) containerViewGroup.findViewById(R.id.btAdd_indivisual_variety);
+
+        if (isAddVarietyFeatureAlreadyEnabled == true) {
+            if (edNameOfVariety.getText().toString().length() > 2 && edNameOfVariety.getText().toString() != null) {
+                if (llContainerFrVarities.getChildCount() != 0) {
+                    boolean everythingIsFine = true;
+                    for (int i = 0; i < llContainerFrVarities.getChildCount(); i++) {
+                        RelativeLayout container = (RelativeLayout) llContainerFrVarities.getChildAt(i);
+                        EditText ed = (EditText) container.findViewById(R.id.ed_name);
+                        if (ed.getText().toString() == null) {
+                            everythingIsFine = false;
+                        }
+                    }
+                    if (everythingIsFine == true) {
+                        return true;
+                    } else {
+                        showToast("one of the Variety option is empty");
+                        return false;
+                    }
+                } else {
+                    showToast("Add varieties");
+                    return false;
+                }
+            } else {
+                showToast("Variety name Field is empty or text count is low.");
+                return false;
+            }
+        } else {
+            return true;
+        }
+
+    }
+
+    private void getAllDataFromAllFieldsAndSendToPresenter() {
+
+        //------------getting Images in a list
+        ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
+        for (int i = 0; i < llContainerFrIvs.getChildCount(); i++) {
+            RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
+            ImageView iv = (ImageView) inflatedIvRlContainer.findViewById(R.id.id_fr_slected_image);
+            bitmaps.add(((BitmapDrawable) iv.getDrawable()).getBitmap());
+        }
+        //------------getting names from text fields
+        EditText edName = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_item);
+        EditText edPrice = (EditText) containerViewGroup.findViewById(R.id.ed_price_of_item);
+        EditText edDescrpt = (EditText) containerViewGroup.findViewById(R.id.ed_descrp_of_item);
+
+        String itemName = edName.getText().toString();
+        String itemPrice = edPrice.getText().toString();
+        String itemDescrp = edDescrpt.getText().toString();
+        //------------getting Category data
+        String ctgr =mCategoryPath;
+        String rootctgr = rootCtgr;
+        String subctgr = subCtgr;
+        String subsubctgr = subSubCtgr;
+        //------------getting Variety optioins data
+        EditText edNameOfVariety = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_variety);
+        ArrayList<String> varieties = getVarieties();
+        String nameOfVariety =edNameOfVariety.getText().toString();
+        //------------getting Visibility option
+        boolean visible = true;
+
+        //=============================now pass all this data to presenter
+        mPresenter.makeItemObjectAndUpload(bitmaps,itemName,itemPrice,itemDescrp ,ctgr,rootctgr,subctgr,subsubctgr ,nameOfVariety ,varieties,visible);
+    }
+
+    private ArrayList<String> getVarieties() {
+        LinearLayout llContainerFrVarities = (LinearLayout) containerViewGroup.findViewById(R.id.container_for_varieties);
+        ArrayList<String> varieties = new ArrayList<>();
+        for (int i = 0; i < llContainerFrVarities.getChildCount(); i++) {
+            RelativeLayout container = (RelativeLayout) llContainerFrVarities.getChildAt(i);
+            EditText ed = (EditText) container.findViewById(R.id.ed_name);
+            varieties.add(ed.getText().toString());
+        }
+        return varieties;
+    }
+
+
+    //-------------------------------------------------------------------
+    //below function is for catching back button pressed
+    private void attachOnBackBtPressedlistener() {
+        containerViewGroup.setFocusableInTouchMode(true);
+        containerViewGroup.requestFocus();
+        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+                    onBackButtonPressed();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
 
     private void onBackButtonPressed() {
 

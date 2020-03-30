@@ -3,6 +3,7 @@ package io.shubh.e_commver1.ItemsDetailsTakingFragment.Presenter;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface ItemsDetailsTakingPresenter {
@@ -23,4 +24,6 @@ public interface ItemsDetailsTakingPresenter {
 
 
     void onEditBtOfAnyImageViewIsClickedAndBitmapHasReturned(Bitmap singleImageBitmap ,int indexOfIvOfWhichEditBtWasClicked);
+
+    void makeItemObjectAndUpload(ArrayList<Bitmap> bitmaps, String itemName, String itemPrice, String itemDescrp, String ctgr, String rootctgr, String subctgr, String subsubctgr, String nameOfVariety, ArrayList<String> varieties, boolean visible);
 }

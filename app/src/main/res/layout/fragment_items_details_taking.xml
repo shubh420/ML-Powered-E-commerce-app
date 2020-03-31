@@ -27,8 +27,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background=" @color/colorTransparent"
-                android:elevation="0dp"
 
+                android:elevation="0dp"
                 android:gravity="center_vertical"
                 android:minHeight="?attr/actionBarSize"
                 android:padding="4dp"
@@ -186,10 +186,9 @@
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:cardCornerRadius="8dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginRight="6dp"
-                            >
+                            app:cardCornerRadius="8dp">
 
                             <ImageButton
                                 android:id="@+id/id_fr_bt_bottom_sheet_back"
@@ -241,69 +240,98 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:orientation="vertical"
-                        android:paddingBottom="20dp">
+                        android:paddingBottom="10dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:padding="5dp">
 
 
                             <TextView
                                 android:id="@+id/tvHeader"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Add variety"
+                                android:text="Add Variety"
                                 android:textColor="@color/colorGrayForHeaderTvs"
-                                android:textSize="20sp"/>
+                                android:textSize="20sp" />
                             <!--below bt is for info about this feature-->
-                            <ImageButton
-                                android:id="@+id/bt_show_btm_sheet_fr_info"
+                            <androidx.cardview.widget.CardView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toRightOf="@id/tvHeader" />
+                                android:layout_marginLeft="5dp"
+                                android:layout_toRightOf="@id/tvHeader"
+                                app:cardCornerRadius="8dp"
+                                android:layout_marginTop="3dp"
+                                >
 
-                            <Button
-                                android:id="@+id/btAddVarity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentRight="true"
-                                android:text="SHOW" />
+                                <ImageButton
+                                    android:id="@+id/bt_show_btm_sheet_fr_info"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:background="@color/colorSecondary"
+                                    android:padding="4dp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/ic_info_svg"
+                                    android:tint="@color/colorPrimary"
+
+                                    />
+                            </androidx.cardview.widget.CardView>
 
                             <Switch
                                 android:id="@+id/switch1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Switch"
                                 android:layout_alignParentRight="true"
-                                />
+                                android:text="Add"
+                                android:textColor="@color/colorSecondary"
+                                android:textSize="17sp"
+                                android:layout_marginTop="3dp"/>
 
                         </RelativeLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:background="@drawable/bg_layout_border"
+                            android:padding="0dp"
+                            >
                         <EditText
                             android:id="@+id/ed_name_of_variety"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Name of Variety ,like shoe no or Shirt size"
-                            android:visibility="gone" />
+                            android:hint="Name of Variety,like shoe size."
+                            android:visibility="gone"
+                            android:background="@drawable/bg_layout_border"
+                            android:padding="10dp"
+                            android:layout_margin="8dp"
+                            />
 
                         <LinearLayout
                             android:id="@+id/container_for_varieties"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+
+                            />
 
                         <Button
                             android:id="@+id/btAdd_indivisual_variety"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
-                            android:text="Add"
-                            android:visibility="gone" />
+                            android:text="Add more"
+                            android:textColor="#fff"
+                            android:background="@drawable/bg_button"
+                            android:visibility="gone"
+                            android:layout_marginBottom="8dp"/>
+                        </LinearLayout>
 
                     </LinearLayout>
+
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -316,20 +344,48 @@
                             android:id="@+id/tv_visiblity"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:hint="Visibilty" />
+                            android:text="Visibilty"
+                            android:textColor="@color/colorGrayForHeaderTvs"
+                            android:textSize="20sp"
+                            />
                         <!--below bt is for info about this feature-->
-                        <ImageButton
-                            android:id="@+id/ibt_show_bttm_sheet_info"
+                        <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/tv_visiblity" />
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/tv_visiblity"
+                            app:cardCornerRadius="8dp"
+                            android:layout_marginTop="3dp"
+                            >
 
-                        <Button
+                            <ImageButton
+                                android:id="@+id/ibt_show_bttm_sheet_info"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:background="@color/colorSecondary"
+                                android:padding="4dp"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_info_svg"
+                                android:tint="@color/colorPrimary"
+
+                                />
+                        </androidx.cardview.widget.CardView>
+
+                        <Switch
+                            android:id="@+id/switch2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:text="Add"
+                            android:textColor="@color/colorSecondary"
+                            android:textSize="17sp"
+                            android:layout_marginTop="3dp"/>
+                        <!--<Button
                             android:id="@+id/bt_show_or_hide"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:text="Show" />
+                            android:text="Show" />-->
 
 
                     </RelativeLayout>

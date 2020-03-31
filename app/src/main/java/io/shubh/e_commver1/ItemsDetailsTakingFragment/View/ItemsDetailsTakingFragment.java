@@ -24,11 +24,13 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -429,11 +431,11 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                             isCtgrWithNosubCtgrIsSelected = false;
                         } else {
                             isCtgrWithNosubCtgrIsSelected = true;
-                            subCtgr="null";
-                            subSubCtgr="null";
+                            subCtgr = "null";
+                            subSubCtgr = "null";
 
                             levelInMultiLvlCtgrSys = 1;
-                            updateCtgrBoxHeader("Ctgr Selected: "+mCategoryName);
+                            updateCtgrBoxHeader("Ctgr Selected: " + mCategoryName);
                             setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                             iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                             iv.setTag("ic_check_svg");
@@ -502,8 +504,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
                                 } else {
                                     levelInMultiLvlCtgrSys = 2;
-                                    subSubCtgr="null";
-                                    updateCtgrBoxHeader("Ctgr Selected: "+mCategoryName);
+                                    subSubCtgr = "null";
+                                    updateCtgrBoxHeader("Ctgr Selected: " + mCategoryName);
 
                                     setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                                     iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
@@ -554,7 +556,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                         subSubCtgr = mCategoryName;
                                         mCategoryPath = rootCtgr + "/" + subCtgr + "//" + subSubCtgr;
 
-                                        updateCtgrBoxHeader("Ctgr Selected: "+mCategoryName);
+                                        updateCtgrBoxHeader("Ctgr Selected: " + mCategoryName);
                                         setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                                         iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                                         iv.setTag("ic_check_svg");
@@ -673,15 +675,15 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     //-----------------------------------Variety giving facuility------------------------------------------
     private void setUpVarietyGivingOPtionAndVisibilityOption() {
 
-        Button btAddOrRemoveVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
+        Switch mAddOrRemoveSwitch = (Switch) containerViewGroup.findViewById(R.id.switch1);
         LinearLayout llContainerFrVarities = (LinearLayout) containerViewGroup.findViewById(R.id.container_for_varieties);
         EditText edNameOfVariety = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_variety);
         Button btAdd = (Button) containerViewGroup.findViewById(R.id.btAdd_indivisual_variety);
-        btAddOrRemoveVariety.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+        mAddOrRemoveSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isAddVarietyFeatureAlreadyEnabled == false) {
-                    btAddOrRemoveVariety.setText("HIDE");
+                    mAddOrRemoveSwitch.setText("Remove");
                     isAddVarietyFeatureAlreadyEnabled = true;
                     edNameOfVariety.setVisibility(View.VISIBLE);
                     llContainerFrVarities.setVisibility(View.VISIBLE);
@@ -710,13 +712,14 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                     btAdd.performClick();
 
                 } else {
-                    btAddOrRemoveVariety.setText("SHOW");
+                    mAddOrRemoveSwitch.setText("Add");
                     isAddVarietyFeatureAlreadyEnabled = false;
                     llContainerFrVarities.setVisibility(View.GONE);
                     edNameOfVariety.setVisibility(View.GONE);
                     btAdd.setVisibility(View.GONE);
-                }
 
+                    llContainerFrVarities.removeAllViews();
+                }
             }
         });
 
@@ -761,19 +764,33 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         });
 
 //---------------Visibility option work from here
-        Button btShowOrHideOfVisibiltyOption = (Button) containerViewGroup.findViewById(R.id.bt_show_or_hide);
-        btShowOrHideOfVisibiltyOption.setOnClickListener(new View.OnClickListener() {
+        // Button btShowOrHideOfVisibiltyOption = (Button) containerViewGroup.findViewById(R.id.bt_show_or_hide);
+        Switch switchShowOrHideOfVisibiltyOption = (Switch) containerViewGroup.findViewById(R.id.switch2);
+        switchShowOrHideOfVisibiltyOption.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (stateOfVisibility == true) {
-                    btShowOrHideOfVisibiltyOption.setText("Hide");
+                    switchShowOrHideOfVisibiltyOption.setText("Hidden");
                     stateOfVisibility = false;
                 } else {
                     stateOfVisibility = true;
-                    btShowOrHideOfVisibiltyOption.setText("Show");
+                    switchShowOrHideOfVisibiltyOption.setText("Visible");
                 }
+
             }
         });
+                /*btShowOrHideOfVisibiltyOption.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (stateOfVisibility == true) {
+                            btShowOrHideOfVisibiltyOption.setText("Hide");
+                            stateOfVisibility = false;
+                        } else {
+                            stateOfVisibility = true;
+                            btShowOrHideOfVisibiltyOption.setText("Show");
+                        }
+                    }
+                });*/
 
 
         ImageButton btShowBttmSheetFrInfrOnVisibilty = (ImageButton) containerViewGroup.findViewById(R.id.ibt_show_bttm_sheet_info);
@@ -840,7 +857,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     }
 
     private boolean checkIfTheAddVarietyOptionIsReadyToUpload() {
-        Button btAddOrRemoveVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
+        //  Button btAddOrRemoveVariety = (Button) containerViewGroup.findViewById(R.id.btAddVarity);
         LinearLayout llContainerFrVarities = (LinearLayout) containerViewGroup.findViewById(R.id.container_for_varieties);
         EditText edNameOfVariety = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_variety);
         Button btAdd = (Button) containerViewGroup.findViewById(R.id.btAdd_indivisual_variety);
@@ -852,7 +869,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                     for (int i = 0; i < llContainerFrVarities.getChildCount(); i++) {
                         RelativeLayout container = (RelativeLayout) llContainerFrVarities.getChildAt(i);
                         EditText ed = (EditText) container.findViewById(R.id.ed_name);
-                        if (ed.getText().toString().length() ==0) {
+                        if (ed.getText().toString().length() == 0) {
                             everythingIsFine = false;
                         }
                     }
@@ -883,7 +900,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
         LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
         for (int i = 0; i < llContainerFrIvs.getChildCount(); i++) {
-          //  RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
+            //  RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
             ImageView iv = (ImageView) llContainerFrIvs.findViewById(R.id.id_fr_slected_image);
             bitmaps.add(((BitmapDrawable) iv.getDrawable()).getBitmap());
         }
@@ -896,19 +913,19 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         String itemPrice = edPrice.getText().toString();
         String itemDescrp = edDescrpt.getText().toString();
         //------------getting Category data
-        String ctgr =mCategoryPath;
+        String ctgr = mCategoryPath;
         String rootctgr = rootCtgr;
         String subctgr = subCtgr;
         String subsubctgr = subSubCtgr;
         //------------getting Variety optioins data
         EditText edNameOfVariety = (EditText) containerViewGroup.findViewById(R.id.ed_name_of_variety);
         ArrayList<String> varieties = getVarieties();
-        String nameOfVariety =edNameOfVariety.getText().toString();
+        String nameOfVariety = edNameOfVariety.getText().toString();
         //------------getting Visibility option
         boolean visible = stateOfVisibility;
 
         //=============================now pass all this data to presenter
-        mPresenter.makeItemObjectAndUpload(bitmaps,itemName,itemPrice,itemDescrp ,ctgr,rootctgr,subctgr,subsubctgr ,nameOfVariety ,varieties,visible);
+        mPresenter.makeItemObjectAndUpload(bitmaps, itemName, itemPrice, itemDescrp, ctgr, rootctgr, subctgr, subsubctgr, nameOfVariety, varieties, visible);
     }
 
     private ArrayList<String> getVarieties() {

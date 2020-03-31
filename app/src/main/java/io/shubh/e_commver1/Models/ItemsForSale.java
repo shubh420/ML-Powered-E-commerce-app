@@ -10,7 +10,7 @@ public class ItemsForSale implements Serializable {
 
 
     String category , description ,item_price , name ,root_category ,seller_id ,sub_category ,sub_sub_category ;
-    String order_id ;
+    int order_id ;
     long time_of_upload ;
     String varietyName;
     boolean visibility;
@@ -95,11 +95,11 @@ public class ItemsForSale implements Serializable {
     }
 
     @PropertyName("order id")
-    public String getOrder_id() {
+    public int getOrder_id() {
         return order_id;
     }
     @PropertyName("order id")
-    public void setOrder_id(String order_id) {
+    public void setOrder_id(int order_id) {
         this.order_id = order_id;
     }
 

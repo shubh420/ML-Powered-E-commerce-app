@@ -85,7 +85,7 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
                         item.setRoot_category(rootctgr);
                         item.setSub_category(subctgr);
                         item.setSub_sub_category(subsubctgr);
-                        item.setOrder_id(idForThisItem);
+                        item.setOrder_id(Integer.parseInt(idForThisItem));
                         item.setSeller_id(StaticClassForGlobalInfo.UId);
                         item.setTime_of_upload(System.currentTimeMillis() / 1000L);
                         item.setVisibility(visible);
@@ -106,7 +106,7 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
                                     public void onFinishedUpdatingId() {
                                   
                                         //Item is finally upladed just let the view know now
-                                        Log.i(TAG, "onFinishedUpdatingId: ");
+                                        Log.i("%%%%%", "Uploaded");
                                     }
                                 });
 

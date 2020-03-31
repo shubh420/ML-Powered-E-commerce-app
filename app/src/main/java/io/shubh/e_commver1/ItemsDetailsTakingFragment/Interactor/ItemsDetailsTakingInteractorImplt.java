@@ -2,6 +2,7 @@ package io.shubh.e_commver1.ItemsDetailsTakingFragment.Interactor;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -89,14 +90,19 @@ public class ItemsDetailsTakingInteractorImplt implements ItemsDetailsTakingInte
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 //  filepath.getDownloadUrl();
-
-               dwnldImageUrls.add( taskSnapshot.getStorage().getDownloadUrl().toString());
+                    taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            dwnldImageUrls.add( uri.toString());
+                            uploadImagesInStorageWithArgAsCallbackFunction(i+1,idForThisItem , dwnldImageUrls,bitmaps ,l);
+                        }
+                    });
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle unsuccessful uploads
+                    Log.e(TAG, "Error uploading image", exception);
                 }
             });
 
@@ -109,7 +115,7 @@ public class ItemsDetailsTakingInteractorImplt implements ItemsDetailsTakingInte
     @Override
     public void uploadItemFunctionWithArgAsCallbackFunction(ItemsForSale item, SeparateThirdCallbackToPresnterAfterItemUploaded l) {
 
-        db.collection("items for sale").document(item.getOrder_id())
+        db.collection("items for sale").document(String.valueOf(item.getOrder_id()))
                 .set(item)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -120,7 +126,7 @@ public class ItemsDetailsTakingInteractorImplt implements ItemsDetailsTakingInte
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("TAG", "Error writing document", e);
+                        Log.e(TAG, "Error uploading image", e);
                     }
                 });
     }

@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
@@ -114,7 +115,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     private void setUpImagePickingDialogueBottomSheetAndImgBttnForIt() {
 
-        Button btAddImages = (Button) containerViewGroup.findViewById(R.id.id_fr_bt_choose_images);
+        ImageButton btAddImages = (ImageButton) containerViewGroup.findViewById(R.id.id_fr_bt_choose_images);
         btAddImages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,7 +295,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
 
 
-        RelativeLayout inflatedIvRlContainer = (RelativeLayout) inflater.inflate(R.layout.inflate_relative_layouts_with_image_views, llContainerFrIvs, false);
+        CardView inflatedIvRlContainer = (CardView) inflater.inflate(R.layout.inflate_relative_layouts_with_image_views, llContainerFrIvs, false);
         llContainerFrIvs.addView(inflatedIvRlContainer);
 
         ImageView iv = (ImageView) inflatedIvRlContainer.findViewById(R.id.id_fr_slected_image);
@@ -399,7 +400,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                 tv.setText(categoriesList.get(i).getName());
                 //making the iv with arrows if the ctgr have subctgrs
                 if (categoriesList.get(i).isHaveSubCatgr()) {
-                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_svg));
+                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_right_svg));
                 } else {
                     iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
                 }
@@ -432,7 +433,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                             subSubCtgr="null";
 
                             levelInMultiLvlCtgrSys = 1;
-                            updateCtgrBoxHeader(mCategoryName);
+                            updateCtgrBoxHeader("Ctgr Selected: "+mCategoryName);
                             setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                             iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                             iv.setTag("ic_check_svg");
@@ -470,7 +471,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                         tv.setText(subCategoriesList.get(j).getName());
                         //making the iv with arrows if the subctgr have subsubctgrs
                         if (subCategoriesList.get(j).isHaveSubSubCatgr()) {
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_svg));
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_right_svg));
                         } else {
                             iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
                         }
@@ -497,9 +498,12 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                     levelInMultiLvlCtgrSys = 3;
                                     loadCategorylayoutsInTheSidebarWithAnimation();
                                     isCtgrWithNosubCtgrIsSelected = false;
+                                    updateCtgrBoxHeader(mCategoryName);
+
                                 } else {
                                     levelInMultiLvlCtgrSys = 2;
                                     subSubCtgr="null";
+                                    updateCtgrBoxHeader("Ctgr Selected: "+mCategoryName);
 
                                     setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                                     iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
@@ -550,7 +554,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                         subSubCtgr = mCategoryName;
                                         mCategoryPath = rootCtgr + "/" + subCtgr + "//" + subSubCtgr;
 
-                                        updateCtgrBoxHeader(mCategoryName);
+                                        updateCtgrBoxHeader("Ctgr Selected: "+mCategoryName);
                                         setRadioBtToAllOtherRowsWhichHadThemOriginally(inflatedRow);
                                         iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
                                         iv.setTag("ic_check_svg");
@@ -814,6 +818,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                 if (stateOfVisibility == false) {
                                     showToast("Visiblity is turned off ,It wont appear in search,can be turned on later");
                                 }
+
                                 getAllDataFromAllFieldsAndSendToPresenter();
 
                             } else {
@@ -847,7 +852,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                     for (int i = 0; i < llContainerFrVarities.getChildCount(); i++) {
                         RelativeLayout container = (RelativeLayout) llContainerFrVarities.getChildAt(i);
                         EditText ed = (EditText) container.findViewById(R.id.ed_name);
-                        if (ed.getText().toString() == null) {
+                        if (ed.getText().toString().length() ==0) {
                             everythingIsFine = false;
                         }
                     }
@@ -878,8 +883,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
         LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
         for (int i = 0; i < llContainerFrIvs.getChildCount(); i++) {
-            RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
-            ImageView iv = (ImageView) inflatedIvRlContainer.findViewById(R.id.id_fr_slected_image);
+          //  RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
+            ImageView iv = (ImageView) llContainerFrIvs.findViewById(R.id.id_fr_slected_image);
             bitmaps.add(((BitmapDrawable) iv.getDrawable()).getBitmap());
         }
         //------------getting names from text fields
@@ -900,7 +905,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         ArrayList<String> varieties = getVarieties();
         String nameOfVariety =edNameOfVariety.getText().toString();
         //------------getting Visibility option
-        boolean visible = true;
+        boolean visible = stateOfVisibility;
 
         //=============================now pass all this data to presenter
         mPresenter.makeItemObjectAndUpload(bitmaps,itemName,itemPrice,itemDescrp ,ctgr,rootctgr,subctgr,subsubctgr ,nameOfVariety ,varieties,visible);

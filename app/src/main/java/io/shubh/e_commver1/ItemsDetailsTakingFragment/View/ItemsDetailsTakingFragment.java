@@ -764,7 +764,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         });
 
 //---------------Visibility option work from here
-        // Button btShowOrHideOfVisibiltyOption = (Button) containerViewGroup.findViewById(R.id.bt_show_or_hide);
         Switch switchShowOrHideOfVisibiltyOption = (Switch) containerViewGroup.findViewById(R.id.switch2);
         switchShowOrHideOfVisibiltyOption.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -779,19 +778,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
             }
         });
-                /*btShowOrHideOfVisibiltyOption.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (stateOfVisibility == true) {
-                            btShowOrHideOfVisibiltyOption.setText("Hide");
-                            stateOfVisibility = false;
-                        } else {
-                            stateOfVisibility = true;
-                            btShowOrHideOfVisibiltyOption.setText("Show");
-                        }
-                    }
-                });*/
-
 
         ImageButton btShowBttmSheetFrInfrOnVisibilty = (ImageButton) containerViewGroup.findViewById(R.id.ibt_show_bttm_sheet_info);
         btShowBttmSheetFrInfrOnVisibilty.setOnClickListener(new View.OnClickListener() {

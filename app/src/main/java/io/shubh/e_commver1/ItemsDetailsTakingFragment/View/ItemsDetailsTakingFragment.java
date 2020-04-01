@@ -38,6 +38,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
@@ -347,7 +348,13 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     public void replaceBitmapOnThisPosition(int indexOfIvOfWhichEditBtWasClicked, Bitmap singleImageBitmap) {
         LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
         ImageView iv = (ImageView) llContainerFrIvs.getChildAt(indexOfIvOfWhichEditBtWasClicked).findViewById(R.id.id_fr_slected_image);
+        iv.setVisibility(View.VISIBLE);
         iv.setImageBitmap(singleImageBitmap);
+    }
+
+    @Override
+    public void onFinishedUploadingItem() {
+        onBackButtonPressed();
     }
 
 
@@ -887,6 +894,9 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     private void getAllDataFromAllFieldsAndSendToPresenter() {
 
+
+        showProgressBar(true);
+
         //------------getting Images in a list
         ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
@@ -968,7 +978,17 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     @Override
     public void showProgressBar(boolean b) {
+        View dim_background_of_bottom_sheet = (View) containerViewGroup.findViewById(R.id.touch_to_dismiss_bottom_sheet_dim_background);
+       dim_background_of_bottom_sheet.setVisibility(View.VISIBLE);
+        dim_background_of_bottom_sheet.setClickable(false);
 
+        ImageView iv_loading_gif = (ImageView)containerViewGroup.findViewById(R.id.iv_loading_gif);
+        CardView container_iv_loading_gif = (CardView) containerViewGroup.findViewById(R.id.cv_container_loaading_iv);
+        container_iv_loading_gif.setVisibility(View.VISIBLE);
+        Glide.with(getActivity().getApplicationContext()).load(R.drawable.shopping_loader).into(iv_loading_gif);
+
+        /*    Picasso.get()
+                .load(R.drawable.shopping_loader).into(iv_loading_gif);*/
     }
 
     @Override

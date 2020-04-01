@@ -68,8 +68,6 @@ dependencies {
 
     implementation 'com.orhanobut:dialogplus:1.11@aar'
 
-    implementation 'com.squareup.picasso:picasso:2.71828'
-
     implementation 'com.google.firebase:firebase-ml-vision:18.0.1'
     implementation 'com.google.firebase:firebase-ml-vision-image-label-model:17.0.2'
     implementation 'com.google.firebase:firebase-ml-vision-face-model:17.0.2'
@@ -85,7 +83,8 @@ dependencies {
 
 //below library is for shimmer loading animation
     implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
-
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

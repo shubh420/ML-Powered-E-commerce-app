@@ -25,4 +25,6 @@ public interface ItemsDetailsTakingView {
     void incrementAllowedImagesPickUpAmount(int i);
 
     void replaceBitmapOnThisPosition(int indexOfIvOfWhichEditBtWasClicked, Bitmap singleImageBitmap);
+
+    void onFinishedUploadingItem();
 }

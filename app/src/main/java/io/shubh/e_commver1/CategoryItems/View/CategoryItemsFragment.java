@@ -33,7 +33,7 @@ import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
-import io.shubh.e_commver1.reclr_adapter_class_for_ctgr_items;
+import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +72,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
     RecyclerView recyclerView;
     GridLayoutManager gridLayoutManager;
     ArrayList<ItemsForSale> itemsList;
-    reclr_adapter_class_for_ctgr_items adapter;
+    ReclrAdapterClassForCtgrItems adapter;
     String nameOfCtgrforWhichDataIsDetected;
 
     String rootCtgr;
@@ -174,7 +174,7 @@ static DrawerLayout drawerLayoutSttatic;
         recyclerView.setLayoutManager(gridLayoutManager);
 
         itemsList = new ArrayList<>();
-        adapter = new reclr_adapter_class_for_ctgr_items(getContext(), itemsList);
+        adapter = new ReclrAdapterClassForCtgrItems(getContext(), itemsList);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout)containerViewGroup.findViewById(R.id.appBarLayout);

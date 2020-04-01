@@ -23,7 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:tint="#2A000000" />
+            android:tint="#2A000000"
+            android:background="@color/colorLoadingImageViewPlaceholder"/>
         <TextView
           android:id="@+id/id_tv_fR_main_item_ctgr_item_list"
             android:layout_width="wrap_content"

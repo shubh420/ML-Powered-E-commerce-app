@@ -1,4 +1,4 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,20 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.R;
 
-public class reclr_adapter_class_for_ctgr_items extends RecyclerView.Adapter<reclr_adapter_class_for_ctgr_items.ViewHolder> {
+public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
     private Context context;
 
 
 
-    public reclr_adapter_class_for_ctgr_items(Context context, List<ItemsForSale> dataForItems) {
+    public ReclrAdapterClassForCtgrItems(Context context, List<ItemsForSale> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
 
@@ -51,24 +51,18 @@ public class reclr_adapter_class_for_ctgr_items extends RecyclerView.Adapter<rec
     }
 
     @Override
-    public reclr_adapter_class_for_ctgr_items.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ReclrAdapterClassForCtgrItems.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.reclr_item_fr_ctgr_items_list, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull reclr_adapter_class_for_ctgr_items.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReclrAdapterClassForCtgrItems.ViewHolder holder, int position) {
 
         holder.tv_item_Title.setText(dataForItemArrayList.get(position).getName());
         holder.tv_item_price.setText("₹"+dataForItemArrayList.get(position).getItem_price());
 
-     //   Log.d("&&&&&&&&&&3", dataForItemArrayList.get(position).getItem_Descrp());
-/*
-
-        Picasso.get().load(dataForItemArrayList.get(position).getItem_image_url()).placeholder(R.drawable.ring)
-                .resize(300, 300).centerCrop().into(holder.iv_item_image);
-*/
-
+        Glide.with(context).load(dataForItemArrayList.get(position).getListOfImageURLs().get(0)).centerCrop().into(holder.iv_item_image);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

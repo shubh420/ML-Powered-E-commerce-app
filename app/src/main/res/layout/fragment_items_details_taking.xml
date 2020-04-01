@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
 
             android:background="@drawable/bg_gradient3_fr_item_detail_taking_frag"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -95,7 +96,8 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="20dp"
+                    >
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -148,7 +150,8 @@
                             android:layout_height="match_parent"
 
                             android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:animateLayoutChanges="true">
 
                         </LinearLayout>
                     </HorizontalScrollView>
@@ -238,7 +241,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:padding="8dp">
+                            android:padding="8dp"
+                            android:animateLayoutChanges="true">
 
                         </LinearLayout>
 
@@ -251,7 +255,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:orientation="vertical"
-                        android:paddingBottom="10dp">
+                        android:paddingBottom="10dp"
+                        android:animateLayoutChanges="true">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -309,6 +314,7 @@
                             android:orientation="vertical"
                             android:background="@drawable/bg_layout_border"
                             android:padding="0dp"
+                            android:animateLayoutChanges="true"
                             >
                         <EditText
                             android:id="@+id/ed_name_of_variety"
@@ -327,7 +333,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:visibility="gone"
-
+                            android:animateLayoutChanges="true"
                             />
 
                         <Button
@@ -422,6 +428,24 @@
             android:background="#9000"
             android:clickable="true"
             android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_container_loaading_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            >
+        <ImageView
+            android:id="@+id/iv_loading_gif"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+
+
+            />
+        </androidx.cardview.widget.CardView>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </RelativeLayout>

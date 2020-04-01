@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -71,8 +71,9 @@ public class reclr_adapter_class_for_seller_items extends RecyclerView.Adapter<r
         holder.tv_item_catgr.setText(dataForItemArrayList.get(position).getItem_ctgr());
         //     holder.iv_item_image.setText(dataForItemArrayList.get(position).getvid_time());
         // Picasso.with(context).load(dataForItemArrayList.get(position).getVid_image_url()).placeholder(R.drawable.load).into(viewHolder.img_android);
-        Picasso.get().load(dataForItemArrayList.get(position).getItem_image_url()).placeholder(R.drawable.ring)
-                .resize(300, 300).centerCrop().into(holder.iv_item_image);
+        Glide.with(context).load(dataForItemArrayList.get(position).getItem_image_url())
+                .override(300, 300).into(holder.iv_item_image);
+
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

@@ -105,8 +105,7 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
                                     @Override
                                     public void onFinishedUpdatingId() {
                                   
-                                        //Item is finally upladed just let the view know now
-                                        Log.i("%%%%%", "Uploaded");
+                                        mView.onFinishedUploadingItem();
                                     }
                                 });
 

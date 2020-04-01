@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -31,9 +30,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
-import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
-import io.shubh.e_commver1.ClassForMainActvityItemReclrDATAObject;
-import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
@@ -42,9 +38,7 @@ import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SellerConfirmationFragment;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
-import io.shubh.e_commver1.reclr_adapter_class_for_main_activity_items;
-import io.shubh.e_commver1.seller_confirmation_activity;
-import io.shubh.e_commver1.seller_items_list;
+import io.shubh.e_commver1.Adapters.ReclrAdapterClassForMainActivity;
 
 public class MainActivity extends AppCompatActivity implements MainView {
 
@@ -78,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private void DoUiWork() {
 
-      //  progressBar = (ProgressBar) findViewById(R.id.id_fr_prggrs_bar_main_activity);
+
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
         navigationDrawerSetUp();
@@ -353,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        reclr_adapter_class_for_main_activity_items adapter = new reclr_adapter_class_for_main_activity_items(MainActivity.this, listOfDataObjectsForAdapter ,drawerLayout);
+        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this, listOfDataObjectsForAdapter ,drawerLayout);
         recyclerView.setAdapter(adapter);
 
 

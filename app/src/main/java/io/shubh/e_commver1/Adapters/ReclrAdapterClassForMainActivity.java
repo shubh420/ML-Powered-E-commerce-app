@@ -1,4 +1,4 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,19 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
-import io.shubh.e_commver1.Main.View.MainActivity;
+import io.shubh.e_commver1.R;
 
-public class reclr_adapter_class_for_main_activity_items extends RecyclerView.Adapter<reclr_adapter_class_for_main_activity_items.ViewHolder>
+public class ReclrAdapterClassForMainActivity extends RecyclerView.Adapter<ReclrAdapterClassForMainActivity.ViewHolder>
       {
 
     private ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItemArrayList;
@@ -31,7 +28,7 @@ public class reclr_adapter_class_for_main_activity_items extends RecyclerView.Ad
     private DrawerLayout drawerLayoutForTpBePassedToFragments;
 
 
-    public reclr_adapter_class_for_main_activity_items(Context context, ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItems, DrawerLayout drawerLayout) {
+    public ReclrAdapterClassForMainActivity(Context context, ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItems, DrawerLayout drawerLayout) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
         drawerLayoutForTpBePassedToFragments=drawerLayout;
@@ -58,20 +55,18 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
     }
 
     @Override
-    public reclr_adapter_class_for_main_activity_items.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public ReclrAdapterClassForMainActivity.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.reclr_item_fr_main_activity_items_list, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull reclr_adapter_class_for_main_activity_items.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ReclrAdapterClassForMainActivity.ViewHolder holder, int position) {
 
         holder.tv_item_Title.setText(dataForItemArrayList.get(position).getItem_title());
 
-        Picasso.get().load(dataForItemArrayList.get(position).getItem_image_url())
-                //.placeholder(R.drawable.ring)
-                .resize(300, 300).centerCrop().into(holder.iv_item_image);
-
+        Glide.with(context).load(dataForItemArrayList.get(position).getItem_image_url())
+                .override(300, 300).centerCrop().into(holder.iv_item_image);
 
         holder.cv_item.setOnClickListener(new View.OnClickListener() {
             @Override

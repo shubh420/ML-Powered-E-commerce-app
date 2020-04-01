@@ -17,5 +17,6 @@
 
     <color name="colorShimmerLoading">#dddddd</color>
     <color name="colorTransparent">#00ffffff</color>
+    <color name="colorBlur">#46111111</color>
 
 </resources>

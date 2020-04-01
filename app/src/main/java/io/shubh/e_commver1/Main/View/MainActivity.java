@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private void DoUiWork() {
 
       //  progressBar = (ProgressBar) findViewById(R.id.id_fr_prggrs_bar_main_activity);
-
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
         navigationDrawerSetUp();

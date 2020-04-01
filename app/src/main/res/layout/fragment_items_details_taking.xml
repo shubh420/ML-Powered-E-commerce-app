@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:fitsSystemWindows="true"
 
-    tools:context=".ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment">
+    tools:context=".ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment"
+    >
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,18 +33,21 @@
                 android:gravity="center_vertical"
                 android:minHeight="?attr/actionBarSize"
                 android:padding="4dp"
-                android:visibility="visible">
+                android:visibility="visible"
+               >
 
                 <ImageButton
                     android:id="@+id/id_fr_menu_bt"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="left"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:padding="12dp"
+                    android:background="@drawable/bg_img_bt_circular_border_for_circular_ripple"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
                     android:tint="@color/colorPrimary"
+                    android:layout_marginLeft="-4dp"
 
                     />
 
@@ -83,7 +87,7 @@
                 android:layout_marginRight="15dp"
                 android:elevation="10dp"
                 app:cardCornerRadius="15dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="15dp">
 
 
                 <LinearLayout
@@ -391,12 +395,6 @@
                             android:textColor="@color/colorSecondary"
                             android:textSize="17sp"
                             android:layout_marginTop="3dp"/>
-                        <!--<Button
-                            android:id="@+id/bt_show_or_hide"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:text="Show" />-->
 
 
                     </RelativeLayout>

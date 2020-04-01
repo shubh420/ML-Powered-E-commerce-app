@@ -5,8 +5,10 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -105,11 +109,13 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     private void DoUiWork() {
 
+
         attachOnBackBtPressedlistener();
         setUpImagePickingDialogueBottomSheetAndImgBttnForIt();
         setUpCtgrSelectionBox();
         setUpVarietyGivingOPtionAndVisibilityOption();
         setUpUploadBtUIAndLogicWork();
+
     }
 
 

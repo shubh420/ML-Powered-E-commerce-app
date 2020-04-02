@@ -304,7 +304,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
 
     }
 */
-    private void set_up_the_recycler_grid_view(ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter) {
+   /* private void set_up_the_recycler_grid_view(ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter) {
         //now executing the UI part
         recyclerView = (RecyclerView) findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
         recyclerView.setHasFixedSize(true);
@@ -327,7 +327,7 @@ public class CategoryItemsActivity extends AppCompatActivity {
             Toast.makeText(this, "No Items found", Toast.LENGTH_SHORT).show();
         }
 
-    }
+    }*/
 
 /*    private ArrayList<String> sort_the_url_into_order(ArrayList<String> images_url, ArrayList<Integer> imagesorder) {
         int i, key, j;

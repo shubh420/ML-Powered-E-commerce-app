@@ -11,6 +11,7 @@ import io.shubh.e_commver1.CategoriesObjectClass;
 import io.shubh.e_commver1.Main.Interactor.MainInteractor;
 import io.shubh.e_commver1.Main.View.MainView;
 import io.shubh.e_commver1.Models.Category;
+import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 public class MainPresenterImplt implements MainPresenter, MainInteractor.CallbacksToPresnter {

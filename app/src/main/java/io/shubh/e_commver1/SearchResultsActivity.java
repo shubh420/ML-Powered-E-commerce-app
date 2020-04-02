@@ -47,12 +47,12 @@ public class SearchResultsActivity extends AppCompatActivity {
         Log.i("&&& name recieved", searchQuery);
         pageNoForMlFeature = getIntent().getExtras().getInt("page no");
 
-        init();
+       /* init();
         searchDatabaseForThisQuery();
-        setSearchViewWork();
+        setSearchViewWork();*/
     }
 
-    private void init() {
+  /*  private void init() {
 
         searchQuery =searchQuery.replaceFirst("," ,"" );
         Log.i("&&&", "superstring after replacing first "+ searchQuery);
@@ -155,7 +155,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private String[] getAllWordsFromSringInArray() {
 
-     /*   String[] words = searchQuery.split("\\s+");
+     *//*   String[] words = searchQuery.split("\\s+");
         for (int i = 0; i < words.length; i++) {
             // You may want to check for a non-word character before blindly
             // performing a replacement
@@ -163,7 +163,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             words[i] = words[i].replaceAll("[^\\w]", "");
 
             Log.i("&&&&", "getAllWordsFromSringInArray: ");
-        }*/
+        }*//*
 
    if(pageNoForMlFeature==1) {
        ArrayList<String> listOfSearchQueries = new ArrayList<>();
@@ -183,7 +183,7 @@ public class SearchResultsActivity extends AppCompatActivity {
    }else   if(pageNoForMlFeature==2){
        ArrayList<String> listOfSearchQueries = new ArrayList<>();
        String[] arrSplit = searchQuery.split(" ");
-       /*int lastIndex = 0;
+       *//*int lastIndex = 0;
        for (int i = 0; i < searchQuery.length(); i++) {
            if (searchQuery.charAt(i) == ' ') {
                listOfSearchQueries.add(searchQuery.substring(lastIndex, i));
@@ -193,7 +193,7 @@ public class SearchResultsActivity extends AppCompatActivity {
            listOfSearchQueries.add(searchQuery.substring(lastIndex, searchQuery.length() - 1));
 
            // Log.i("&&&&", "getAllWordsFromSringInArray: ");
-       }*/
+       }*//*
        if(arrSplit.length==0){
            arrSplit[0]=searchQuery;
        }
@@ -261,9 +261,9 @@ public class SearchResultsActivity extends AppCompatActivity {
             key2 = images_url.get(i);
             j = i - 1;
 
-        /* Move elements of arr[0..i-1], that are
+        *//* Move elements of arr[0..i-1], that are
         greater than key, to one position ahead
-        of their current position */
+        of their current position *//*
             while (j >= 0 && imagesorder.get(j) > key) {
                 imagesorder.set(j + 1, imagesorder.get(j));
                 images_url.set(j + 1, images_url.get(j));
@@ -281,8 +281,8 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.removeAllViews();
 
-      /*  RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CategoryItemsActivity.this);
-        recyclerView.setLayoutManager(layoutManager);*/
+      *//*  RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CategoryItemsActivity.this);
+        recyclerView.setLayoutManager(layoutManager);*//*
 
         // set a GridLayoutManager with 2 number of columns
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
@@ -308,5 +308,5 @@ public class SearchResultsActivity extends AppCompatActivity {
         //just adding an animatiion here whic makes it go with animation sliding to right
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
 
-    }
+    }*/
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
+
 public interface MainView {
 
     void switchActivity(int i);

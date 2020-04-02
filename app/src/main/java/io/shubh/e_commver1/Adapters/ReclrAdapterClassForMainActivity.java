@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
+import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.R;
 
 public class ReclrAdapterClassForMainActivity extends RecyclerView.Adapter<ReclrAdapterClassForMainActivity.ViewHolder>

@@ -903,7 +903,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
         for (int i = 0; i < llContainerFrIvs.getChildCount(); i++) {
             //  RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
-            ImageView iv = (ImageView) llContainerFrIvs.findViewById(R.id.id_fr_slected_image);
+            CardView cv =(CardView)llContainerFrIvs.getChildAt(i);
+            ImageView iv = (ImageView) cv.findViewById(R.id.id_fr_slected_image);
             bitmaps.add(((BitmapDrawable) iv.getDrawable()).getBitmap());
         }
         //------------getting names from text fields

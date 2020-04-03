@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ItemDetailPage.View.ItemDetailFragment"
+    android:background="@color/colorTransparent"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/pager2"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:clipToPadding="false"
+        android:overScrollMode="ifContentScrolls"
+        >
+
+    </androidx.viewpager.widget.ViewPager>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        android:gravity="bottom"
+        app:tabMode="fixed"
+        app:tabRippleColor="@color/colorSecondary"
+        android:layout_marginTop="260dp"
+        android:theme="@style/Base.Widget.Design.TabLayout"
+        />
+    </RelativeLayout>
+
+    <!--below cooordinatorlayout id for bootomsheet to inflate-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTransparent">
+
+        <include layout="@layout/bottom_sheet_fr_item_detail_page"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</RelativeLayout>

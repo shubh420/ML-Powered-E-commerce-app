@@ -29,7 +29,10 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="@color/colorLoadingImageViewPlaceholder"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+
+            android:transitionName="MyTransition"
+            />
 
 
     </androidx.cardview.widget.CardView>

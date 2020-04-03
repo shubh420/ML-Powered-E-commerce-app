@@ -73,10 +73,10 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
             @Override
             public void onClick(View view) {
 
-                ((AppCompatActivity )context).getSupportFragmentManager().beginTransaction()
+                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
 
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title() , dataForItemArrayList.get(position).getItem_title(),drawerLayoutForTpBePassedToFragments) )
+                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title(), dataForItemArrayList.get(position).getItem_title(), drawerLayoutForTpBePassedToFragments))
                         .commit();
 
                 drawerLayoutForTpBePassedToFragments.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);

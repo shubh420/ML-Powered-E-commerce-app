@@ -12,5 +12,24 @@
     </style>
 
 
+<!--Theme for item details fragment ..given to it dynamically in oncreate view-->
+        <style name="Theme.AppCompat.Translucent">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--       <item name="android:colorBackgroundCacheHint">@null</item>-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--  <item name="android:windowAnimationStyle">@android:style/Animation</item>-->
+    </style>
+
+<!--do any chnge to layout of tablayout from here ,but to change the size of dots do that by drawable file thickness attribute-->
+    <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
+        <item name="tabIndicatorColor">?attr/colorAccent</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabPaddingStart">12dp</item>
+        <item name="tabPaddingEnd">12dp</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+        <item name="tabSelectedTextColor">?android:textColorPrimary</item>
+    </style>
 
 </resources>

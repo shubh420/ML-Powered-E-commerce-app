@@ -9,28 +9,37 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
+import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 
 public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
     private Context context;
+    private CategoryItemsFragment categoryItemsFragment;
+    private FragmentActivity activity;
 
 
-
-    public ReclrAdapterClassForCtgrItems(Context context, List<ItemsForSale> dataForItems) {
+//TODO-remove the not in use arguements from below
+    public ReclrAdapterClassForCtgrItems(FragmentActivity activity, CategoryItemsFragment categoryItemsFragment, Context context, List<ItemsForSale> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
+        this.categoryItemsFragment = categoryItemsFragment;
+        this.activity = activity;
+
 
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv_item_Title;
         TextView tv_item_price;
 
@@ -41,12 +50,12 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
         public ViewHolder(View view) {
             super(view);
 
-            tv_item_Title = (TextView)view.findViewById(R.id.id_tv_title_fR_rclr_item_ctgr_item_list);
-            tv_item_price = (TextView)view.findViewById(R.id.id_tv_price_fR_rclr_item_ctgr_item_list);
+            tv_item_Title = (TextView) view.findViewById(R.id.id_tv_title_fR_rclr_item_ctgr_item_list);
+            tv_item_price = (TextView) view.findViewById(R.id.id_tv_price_fR_rclr_item_ctgr_item_list);
 
-            iv_item_image = (ImageView)view.findViewById(R.id.id_iv_fR_rclr_item_ctgr_item_list);
+            iv_item_image = (ImageView) view.findViewById(R.id.id_iv_fR_rclr_item_ctgr_item_list);
 
-            edit_bt =(ImageButton) view.findViewById(R.id.id_bt_save_fR_rclr_item_ctgr_item_list);
+            edit_bt = (ImageButton) view.findViewById(R.id.id_bt_save_fR_rclr_item_ctgr_item_list);
         }
     }
 
@@ -60,7 +69,7 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
     public void onBindViewHolder(@NonNull ReclrAdapterClassForCtgrItems.ViewHolder holder, int position) {
 
         holder.tv_item_Title.setText(dataForItemArrayList.get(position).getName());
-        holder.tv_item_price.setText("₹"+dataForItemArrayList.get(position).getItem_price());
+        holder.tv_item_price.setText("₹" + dataForItemArrayList.get(position).getItem_price());
 
         Glide.with(context).load(dataForItemArrayList.get(position).getListOfImageURLs().get(0)).centerCrop().into(holder.iv_item_image);
 
@@ -68,20 +77,16 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
             @Override
             public void onClick(View view) {
 
+
+
+                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                        .add( R.id.rl_root_ctgr_items_frag,new ItemDetailFragment(dataForItemArrayList.get(position) ))
+                        .commit();
+
+
             }
         });
 
-    /*    viewHolder.share.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String shareBody = dataForItemArrayList.get(i).getVidTitle() + "\n\nSee this titled video at this app in play store" + "\n\nhttps://play.google.com/store/apps/details?id=io.shubh.BeautyApp";
-                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                sharingIntent.setType("text/plain");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject Here");
-                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                view.getContext().startActivity(Intent.createChooser(sharingIntent, "Share"));
-            }
-        });*/
 
     }
 
@@ -90,7 +95,6 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
     public int getItemCount() {
         return dataForItemArrayList.size();
     }
-
 
 
 }

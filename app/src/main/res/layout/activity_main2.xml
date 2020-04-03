@@ -4,33 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_search"
         android:layout_width="match_parent"
         android:layout_height="46dp"
-        android:elevation="50dp"
-        app:cardElevation="50dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="15dp"
+        android:layout_marginBottom="8dp"
+        android:elevation="50dp"
         app:cardCornerRadius="10dp"
-        android:layout_marginBottom="8dp">
+        app:cardElevation="50dp">
 
-       <androidx.appcompat.widget.SearchView
-           android:id="@+id/searchview"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:elevation="0dp"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:elevation="0dp"
 
-           android:queryHint="Search a product"
-           app:queryHint="Search a product"
-           app:defaultQueryHint="Search a product"
-           android:iconifiedByDefault="false"
-        app:iconifiedByDefault="false"
-/>
+            android:iconifiedByDefault="false"
+            android:queryHint="Search a product"
+            app:defaultQueryHint="Search a product"
+            app:iconifiedByDefault="false"
+            app:queryHint="Search a product" />
 
     </androidx.cardview.widget.CardView>
 
@@ -46,84 +45,82 @@
             android:orientation="vertical">
 
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
 
+                <TextView
+                    android:id="@+id/id_fr_tv_welcome_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/id_fr_tv_welcome_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="50dp"
+                    android:text="Use text based search"
+                    android:textSize="25sp" />
 
-                android:text="Use text based search"
-                android:layout_centerHorizontal="true"
-                android:textSize="25sp"
-                android:layout_marginTop="50dp"/>
+                <TextView
+                    android:id="@+id/tv_or"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/tv_or"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                    android:layout_below="@id/id_fr_tv_welcome_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="3dp"
+                    android:text="OR"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
 
-                android:text="OR"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:layout_below="@id/id_fr_tv_welcome_text"
-                android:layout_centerHorizontal="true"
-android:layout_marginTop="3dp"
-                />
-            <TextView
-                android:id="@+id/id_fr_tv_AMO_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tv_or"
-                android:text="Use The Image Search"
-                android:layout_centerHorizontal="true"
+                <TextView
+                    android:id="@+id/id_fr_tv_AMO_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_or"
+                    android:layout_centerHorizontal="true"
+                    android:text="Use The Image Search"
 
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/id_fr_tv_AMO_text"
-            android:layout_centerHorizontal="true"
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/id_fr_tv_AMO_text"
+                    android:layout_centerHorizontal="true"
 
-            android:text="Powered by ML"
-            android:textSize="20sp"
-            android:layout_marginTop="2dp"
-            />
+                    android:layout_marginTop="2dp"
+                    android:text="Powered by ML"
+                    android:textSize="20sp" />
 
-        <!--   <TextView
-               android:id="@+id/textView"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:layout_below="@+id/ll1"
-               android:layout_centerHorizontal="true"
-               android:layout_marginTop="29dp"
-               android:text="Explore us"
-               android:textAppearance="@style/TextAppearance.AppCompat.Large"
-               android:textSize="24sp"
-               android:textStyle="bold|italic" />-->
-    </RelativeLayout>
+                <!--   <TextView
+                       android:id="@+id/textView"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_below="@+id/ll1"
+                       android:layout_centerHorizontal="true"
+                       android:layout_marginTop="29dp"
+                       android:text="Explore us"
+                       android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                       android:textSize="24sp"
+                       android:textStyle="bold|italic" />-->
+            </RelativeLayout>
 
 
-    <RelativeLayout
+            <RelativeLayout
 
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.2">
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.2">
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srcCompat="@drawable/object_detection"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:srcCompat="@drawable/object_detection" />
 
-    </RelativeLayout>
+            </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -134,7 +131,6 @@ android:layout_marginTop="3dp"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="3">
-
 
 
                     <androidx.cardview.widget.CardView
@@ -214,9 +210,7 @@ android:layout_marginTop="3dp"
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-
+                android:layout_height="wrap_content">
 
 
                 <TextView
@@ -224,31 +218,31 @@ android:layout_marginTop="3dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="Use text based search"
                     android:layout_centerHorizontal="true"
-                    android:textSize="25sp"
-                    android:layout_marginTop="50dp"/>
+                    android:layout_marginTop="50dp"
+                    android:text="Use text based search"
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/tv_or2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:text="OR"
-                    android:textAlignment="center"
-                    android:textSize="20sp"
                     android:layout_below="@id/id_fr_tv_welcome_text2"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="3dp"
-                    />
+                    android:text="OR"
+                    android:textAlignment="center"
+                    android:textSize="20sp" />
+
                 <TextView
                     android:id="@+id/id_fr_tv_AMO_text2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/tv_or2"
-                    android:text="Use The Text on Image Search"
                     android:layout_centerHorizontal="true"
-android:gravity="center"
+                    android:gravity="center"
+                    android:text="Use The Text on Image Search"
                     android:textSize="30sp"
                     android:textStyle="bold" />
 
@@ -259,10 +253,9 @@ android:gravity="center"
                     android:layout_below="@+id/id_fr_tv_AMO_text2"
                     android:layout_centerHorizontal="true"
 
-                    android:text="Powered by ML"
-                    android:textSize="20sp"
                     android:layout_marginTop="2dp"
-                    />
+                    android:text="Powered by ML"
+                    android:textSize="20sp" />
 
                 <!--   <TextView
                        android:id="@+id/textView"
@@ -287,10 +280,10 @@ android:gravity="center"
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:srcCompat="@drawable/text_recognition"
-                    />
+                    app:srcCompat="@drawable/text_recognition" />
 
             </RelativeLayout>
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -301,7 +294,6 @@ android:gravity="center"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:weightSum="3">
-
 
 
                     <androidx.cardview.widget.CardView
@@ -375,90 +367,84 @@ android:gravity="center"
 
     <!--++++++++++++++++++++++++++++++++++++++++++-->
 
-   <!-- <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight=".8">
+    <!-- <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="0dp"
+         android:layout_weight=".8">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cv1"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="30dp"
-
-                    android:layout_marginRight="40dp"
-
-
-                    android:elevation="6dp"
-                    app:cardCornerRadius="3dp"
-                    app:cardElevation="6dp">
-
-                    <LinearLayout
-                        android:id="@+id/bt_camera"
-
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@layout/gradient"
-                        android:clickable="true"
-                        android:foreground="?android:attr/selectableItemBackground"
-                        android:orientation="vertical"
-
-                        >
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:text="Camera"
-                            android:textColor="#ffffff"
-                            android:textSize="21sp" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <LinearLayout
-                    android:id="@+id/bt_gallery"
-
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-
-                    android:layout_below="@id/cv1"
-                    android:layout_marginLeft="40dp"
-
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="40dp"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center_horizontal"
-                        android:text="Gallery"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-            </RelativeLayout>
-
-
-        </RelativeLayout>-->
+         <RelativeLayout
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="horizontal"
+             android:weightSum="3">
 
 
 
+                 <androidx.cardview.widget.CardView
+                     android:id="@+id/cv1"
+                     android:layout_width="match_parent"
+                     android:layout_height="42dp"
+
+                     android:layout_marginLeft="40dp"
+                     android:layout_marginTop="30dp"
+
+                     android:layout_marginRight="40dp"
 
 
+                     android:elevation="6dp"
+                     app:cardCornerRadius="3dp"
+                     app:cardElevation="6dp">
 
+                     <LinearLayout
+                         android:id="@+id/bt_camera"
+
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:background="@layout/gradient"
+                         android:clickable="true"
+                         android:foreground="?android:attr/selectableItemBackground"
+                         android:orientation="vertical"
+
+                         >
+
+                         <TextView
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:layout_gravity="center"
+                             android:gravity="center"
+                             android:text="Camera"
+                             android:textColor="#ffffff"
+                             android:textSize="21sp" />
+                     </LinearLayout>
+                 </androidx.cardview.widget.CardView>
+
+                 <LinearLayout
+                     android:id="@+id/bt_gallery"
+
+                     android:layout_width="match_parent"
+                     android:layout_height="42dp"
+
+                     android:layout_below="@id/cv1"
+                     android:layout_marginLeft="40dp"
+
+                     android:layout_marginTop="8dp"
+                     android:layout_marginRight="40dp"
+                     android:clickable="true"
+                     android:foreground="?android:attr/selectableItemBackground">
+
+                     <TextView
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:layout_gravity="center"
+                         android:gravity="center_horizontal"
+                         android:text="Gallery"
+                         android:textSize="18sp" />
+                 </LinearLayout>
+
+             </RelativeLayout>
+
+
+         </RelativeLayout>-->
 
 
 </LinearLayout>

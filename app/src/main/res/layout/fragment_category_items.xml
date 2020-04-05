@@ -1,240 +1,238 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/rl_root_ctgr_items_frag"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_root_ctgr_items_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context=".CategoryItemsActivity">
+    tools:context="io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment">
 
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
 
-            android:id="@+id/content"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+
+        >
+
+        <com.google.android.material.appbar.AppBarLayout
+
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
+            android:layout_height="wrap_content"
+            android:elevation="0dp"
+            android:stateListAnimator="@null">
 
-            >
-
-                <com.google.android.material.appbar.AppBarLayout
-
-                android:id="@+id/appBarLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:stateListAnimator="@null"
-                android:elevation="0dp">
-
-                <!--custom tool bar below-->
-                <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+            <!--custom tool bar below-->
+            <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/colorPrimary"
-                android:minHeight="?attr/actionBarSize"
-
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                android:padding="4dp"
-                android:gravity="center_vertical"
                 android:elevation="0dp"
+
+                android:gravity="center_vertical"
+                android:minHeight="?attr/actionBarSize"
+                android:padding="4dp"
                 android:visibility="visible"
-
                 app:layout_scrollFlags="scroll|enterAlways|snap"
-                >
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+
+                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+                <!--TODo -make the below bt color more light-->
+                <ImageButton
+                    android:id="@+id/btCloseFrag"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    android:layout_gravity="left"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:padding="9dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_close_svg"
+                    android:tint="#757575"
+
+                    />
+
 
                 <ImageButton
-                android:id="@+id/id_fr_menu_bt"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:layout_gravity="left"
-                app:srcCompat="@drawable/menu"
-                android:scaleType="centerCrop"
-                android:background="@null"
-                android:clickable="true"
-                android:foreground="?attr/selectableItemBackground"
-
-                />
+                    android:id="@+id/id_fr_my_cart_bt"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="15dp"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/shopping_cart2" />
 
                 <ImageButton
-                android:id="@+id/id_fr_my_cart_bt"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:layout_gravity="right"
-                app:srcCompat="@drawable/shopping_cart2"
-                android:scaleType="centerCrop"
-                android:background="@null"
-                android:layout_marginRight="15dp"
-                />
+                    android:id="@+id/id_fr_notification_bt"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="right"
+                    android:layout_marginRight="15dp"
+                    android:background="@null"
+                    android:padding="10dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/bell" />
 
-                <ImageButton
-                android:id="@+id/id_fr_notification_bt"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:padding="10dp"
-                android:layout_gravity="right"
-                app:srcCompat="@drawable/bell"
-                android:scaleType="centerCrop"
-                android:background="@null"
-                android:layout_marginRight="15dp"
-                />
-
-                </androidx.appcompat.widget.Toolbar>
+            </androidx.appcompat.widget.Toolbar>
 
 
-                <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:animateLayoutChanges="true">
 
+                <TextView
+                    android:id="@+id/id_fr_tv_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/adamina"
+                    android:maxLines="1"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="15dp"
+                    android:text="Category"
+                    android:textColor="#A60C0C0C"
+                    android:textSize="35sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/id_fr_ll_fr_directory_tvs"
+                    android:layout_width="match_parent"
+                    android:layout_height="23dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="8dp"
+                    android:animateLayoutChanges="true"
+                    android:orientation="horizontal">
+
                     <TextView
-                        android:id="@+id/id_fr_tv_header"
-                        android:layout_width="match_parent"
+                        android:id="@+id/id_fr_tv_catgr_directory"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_gravity="center"
-                        android:ellipsize="end"
-                        android:fontFamily="@font/adamina"
-                        android:maxLines="1"
                         android:paddingLeft="15dp"
-                        android:paddingTop="20dp"
-                        android:paddingRight="15dp"
                         android:text="Category"
-                        android:textColor="#A60C0C0C"
-                        android:textSize="35sp" />
+                        android:textAllCaps="false"
+                        android:textColor="#A6222222"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/id_fr_tv_first_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="/"
+                        android:textColor="#A6222222"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/id_fr_tv_sub_catgr_directory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="Sub-Category"
+                        android:textColor="#A6222222"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/id_fr_tv_scnd_slash"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="/"
+                        android:textColor="#A6222222"
+                        android:textSize="15sp"
+
+
+                        />
+
+                    <TextView
+                        android:id="@+id/id_fr_tv_sub_sub_catgr_directory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingLeft="5dp"
+                        android:text="Sub-Sub-Category"
+                        android:textColor="#A6222222"
+                        android:textSize="15sp"
+
+
+                        />
                 </LinearLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <include
+            layout="@layout/shimmer_layout_file_fr_include_in_ctgr_items_frag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="45dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/id_fr_recycler_view_ctgr_items_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="50dp"
+
+            android:paddingRight="4dp"
+            android:paddingBottom="50dp"
+
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <RelativeLayout
+            android:id="@+id/rl_root_container_of_side_strip"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+
+            android:elevation="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+
+            >
+
+            <ScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
                 <LinearLayout
-                android:id="@+id/id_fr_ll_fr_directory_tvs"
-                android:layout_width="match_parent"
-                android:layout_height="23dp"
-                android:orientation="horizontal"
-                android:animateLayoutChanges="true"
-                android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp">
-
-                <TextView
-                android:id="@+id/id_fr_tv_catgr_directory"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingLeft="15dp"
-                android:text="Category"
-                android:textAllCaps="false"
-                android:textColor="#A6222222"
-                android:textSize="15sp"
-                    />
-                <TextView
-                android:id="@+id/id_fr_tv_first_slash"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="/"
-                android:textColor="#A6222222"
-                android:layout_gravity="center"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-                />
-                <TextView
-                android:id="@+id/id_fr_tv_sub_catgr_directory"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Sub-Category"
-                android:textColor="#A6222222"
-                android:layout_gravity="center"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-                />
-
-                <TextView
-                android:id="@+id/id_fr_tv_scnd_slash"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:paddingLeft="5dp"
-                android:text="/"
-                android:textColor="#A6222222"
-                android:textSize="15sp"
-
-
-                />
-                <TextView
-                android:id="@+id/id_fr_tv_sub_sub_catgr_directory"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="Sub-Sub-Category"
-                android:textColor="#A6222222"
-                android:layout_gravity="center"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-
-
-                />
-                </LinearLayout>
-</LinearLayout>
-                </com.google.android.material.appbar.AppBarLayout>
-
-
-                <include
+                    android:id="@+id/container_fr_ctgr"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    layout="@layout/shimmer_layout_file_fr_include_in_ctgr_items_frag"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:layout_marginLeft="45dp"/>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/id_fr_recycler_view_ctgr_items_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingRight="4dp"
-
-                android:paddingLeft="50dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
-android:paddingBottom="50dp"
-                />
-                <RelativeLayout
-                    android:id="@+id/rl_root_container_of_side_strip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:elevation="0dp"
-
-                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
 
                     >
 
-                        <ScrollView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent">
-                                <LinearLayout
-                                    android:id="@+id/container_fr_ctgr"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
+                    <include
+                        layout="@layout/infalte_vertical_textviews_for_ctgr_vertical_strip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                                  >
-                                        <include
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            layout="@layout/infalte_vertical_textviews_for_ctgr_vertical_strip" />
-
-                                </LinearLayout>
-                        </ScrollView>
-                </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+        </RelativeLayout>
 
 
-
-
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
 </RelativeLayout>

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-<!--TODO give this drawable ripple effect ..and remove ripple from foreground of the back buttons using it-->
-
-    <corners
-        android:radius="50dp"/>
-</shape>

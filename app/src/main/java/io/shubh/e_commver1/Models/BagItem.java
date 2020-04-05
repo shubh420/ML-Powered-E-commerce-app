@@ -6,20 +6,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemsForSale implements Serializable {
+public class BagItem implements Serializable {
 
 
-    String category , description ,item_price , name ,root_category ,seller_id ,sub_category ,sub_sub_category ;
+    /*String category ,item_price , name ,seller_id  ;
     int order_id ;
     long time_of_upload ;
-    String varietyName;
-    boolean visibility;
-
 
     List<String> listOfImageURLs = new ArrayList<String>();
     List<String> varieies = new ArrayList<String>();
 
-    public ItemsForSale() {
+    public BagItem() {
     }
 
     @PropertyName("category")
@@ -148,5 +145,5 @@ public class ItemsForSale implements Serializable {
     @PropertyName("varieties")
     public void setVarieies(List<String> varieies) {
         this.varieies = varieies;
-    }
+    }*/
 }

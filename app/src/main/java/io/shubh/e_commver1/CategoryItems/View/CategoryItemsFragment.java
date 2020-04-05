@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -145,6 +146,8 @@ static DrawerLayout drawerLayoutSttatic;
 
     private void DoUiWork() {
 
+        setUpToolbar();
+
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
 
         //TODO-add fadin animation to tv header on changing text
@@ -194,8 +197,19 @@ static DrawerLayout drawerLayoutSttatic;
 
         updateHeaderTvAndCtgrStrip();
         loadCategorylayoutsInTheSidebarWithAnimation();
+
+
     }
 
+    private void setUpToolbar() {
+        ImageButton btCloseFrag = (ImageButton)containerViewGroup.findViewById(R.id.btCloseFrag);
+        btCloseFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonPressed();
+            }
+        });
+    }
 
 
     private void loadCategorylayoutsInTheSidebar() {

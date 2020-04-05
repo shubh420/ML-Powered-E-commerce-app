@@ -981,7 +981,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     public void showProgressBar(boolean b) {
         View dim_background_of_bottom_sheet = (View) containerViewGroup.findViewById(R.id.touch_to_dismiss_bottom_sheet_dim_background);
        dim_background_of_bottom_sheet.setVisibility(View.VISIBLE);
-        dim_background_of_bottom_sheet.setClickable(false);
+        dim_background_of_bottom_sheet.setClickable(true);
 
         ImageView iv_loading_gif = (ImageView)containerViewGroup.findViewById(R.id.iv_loading_gif);
         CardView container_iv_loading_gif = (CardView) containerViewGroup.findViewById(R.id.cv_container_loaading_iv);

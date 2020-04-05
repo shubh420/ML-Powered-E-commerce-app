@@ -5,9 +5,12 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bg_gradient3_fr_item_detail_taking_frag"
+
     android:fitsSystemWindows="true"
 
     tools:context=".ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment"
+
     >
 
     <ScrollView
@@ -20,9 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
-            android:background="@drawable/bg_gradient3_fr_item_detail_taking_frag"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -34,21 +35,18 @@
                 android:gravity="center_vertical"
                 android:minHeight="?attr/actionBarSize"
                 android:padding="4dp"
-                android:visibility="visible"
-               >
+                android:visibility="visible">
 
                 <ImageButton
                     android:id="@+id/id_fr_menu_bt"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
                     android:layout_gravity="left"
-                    android:foreground="?android:attr/selectableItemBackground"
-                    android:padding="12dp"
-                    android:background="@drawable/bg_img_bt_circular_border_for_circular_ripple"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:padding="9dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
                     android:tint="@color/colorPrimary"
-                    android:layout_marginLeft="-4dp"
 
                     />
 
@@ -59,11 +57,10 @@
                     android:layout_gravity="right"
                     android:layout_marginLeft="5dp"
                     android:background="@color/colorTransparent"
-                    android:text="Upload"
-                    android:textColor="#fff"
                     android:elevation="0dp"
                     android:foreground="?android:attr/selectableItemBackground"
-                    />
+                    android:text="Upload"
+                    android:textColor="#fff" />
             </androidx.appcompat.widget.Toolbar>
 
             <TextView
@@ -86,9 +83,9 @@
                 android:layout_marginTop="35dp"
 
                 android:layout_marginRight="15dp"
+                android:layout_marginBottom="15dp"
                 android:elevation="10dp"
-                app:cardCornerRadius="15dp"
-                android:layout_marginBottom="15dp">
+                app:cardCornerRadius="15dp">
 
 
                 <LinearLayout
@@ -96,8 +93,7 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true"
                     android:orientation="vertical"
-                    android:padding="20dp"
-                    >
+                    android:padding="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -125,11 +121,11 @@
                                 android:layout_height="25dp"
 
                                 android:background="@color/colorSecondary"
+                                android:foreground="?android:attr/selectableItemBackground"
                                 android:padding="6dp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/ic_add_svg"
                                 android:tint="@color/colorPrimary"
-                                android:foreground="?android:attr/selectableItemBackground"
 
                                 />
                         </androidx.cardview.widget.CardView>
@@ -149,9 +145,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
 
+                            android:animateLayoutChanges="true"
                             android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:animateLayoutChanges="true">
+                            android:orientation="horizontal">
 
                         </LinearLayout>
                     </HorizontalScrollView>
@@ -207,13 +203,12 @@
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:background="@color/colorSecondary"
+                                android:foreground="?android:attr/selectableItemBackground"
                                 android:padding="4dp"
                                 android:rotation="180"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/ic_arrow_right_svg"
-                                android:tint="@color/colorPrimary"
-                                android:foreground="?android:attr/selectableItemBackground"
-                                />
+                                android:tint="@color/colorPrimary" />
                         </androidx.cardview.widget.CardView>
 
                         <TextView
@@ -240,9 +235,9 @@
                             android:id="@+id/container_fr_ctgr"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:animateLayoutChanges="true"
                             android:orientation="vertical"
-                            android:padding="8dp"
-                            android:animateLayoutChanges="true">
+                            android:padding="8dp">
 
                         </LinearLayout>
 
@@ -254,9 +249,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
+                        android:animateLayoutChanges="true"
                         android:orientation="vertical"
-                        android:paddingBottom="10dp"
-                        android:animateLayoutChanges="true">
+                        android:paddingBottom="10dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -277,21 +272,20 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="5dp"
-                                android:layout_toRightOf="@id/tvHeader"
-                                app:cardCornerRadius="8dp"
                                 android:layout_marginTop="3dp"
-                                >
+                                android:layout_toRightOf="@id/tvHeader"
+                                app:cardCornerRadius="8dp">
 
                                 <ImageButton
                                     android:id="@+id/bt_show_btm_sheet_fr_info"
                                     android:layout_width="25dp"
                                     android:layout_height="25dp"
                                     android:background="@color/colorSecondary"
+                                    android:foreground="?android:attr/selectableItemBackground"
                                     android:padding="4dp"
                                     android:scaleType="centerCrop"
                                     android:src="@drawable/ic_info_svg"
                                     android:tint="@color/colorPrimary"
-                                    android:foreground="?android:attr/selectableItemBackground"
 
                                     />
                             </androidx.cardview.widget.CardView>
@@ -301,53 +295,50 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
+                                android:layout_marginTop="3dp"
                                 android:text="Add"
                                 android:textColor="@color/colorSecondary"
-                                android:textSize="17sp"
-                                android:layout_marginTop="3dp"/>
+                                android:textSize="17sp" />
 
                         </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@drawable/bg_layout_border"
-                            android:padding="0dp"
                             android:animateLayoutChanges="true"
-                            >
-                        <EditText
-                            android:id="@+id/ed_name_of_variety"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Name of Variety,like shoe size."
-                            android:visibility="gone"
                             android:background="@drawable/bg_layout_border"
-                            android:padding="10dp"
-                            android:layout_margin="8dp"
-                            />
-
-                        <LinearLayout
-                            android:id="@+id/container_for_varieties"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="gone"
-                            android:animateLayoutChanges="true"
-                            />
+                            android:padding="0dp">
 
-                        <Button
-                            android:id="@+id/btAdd_indivisual_variety"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:text="Add more"
-                            android:textColor="#fff"
-                            android:background="@drawable/bg_button"
-                            android:visibility="gone"
-                            android:layout_marginBottom="8dp"
-                            android:foreground="?android:attr/selectableItemBackground"
-                            />
+                            <EditText
+                                android:id="@+id/ed_name_of_variety"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="8dp"
+                                android:background="@drawable/bg_layout_border"
+                                android:hint="Name of Variety,like shoe size."
+                                android:padding="10dp"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:id="@+id/container_for_varieties"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:animateLayoutChanges="true"
+                                android:orientation="vertical"
+                                android:visibility="gone" />
+
+                            <Button
+                                android:id="@+id/btAdd_indivisual_variety"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_marginBottom="8dp"
+                                android:background="@drawable/bg_button"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                android:text="Add more"
+                                android:textColor="#fff"
+                                android:visibility="gone" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -366,28 +357,26 @@
                             android:layout_height="wrap_content"
                             android:text="Visibilty"
                             android:textColor="@color/colorGrayForHeaderTvs"
-                            android:textSize="20sp"
-                            />
+                            android:textSize="20sp" />
                         <!--below bt is for info about this feature-->
                         <androidx.cardview.widget.CardView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="5dp"
-                            android:layout_toRightOf="@id/tv_visiblity"
-                            app:cardCornerRadius="8dp"
                             android:layout_marginTop="3dp"
-                            >
+                            android:layout_toRightOf="@id/tv_visiblity"
+                            app:cardCornerRadius="8dp">
 
                             <ImageButton
                                 android:id="@+id/ibt_show_bttm_sheet_info"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:background="@color/colorSecondary"
+                                android:foreground="?android:attr/selectableItemBackground"
                                 android:padding="4dp"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/ic_info_svg"
                                 android:tint="@color/colorPrimary"
-                                android:foreground="?android:attr/selectableItemBackground"
 
                                 />
                         </androidx.cardview.widget.CardView>
@@ -397,10 +386,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
+                            android:layout_marginTop="3dp"
                             android:text="Visible"
                             android:textColor="@color/colorSecondary"
-                            android:textSize="17sp"
-                            android:layout_marginTop="3dp"/>
+                            android:textSize="17sp" />
 
 
                     </RelativeLayout>
@@ -433,17 +422,17 @@
             android:id="@+id/cv_container_loaading_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="8dp"
             android:layout_gravity="center"
             android:visibility="gone"
-            >
-        <ImageView
-            android:id="@+id/iv_loading_gif"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
+            app:cardCornerRadius="8dp">
+
+            <ImageView
+                android:id="@+id/iv_loading_gif"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
 
 
-            />
+                />
         </androidx.cardview.widget.CardView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

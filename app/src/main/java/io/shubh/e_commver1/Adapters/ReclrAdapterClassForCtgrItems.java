@@ -77,10 +77,11 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
             @Override
             public void onClick(View view) {
 
-
+               ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
+               itemDetailFragment.passData(dataForItemArrayList.get(position));
 
                 ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                        .add( R.id.rl_root_ctgr_items_frag,new ItemDetailFragment(dataForItemArrayList.get(position) ))
+                        .add( R.id.rl_root_ctgr_items_frag, itemDetailFragment)
                         .commit();
 
 

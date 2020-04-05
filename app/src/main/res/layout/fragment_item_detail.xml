@@ -9,9 +9,11 @@
     >
 
     <RelativeLayout
+        android:id="@+id/rl_viewpager_container"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/pager2"
         android:layout_width="match_parent"
@@ -31,9 +33,35 @@
         android:gravity="bottom"
         app:tabMode="fixed"
         app:tabRippleColor="@color/colorSecondary"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="270dp"
         android:theme="@style/Base.Widget.Design.TabLayout"
         />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="10dp"
+            app:cardCornerRadius="20dp"
+            android:background="@color/colorTransparent"
+            >
+
+            <ImageButton
+                android:id="@+id/btCloseFrag"
+                android:layout_width="33dp"
+                android:layout_height="33dp"
+                android:layout_gravity="left"
+                android:background="#80FFFFFF"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:padding="9dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_close_svg"
+                android:tint="@color/colorPrimary"
+
+                />
+        </androidx.cardview.widget.CardView>
+
+
     </RelativeLayout>
 
     <!--below cooordinatorlayout id for bootomsheet to inflate-->
@@ -43,7 +71,9 @@
         android:layout_height="match_parent"
         android:background="@color/colorTransparent">
 
-        <include layout="@layout/bottom_sheet_fr_item_detail_page"/>
+        <include
+            layout="@layout/bottom_sheet_fr_item_detail_page"
+            />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </RelativeLayout>

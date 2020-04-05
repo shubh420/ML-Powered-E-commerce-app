@@ -2,20 +2,35 @@ package io.shubh.e_commver1.ItemDetailPage.View;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.List;
@@ -35,9 +50,26 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     ItemsForSale item;
     LayoutInflater inflater;
 
+    BottomSheetBehavior behavior;
+    RelativeLayout rlVpContainer;
+    int itemAmount;
+    String chosenvarietyName = "null";
 
-    public ItemDetailFragment(ItemsForSale item) {
+    public ItemDetailFragment() {
         // Required empty public constructor
+
+    }
+
+    public static ItemDetailFragment newInstance() {
+        // Bundle args = new Bundle();
+        //args.putString("id", id);
+
+        ItemDetailFragment f = new ItemDetailFragment();
+        //f.setArguments(args);
+        return f;
+    }
+
+    public void passData(ItemsForSale item) {
         this.item = item;
     }
 
@@ -65,22 +97,178 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
         attachOnBackBtPressedlistener();
         doPagerAndImageViewWork();
+        doBottomSheetWork();
+        setUpTvs();
+        setUpAmountBarAndVariety();
+
+        setUpToolbar();
+        //doTheAnimationWorkAtLast
+        doAnimationAtDelay();
     }
+
+    private void setUpToolbar() {
+        ImageButton btCloseFrag = (ImageButton) containerViewGroup.findViewById(R.id.btCloseFrag);
+        btCloseFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButtonPressed();
+            }
+        });
+    }
+
 
     private void doPagerAndImageViewWork() {
 
 
         ViewPager viewPager = (ViewPager) containerViewGroup.findViewById(R.id.pager2);
-        CustomPagerAdapterForItemDetailImageViewsPager adapter = new CustomPagerAdapterForItemDetailImageViewsPager(getContext() ,item.getListOfImageURLs());
+        CustomPagerAdapterForItemDetailImageViewsPager adapter = new CustomPagerAdapterForItemDetailImageViewsPager(getContext(), item.getListOfImageURLs());
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) containerViewGroup.findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(viewPager, true);
 
-
+        rlVpContainer = (RelativeLayout) containerViewGroup.findViewById(R.id.rl_viewpager_container);
 
 
     }
+
+    private void doBottomSheetWork() {
+
+        RelativeLayout bottomSheet = (RelativeLayout) containerViewGroup.findViewById(R.id.ll_parent_bottom_sheet);
+        behavior = BottomSheetBehavior.from(bottomSheet);
+
+        DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+        int heightInPixels = displayMetrics.heightPixels;
+        Log.i("***", "layout hieght =" + heightInPixels);
+        int topMarginForBottomSheetInPixFromDp = (int) (285 * this.getResources().getDisplayMetrics().density + 0.5f);
+        Log.i("***", "bs hieght =" + (heightInPixels - topMarginForBottomSheetInPixFromDp));
+
+        bottomSheet.getLayoutParams().height = heightInPixels - (int) (65 * this.getResources().getDisplayMetrics().density + 0.5f);
+
+        behavior.setPeekHeight(heightInPixels - topMarginForBottomSheetInPixFromDp);
+
+
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View view, int i) {
+                if (i == BottomSheetBehavior.STATE_HIDDEN) {
+                    getFragmentManager().beginTransaction().remove(ItemDetailFragment.this).commit();
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View view, float v) {
+
+            }
+        });
+
+    }
+
+
+    private void setUpTvs() {
+
+        TextView tvItemName = (TextView) containerViewGroup.findViewById(R.id.tvItemName);
+        TextView tvItemCtgrPath = (TextView) containerViewGroup.findViewById(R.id.tvItemCtgrPath);
+        TextView tvItemDecsrp = (TextView) containerViewGroup.findViewById(R.id.tvItemDecsrp);
+
+        tvItemName.setText(item.getName());
+        tvItemCtgrPath.setText(item.getCategory());
+        tvItemDecsrp.setText(item.getDescription());
+
+    }
+
+    private void setUpAmountBarAndVariety() {
+
+        ImageButton btPlusItemAmount = (ImageButton) containerViewGroup.findViewById(R.id.btPlusItemAmount);
+        ImageButton btMinusItemAmount = (ImageButton) containerViewGroup.findViewById(R.id.btMinusItemAmount);
+        TextView tvItemAmount = (TextView) containerViewGroup.findViewById(R.id.tvItemAmount);
+        TextView tvItemPrice = (TextView) containerViewGroup.findViewById(R.id.tvItemPrice);
+
+        itemAmount = 1;
+        tvItemAmount.setText(String.valueOf(itemAmount));
+        tvItemPrice.setText("₹" + item.getItem_price());
+
+
+        btPlusItemAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                itemAmount++;
+                tvItemAmount.setText(String.valueOf(itemAmount));
+                tvItemPrice.setText("₹" + String.valueOf(Integer.valueOf(item.getItem_price()) * itemAmount));
+            }
+        });
+
+        btMinusItemAmount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemAmount > 1) {
+                    itemAmount--;
+                    tvItemAmount.setText(String.valueOf(itemAmount));
+                    tvItemPrice.setText("₹" + String.valueOf(Integer.valueOf(item.getItem_price()) * itemAmount));
+
+                }
+            }
+        });
+//---------------------------------------------
+
+        if (item.getVarieies().size() != 0) {
+            RelativeLayout rlContainerFrVariety = (RelativeLayout) containerViewGroup.findViewById(R.id.rlContainerFrVariety);
+            rlContainerFrVariety.setVisibility(View.VISIBLE);
+            TextView tvVarietyName = (TextView) containerViewGroup.findViewById(R.id.tvVarietyName);
+            LinearLayout llVarietyContainer = (LinearLayout) containerViewGroup.findViewById(R.id.llVarietyContainer);
+
+
+            for (int i = 0; i < item.getVarieies().size(); i++) {
+                View inflatedVarietyBox = inflater.inflate(R.layout.infalte_variety_boxes_in_item_detail_frag, llVarietyContainer, false);
+                llVarietyContainer.addView(inflatedVarietyBox);
+                TextView tvIndivVarietyNmae = (TextView) inflatedVarietyBox.findViewById(R.id.tvIndivVarietyNmae);
+                tvIndivVarietyNmae.setText(item.getVarieies().get(i));
+
+                tvIndivVarietyNmae.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                        //removing color from every other if they have it
+                        final int childCount = llVarietyContainer.getChildCount();
+                        for (int i = 0; i < childCount; i++) {
+                            RelativeLayout rlContainingOtherTv = (RelativeLayout) llVarietyContainer.getChildAt(i);
+                            TextView otherTv = (TextView) rlContainingOtherTv.findViewById(R.id.tvIndivVarietyNmae);
+                            otherTv.setBackgroundColor(getResources().getColor(R.color.colorTransparent));
+                        }
+                        //after removing color now setting it
+                        tvIndivVarietyNmae.setBackgroundColor(getResources().getColor(R.color.colorSecondaryAtHalfTransparency));
+                    }
+                });
+//chosing the first variety as selected by default
+                if (i == 0) {
+                    chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                    tvIndivVarietyNmae.setBackgroundColor(getResources().getColor(R.color.colorSecondaryAtHalfTransparency));
+                }
+            }
+        }
+
+    }
+
+
+    private void doAnimationAtDelay() {
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //Do something after 100ms
+                rlVpContainer.setVisibility(View.VISIBLE);
+                TranslateAnimation animate = new TranslateAnimation(0, 0, -rlVpContainer.getHeight(), 0);
+                animate.setDuration(300);
+
+                rlVpContainer.startAnimation(animate);
+                behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }, 50);
+
+    }
+
 
     //below function is for catching back button pressed
     private void attachOnBackBtPressedlistener() {
@@ -100,11 +288,29 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     }
 
     private void onBackButtonPressed() {
-        //since the fragment is about to be destroyed..I will check if this fragemnt is the ony one opened or not
-        //if its the only one opened ..that means after closing it the mainactivty will appear ..so I have to enable the drawer layout open on swipe for the activty
 
-        //now closing this activty
-        getFragmentManager().beginTransaction().remove(ItemDetailFragment.this).commit();
+        TranslateAnimation animate = new TranslateAnimation(0, 0, 0, -rlVpContainer.getHeight());
+        animate.setDuration(300);
+        rlVpContainer.startAnimation(animate);
+        animate.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                rlVpContainer.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+
+
     }
 
 

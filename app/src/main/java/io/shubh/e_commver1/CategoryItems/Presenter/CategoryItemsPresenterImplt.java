@@ -1,7 +1,5 @@
 package io.shubh.e_commver1.CategoryItems.Presenter;
 
-import android.util.Log;
-
 import java.util.List;
 
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractor;
@@ -49,9 +47,9 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     }
 
     @Override
-    public void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath, boolean ifItsALoadMorecall) {
+    public void getItemsFromFirebase(String param1CategoryName, String param2CategoryPath, String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall) {
 
-        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(mParam1CategoryName,mParam2CategoryPath ,ifItsALoadMorecall );
+        mInteractor.getTheFirstItemDocumentAsAReferenceForStartAtFunct(param1CategoryName,param2CategoryPath ,rootCtgr,subCtgr,subSubCtgr,ifItsALoadMorecall );
 
      //   mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(mParam1CategoryName , mParam2CategoryPath);
     }

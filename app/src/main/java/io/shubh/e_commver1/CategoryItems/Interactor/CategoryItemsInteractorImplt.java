@@ -45,7 +45,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
     }
 
     @Override
-    public void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgrName, String ctgrPath, boolean ifItsALoadMorecall) {
+    public void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgrName, String ctgrPath,String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall) {
         Log.i("******", "first call is made here for: "+ctgrPath+"-------------------------");
         ArrayList<ItemsForSale> itemsList = new ArrayList<>();
 
@@ -65,6 +65,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                     //this means we need to get all documents which belong to this subctgr
                     query = db.collection("items for sale")
                             .whereEqualTo("sub category", ctgrName)
+                            .whereEqualTo("root category", rootCtgr)
                             .orderBy("order id", Query.Direction.ASCENDING)
                             .limit(1);
                 } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") != -1) {
@@ -72,6 +73,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                     //this means we need to get all documents which belong to this subsubctgr
                     query = db.collection("items for sale")
                             .whereEqualTo("sub sub category", ctgrName)
+                            .whereEqualTo("root category", rootCtgr)
+                            .whereEqualTo("sub category", subCtgr)
                             .orderBy("order id", Query.Direction.ASCENDING)
                             .limit(1);
                 }
@@ -98,7 +101,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                                             //adding image urls maually now -TODO make a arraylist field for it in firestore document later
 
 
-                                            getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath,false  ,itemsList);
+                                            getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath,rootCtgr,subCtgr,subSubCtgr,false  ,itemsList);
                                         } else {
                                             //TODO-show toast of no items found
                                             Log.i("***", "first call result has 0 size ");
@@ -124,12 +127,12 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                         });
 
         }else{
-            getItemsFromFirebaseWithResultsOnSeparateCallback( ctgrName ,ctgrPath ,true ,itemsList);
+            getItemsFromFirebaseWithResultsOnSeparateCallback( ctgrName ,ctgrPath ,rootCtgr,subCtgr,subSubCtgr,true ,itemsList);
         }
     }
 
     @Override
-    public void getItemsFromFirebaseWithResultsOnSeparateCallback( String  ctgrName, String  ctgrPath,boolean ifItsALoadMorecall , ArrayList<ItemsForSale> itemsList ) {
+    public void getItemsFromFirebaseWithResultsOnSeparateCallback( String  ctgrName, String  ctgrPath,String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall , ArrayList<ItemsForSale> itemsList ) {
 
        // ArrayList<ItemsForSale> list_of_data_objects__for_adapter = new ArrayList<>();
         Log.i("****", "2ndcall is made for:"+ctgrPath+"------------------------");
@@ -155,6 +158,7 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                     //this means we need to get all documents which belong to this subctgr
                     query = db.collection("items for sale")
                             .whereEqualTo("sub category", ctgrName)
+                            .whereEqualTo("root category", rootCtgr)
                             .orderBy("order id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                             //for first time I will pass it the very first function,after that the last document i have
@@ -164,6 +168,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                     //this means we need to get all documents which belong to this subsubctgr
                     query = db.collection("items for sale")
                             .whereEqualTo("sub sub category", ctgrName)
+                            .whereEqualTo("root category", rootCtgr)
+                            .whereEqualTo("sub category", subCtgr)
                             .orderBy("order id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                             //for first time I will pass it the very first function,after that the last document i have

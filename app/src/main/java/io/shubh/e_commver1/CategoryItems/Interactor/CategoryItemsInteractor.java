@@ -25,8 +25,8 @@ public interface CategoryItemsInteractor {
 
     void checkSomethingInDatabase();
 
-    void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgr, String ctgrPath, boolean ifItsALoadMorecall);
+    void getTheFirstItemDocumentAsAReferenceForStartAtFunct(String ctgr, String ctgrPath,String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall);
 
-    void getItemsFromFirebaseWithResultsOnSeparateCallback(String ctgr, String ctgrPath, boolean ifItsALoadMorecall, ArrayList<ItemsForSale> itemsList);
+    void getItemsFromFirebaseWithResultsOnSeparateCallback(String ctgr, String ctgrPath,String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall, ArrayList<ItemsForSale> itemsList);
 }
 

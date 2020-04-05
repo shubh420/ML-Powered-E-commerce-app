@@ -526,7 +526,7 @@ static DrawerLayout drawerLayoutSttatic;
         //ToDO--- add shimmer layout containig two views
         }
 
-        mPresenter.getItemsFromFirebase(mParam1CategoryName, mParam2CategoryPath, ifItsALoadMorecall);
+        mPresenter.getItemsFromFirebase(mParam1CategoryName, mParam2CategoryPath,rootCtgr,subCtgr,subSubCtgr, ifItsALoadMorecall);
     }
 
     @Override

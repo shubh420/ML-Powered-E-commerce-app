@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.List;
 
@@ -51,6 +52,15 @@ View containerViewGroup;
             }
         });
 
+        ImageButton btCloseFrag =(ImageButton)containerViewGroup.findViewById(R.id.btCloseFrag);
+        btCloseFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            onBackButtonPressed();
+
+            }
+        });
 
 
         return containerViewGroup;

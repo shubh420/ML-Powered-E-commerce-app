@@ -25,7 +25,6 @@
         </activity>
 
         <activity android:name=".seller_items_list" />
-        <activity android:name=".seller_confirmation_activity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".Welcome.View.WelcomeActivity" />
         <activity android:name=".LoginActivity" />

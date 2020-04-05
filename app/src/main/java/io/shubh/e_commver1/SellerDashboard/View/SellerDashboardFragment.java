@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -37,8 +38,8 @@ public class SellerDashboardFragment extends Fragment {
  //------------------------------------
         attachOnBackBtPressedlistener();
 
-        Button btAddImages = (Button) containerViewGroup.findViewById(R.id.bt_later);
-        btAddImages.setOnClickListener(new View.OnClickListener() {
+        Button btAddNewItem = (Button) containerViewGroup.findViewById(R.id.btAddNewItem);
+        btAddNewItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -51,7 +52,18 @@ public class SellerDashboardFragment extends Fragment {
                         .commit();
             }
         });
-        // Inflate the layout for this fragment
+
+        ImageButton btCloseFrag = (ImageButton) containerViewGroup.findViewById(R.id.btCloseFrag);
+        btCloseFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                onBackButtonPressed();
+            }
+        });
+
+
+
         return containerViewGroup;
     }
 

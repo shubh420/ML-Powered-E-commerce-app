@@ -7,6 +7,9 @@
     <color name="colorAccent">#8BC34A</color>
 
 
+    <color name="colorWhiteSecondary">#EFF0EF</color>
+
+
     <color name="colorBlackForHeaderTvs">#000</color>
     <color name="colorBlackForSubHeaderTvs">#141414</color>
     <color name="colorGrayForHeaderTvs">#A60C0C0C</color>

@@ -114,7 +114,7 @@
                         android:background="@android:color/transparent"
                         android:clickable="false"
                         android:gravity="center_vertical"
-                        android:text="Search a product "
+                        android:text="Search a product using ML Tech."
                         android:textSize="18sp" />
 
 

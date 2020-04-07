@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -22,16 +23,21 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
+import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Main.View.MainActivity;
+import io.shubh.e_commver1.Models.ItemsForSale;
 
 public class SearchResultsActivity extends AppCompatActivity {
 
     String searchQuery;
     RecyclerView recyclerView;
     FirebaseFirestore db;
-   int  sizeOfSearchresult;
-   int pageNoForMlFeature;
+    int sizeOfSearchresult;
+    int pageNoForMlFeature;
+    ArrayList<ItemsForSale> list = new ArrayList<>();
 
 
     @Override
@@ -42,36 +48,35 @@ public class SearchResultsActivity extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
 
 
-
-        searchQuery=  getIntent().getExtras().getString("string");
+        searchQuery = getIntent().getExtras().getString("string");
         Log.i("&&& name recieved", searchQuery);
         pageNoForMlFeature = getIntent().getExtras().getInt("page no");
 
-       /* init();
+        init();
         searchDatabaseForThisQuery();
-        setSearchViewWork();*/
+        setSearchViewWork();
     }
 
-  /*  private void init() {
+    private void init() {
 
-        searchQuery =searchQuery.replaceFirst("," ,"" );
-        Log.i("&&&", "superstring after replacing first "+ searchQuery);
+        searchQuery = searchQuery.replaceFirst(",", "");
+        Log.i("&&&", "superstring after replacing first " + searchQuery);
 
-        TextView tvSearchText =(TextView)findViewById(R.id.tv_search_text);
+        TextView tvSearchText = (TextView) findViewById(R.id.tv_search_text);
         tvSearchText.setText("Showing results for :" + searchQuery);
 
-        if(pageNoForMlFeature==1) {
+        if (pageNoForMlFeature == 1) {
             searchQuery = searchQuery.replace("  ", "");
         }
-        Log.i("&&&", "superstring after replacing all ',' :"+ searchQuery);
+        Log.i("&&&", "superstring after replacing all ',' :" + searchQuery);
     }
 
     private void setSearchViewWork() {
 
 
         CardView cv_search = (CardView) findViewById(R.id.cv_search);
-        TextView tvSearchBox =(TextView)findViewById(R.id.edt_search_text);
-       // tvSearchBox.setText(searchQuery);
+        TextView tvSearchBox = (TextView) findViewById(R.id.edt_search_text);
+        // tvSearchBox.setText(searchQuery);
 
         cv_search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,11 +90,11 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private void searchDatabaseForThisQuery() {
 
-       String[] searchQueries = getAllWordsFromSringInArray();
-        Log.i("&&&", "search wuery list :" +  Arrays.asList(searchQueries).toString() );
+        String[] searchQueries = getAllWordsFromSringInArray();
+        Log.i("&&&", "search wuery list :" + Arrays.asList(searchQueries).toString());
 
 
-        ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter = new ArrayList<>();
+        ArrayList<ItemsForSale> list_of_data_objects__for_adapter = new ArrayList<>();
         final int[] size_of_items = new int[1];
 
         //first getting all the items in the whole database
@@ -108,43 +113,45 @@ public class SearchResultsActivity extends AppCompatActivity {
 
                                     for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                        String itemName= (String) document.get("name");
-                                        for(int j =0 ;j<searchQueries.length ;j++) {
-                                            Log.i("&&&&", " indivisual seatch query:"+searchQueries[j]);
+                                        String itemName = (String) document.get("name");
+                                        for (int j = 0; j < searchQueries.length; j++) {
+                                            Log.i("&&&&", " indivisual seatch query:" + searchQueries[j]);
                                             if (itemName.contains(searchQueries[j]) || itemName.toLowerCase().contains(searchQueries[j].toLowerCase())) {
                                                 Log.d("&&&&", "true");
 
-                                                ClassForCategoryItemReclrDATAObject data_object = new ClassForCategoryItemReclrDATAObject();
 
-                                                //retriving only these three things for now...later more feilds will be retrived specifically
-                                                data_object.setItem_id(document.getId());
+                                                List<ItemsForSale> list = task.getResult().toObjects(ItemsForSale.class);
+
+
+
+                                      /*          //retriving only these three things for now...later more feilds will be retrived specifically
+                                                data_object.se(document.getId());
                                                 data_object.setItem_title((String) document.get("name"));
-                                                data_object.setItem_price((String) document.get("item price"));
+                                                data_object.setItem_price((String) document.get("item price"));*/
 
 //adding dummy data into this position in master list...later this will be updated with correct data
-                                                list_of_data_objects__for_adapter.add(i, new ClassForCategoryItemReclrDATAObject());
+                                                list_of_data_objects__for_adapter.add(list.get(i));
+                                                Log.i("@@@", "list size :" + list.get(i).getName());
+                                                //  retrive_all_the_item_image_url_in_a_list(document.getId(), i, data_object, list_of_data_objects__for_adapter);
 
-                                                retrive_all_the_item_image_url_in_a_list(document.getId(), i, data_object, list_of_data_objects__for_adapter);
 
-
-                                                i++;
                                             }
                                         }
 
-                                         sizeOfSearchresult=i;
-                                        if( sizeOfSearchresult==0){
-                                            Toast.makeText(SearchResultsActivity.this, "No Items Found", Toast.LENGTH_SHORT).show();
+                                        sizeOfSearchresult = i;
+                                        if (sizeOfSearchresult == 0) {
+                                           //TODO- show the below toast later
+                                            // Toast.makeText(SearchResultsActivity.this, "No Items Found", Toast.LENGTH_SHORT).show();
                                         }
+                                        i++;
 
-
+                                        set_up_the_recycler_grid_view(list_of_data_objects__for_adapter);
                                     }
-
 
 
                                 }
 
-                            }
-                            else {
+                            } else {
                                 Log.w("&&&&", "Error getting documents.", task.getException());
                             }
                         }
@@ -155,7 +162,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     private String[] getAllWordsFromSringInArray() {
 
-     *//*   String[] words = searchQuery.split("\\s+");
+     /*  String[] words = searchQuery.split("\\s+");
         for (int i = 0; i < words.length; i++) {
             // You may want to check for a non-word character before blindly
             // performing a replacement
@@ -163,27 +170,27 @@ public class SearchResultsActivity extends AppCompatActivity {
             words[i] = words[i].replaceAll("[^\\w]", "");
 
             Log.i("&&&&", "getAllWordsFromSringInArray: ");
-        }*//*
+        }*/
 
-   if(pageNoForMlFeature==1) {
-       ArrayList<String> listOfSearchQueries = new ArrayList<>();
-       String[] arrSplit = searchQuery.split(",");
-       int lastIndex = 0;
-       for (int i = 0; i < searchQuery.length(); i++) {
-           if (searchQuery.charAt(i) == ',') {
-               listOfSearchQueries.add(searchQuery.substring(lastIndex, i));
-               Log.i("&&&&", "test" + searchQuery.substring(lastIndex, i));
-               lastIndex = i + 1;
-           }
-           listOfSearchQueries.add(searchQuery.substring(lastIndex, searchQuery.length() - 1));
+        if (pageNoForMlFeature == 1) {
+            ArrayList<String> listOfSearchQueries = new ArrayList<>();
+            String[] arrSplit = searchQuery.split(",");
+            int lastIndex = 0;
+            for (int i = 0; i < searchQuery.length(); i++) {
+                if (searchQuery.charAt(i) == ',') {
+                    listOfSearchQueries.add(searchQuery.substring(lastIndex, i));
+                    Log.i("&&&&", "test" + searchQuery.substring(lastIndex, i));
+                    lastIndex = i + 1;
+                }
+                listOfSearchQueries.add(searchQuery.substring(lastIndex, searchQuery.length() - 1));
 
-           // Log.i("&&&&", "getAllWordsFromSringInArray: ");
-           return arrSplit;
-       }
-   }else   if(pageNoForMlFeature==2){
-       ArrayList<String> listOfSearchQueries = new ArrayList<>();
-       String[] arrSplit = searchQuery.split(" ");
-       *//*int lastIndex = 0;
+                // Log.i("&&&&", "getAllWordsFromSringInArray: ");
+                return arrSplit;
+            }
+        } else if (pageNoForMlFeature == 2) {
+            ArrayList<String> listOfSearchQueries = new ArrayList<>();
+            String[] arrSplit = searchQuery.split(" ");
+     /*  int lastIndex = 0;
        for (int i = 0; i < searchQuery.length(); i++) {
            if (searchQuery.charAt(i) == ' ') {
                listOfSearchQueries.add(searchQuery.substring(lastIndex, i));
@@ -193,17 +200,17 @@ public class SearchResultsActivity extends AppCompatActivity {
            listOfSearchQueries.add(searchQuery.substring(lastIndex, searchQuery.length() - 1));
 
            // Log.i("&&&&", "getAllWordsFromSringInArray: ");
-       }*//*
-       if(arrSplit.length==0){
-           arrSplit[0]=searchQuery;
-       }
-       return arrSplit;
-   }
+       }*/
+            if (arrSplit.length == 0) {
+                arrSplit[0] = searchQuery;
+            }
+            return arrSplit;
+        }
 
-       return null;
+        return null;
     }
 
-    private void retrive_all_the_item_image_url_in_a_list(String document_id, int index_for_list, ClassForCategoryItemReclrDATAObject data_object, ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter) {
+    /*private void retrive_all_the_item_image_url_in_a_list(String document_id, int index_for_list, ClassForCategoryItemReclrDATAObject data_object, ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter) {
 
         //HERE I AM RETRIVNG ALL THE IMAGES
 
@@ -252,8 +259,9 @@ public class SearchResultsActivity extends AppCompatActivity {
                 });
 
     }
+*/
 
-    private ArrayList<String> sort_the_url_into_order(ArrayList<String> images_url, ArrayList<Integer> imagesorder) {
+/*    private ArrayList<String> sort_the_url_into_order(ArrayList<String> images_url, ArrayList<Integer> imagesorder) {
         int i, key, j;
         String key2;
         for (i = 1; i < imagesorder.size(); i++) {
@@ -273,16 +281,16 @@ public class SearchResultsActivity extends AppCompatActivity {
             images_url.set(j + 1, key2);
         }
         return images_url;
-    }
+    }*/
 
-    private void set_up_the_recycler_grid_view(ArrayList<ClassForCategoryItemReclrDATAObject> list_of_data_objects__for_adapter) {
+    private void set_up_the_recycler_grid_view(ArrayList<ItemsForSale> list_of_data_objects__for_adapter) {
         //now executing the UI part
         recyclerView = (RecyclerView) findViewById(R.id.id_fr_recycler_view_search_items_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.removeAllViews();
 
-      *//*  RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(CategoryItemsActivity.this);
-        recyclerView.setLayoutManager(layoutManager);*//*
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SearchResultsActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
 
         // set a GridLayoutManager with 2 number of columns
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
@@ -290,15 +298,16 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-     //   reclr_adapter_class_for_ctgr_items adapter = new reclr_adapter_class_for_ctgr_items(SearchResultsActivity.this, list_of_data_objects__for_adapter);
-      //  recyclerView.setAdapter(adapter);
+        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(SearchResultsActivity.this, list_of_data_objects__for_adapter);
+        recyclerView.setAdapter(adapter);
 
 
-        if (list_of_data_objects__for_adapter.size() == 0) {
+      /*  if (list_of_data_objects__for_adapter.size() == 0) {
             Toast.makeText(this, "No Items found", Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
     }
+
     @Override
     public void onBackPressed() {
         Intent in = new Intent(SearchResultsActivity.this, MainActivity.class);
@@ -308,5 +317,5 @@ public class SearchResultsActivity extends AppCompatActivity {
         //just adding an animatiion here whic makes it go with animation sliding to right
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
 
-    }*/
+    }
 }

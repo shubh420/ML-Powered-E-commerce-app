@@ -1,6 +1,7 @@
 package io.shubh.e_commver1.Adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,20 +22,21 @@ import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.SearchResultsActivity;
 
 public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
     private Context context;
-    private CategoryItemsFragment categoryItemsFragment;
-    private FragmentActivity activity;
+   /* private CategoryItemsFragment categoryItemsFragment;
+    private FragmentActivity activity*/;
 
 
-//TODO-remove the not in use arguements from below
-    public ReclrAdapterClassForCtgrItems(FragmentActivity activity, CategoryItemsFragment categoryItemsFragment, Context context, List<ItemsForSale> dataForItems) {
+
+    public ReclrAdapterClassForCtgrItems( Context context, List<ItemsForSale> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
-        this.categoryItemsFragment = categoryItemsFragment;
-        this.activity = activity;
+       /* this.categoryItemsFragment = categoryItemsFragment;
+        this.activity = activity;*/
 
 
     }
@@ -80,9 +82,18 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
                ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
                itemDetailFragment.passData(dataForItemArrayList.get(position));
 
-                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                        .add( R.id.rl_root_ctgr_items_frag, itemDetailFragment)
-                        .commit();
+                Log.i("!!!!!", context.getClass().getSimpleName());
+               if(context.getClass().getSimpleName().equals("SearchResultsActivity")){
+
+                           ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                           .add( R.id.ll_search_results_container, itemDetailFragment)
+                           .commit();
+               }else{
+                   ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                           .add( R.id.drawerLayout, itemDetailFragment)
+                           .commit();
+               }
+
 
 
             }

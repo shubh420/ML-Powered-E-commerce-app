@@ -177,7 +177,7 @@ static DrawerLayout drawerLayoutSttatic;
         recyclerView.setLayoutManager(gridLayoutManager);
 
         itemsList = new ArrayList<>();
-        adapter = new ReclrAdapterClassForCtgrItems( getActivity(),(CategoryItemsFragment)this,getContext(), itemsList);
+        adapter = new ReclrAdapterClassForCtgrItems( getContext(), itemsList);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout)containerViewGroup.findViewById(R.id.appBarLayout);

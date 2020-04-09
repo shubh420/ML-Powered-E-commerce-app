@@ -1,13 +1,8 @@
-package io.shubh.e_commver1.BagItems.View;
+package io.shubh.e_commver1.AddressSelectionPage.View;
 
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,15 +12,19 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.List;
 
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForBagItemsList;
-import io.shubh.e_commver1.BagItems.Interactor.BagItemsInteractorImplt;
-import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenter;
-import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenterImplt;
+import io.shubh.e_commver1.AddressSelectionPage.Interactor.AddressSelectionInteractorImplt;
+import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresenter;
+import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionImplt;
 import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.R;
 
@@ -33,14 +32,12 @@ import io.shubh.e_commver1.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BagItemsFragment extends Fragment implements BagItemsView, InterfaceForClickcCallback {
+public class BagItemsFragment extends Fragment implements AddressSelectionView, InterfaceForClickcCallback {
 
     View containerViewGroup;
     LayoutInflater inflater;
 
-    ImageView splashimageicon;
-    ProgressBar progressBar;
-    BagItemsPresenter mPresenter;
+    AddressSelectionPresenter mPresenter;
 
     RecyclerView recyclerView;
     ReclrAdapterClassForBagItemsList adapter;
@@ -61,7 +58,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
         containerViewGroup = inflater.inflate(R.layout.fragment_bag_items, container, false);
         this.inflater = inflater;
 
-        mPresenter = new BagItemsPresenterImplt(this, new BagItemsInteractorImplt() {
+        mPresenter = new AddressSelectionImplt(this, new AddressSelectionInteractorImplt() {
         });
 
         DoUiWork();

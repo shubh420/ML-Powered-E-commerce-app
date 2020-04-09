@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.BagItems.Interactor;
+package io.shubh.e_commver1.AddressSelectionPage.Interactor;
 
 import android.util.Log;
 
@@ -19,7 +19,7 @@ import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
-public class BagItemsInteractorImplt implements BagItemsInteractor {
+public class AddressSelectionInteractorImplt implements AddressSelectionInteractor {
 
     FirebaseFirestore db;
     CallbacksToPresnter mPresenter;

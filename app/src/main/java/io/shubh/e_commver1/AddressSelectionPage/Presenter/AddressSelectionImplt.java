@@ -1,19 +1,18 @@
-package io.shubh.e_commver1.BagItems.Presenter;
+package io.shubh.e_commver1.AddressSelectionPage.Presenter;
 
 import java.util.List;
 
-import io.shubh.e_commver1.BagItems.Interactor.BagItemsInteractor;
-import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
-import io.shubh.e_commver1.BagItems.View.BagItemsView;
+import io.shubh.e_commver1.AddressSelectionPage.Interactor.AddressSelectionInteractor;
+import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionView;
 import io.shubh.e_commver1.Models.BagItem;
 
-public class BagItemsPresenterImplt implements BagItemsPresenter, BagItemsInteractor.CallbacksToPresnter {
+public class AddressSelectionImplt implements AddressSelectionPresenter, AddressSelectionInteractor.CallbacksToPresnter {
 
-    private BagItemsView mView;
-    private BagItemsInteractor mInteractor;
+    private AddressSelectionView mView;
+    private AddressSelectionInteractor mInteractor;
 
 
-    public BagItemsPresenterImplt(BagItemsView mView , BagItemsInteractor mSplashInteractor) {
+    public AddressSelectionImplt(AddressSelectionView mView , AddressSelectionInteractor mSplashInteractor) {
        this.mView=mView;
        this.mInteractor = mSplashInteractor;
 
@@ -28,7 +27,7 @@ public class BagItemsPresenterImplt implements BagItemsPresenter, BagItemsIntera
 
         mView.showProgressBar(true);
 
-        mInteractor.getbagItemsDataWithArgAsCallbackFunction( new BagItemsInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList(){
+        mInteractor.getbagItemsDataWithArgAsCallbackFunction( new AddressSelectionInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList(){
             @Override
             public void onFinished(boolean callbackResultOfTheCheck, List<BagItem> bagItemlist) {
 
@@ -56,7 +55,7 @@ public class BagItemsPresenterImplt implements BagItemsPresenter, BagItemsIntera
 
     @Override
     public void deleteBagItem(String docId) {
-        mInteractor.deletebagItemsWithArgAsCallbackFunction(docId,new BagItemsInteractor.SeparateCallbackToPresnterAfterDeletingBagItem() {
+        mInteractor.deletebagItemsWithArgAsCallbackFunction(docId,new AddressSelectionInteractor.SeparateCallbackToPresnterAfterDeletingBagItem() {
             @Override
             public void onFinished(boolean callbackResultOfTheCheck) {
 

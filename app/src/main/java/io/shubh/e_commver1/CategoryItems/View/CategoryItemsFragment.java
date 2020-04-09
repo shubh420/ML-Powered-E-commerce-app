@@ -589,6 +589,11 @@ static DrawerLayout drawerLayoutSttatic;
         showProgressBar(false);
         itemsList.clear();
         adapter.notifyDataSetChanged();
+        LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
+        if(mParam2CategoryPath.indexOf('/')==-1){
+            ll_container_side_bar.removeAllViews();
+        }
+
     }
 
 

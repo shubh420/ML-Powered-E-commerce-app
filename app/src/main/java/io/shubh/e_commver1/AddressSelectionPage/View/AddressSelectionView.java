@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.BagItems.View;
+package io.shubh.e_commver1.AddressSelectionPage.View;
 
 import android.content.Context;
 
@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.shubh.e_commver1.Models.BagItem;
 
-public interface BagItemsView {
+public interface AddressSelectionView {
 
     void switchActivity(int i);
 

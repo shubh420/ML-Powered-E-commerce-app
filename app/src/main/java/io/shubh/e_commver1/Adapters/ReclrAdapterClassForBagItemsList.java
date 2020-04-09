@@ -102,10 +102,10 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
 
             holder.tvItemName.setText(dataForItemArrayList.get(position).getItemObject().getName());
             int itemPrice = Integer.parseInt(dataForItemArrayList.get(position).getItemObject().getItem_price());
-            holder.tvItemPrice.setText("₹" + itemPrice);
             final int[] itemAmount = {Integer.parseInt(dataForItemArrayList.get(position).getItemAmount())};
-            holder.tvItemAmount.setText(String.valueOf(itemAmount[0]));
 
+            holder.tvItemAmount.setText(String.valueOf(itemAmount[0]));
+            holder.tvItemPrice.setText("₹" + itemPrice * itemAmount[0]);
             Glide.with(context).load(dataForItemArrayList.get(position).getItemObject().getListOfImageURLs().get(0)).centerCrop().into(holder.ivItemImage);
 
             holder.btPlusItemAmount.setOnClickListener(new View.OnClickListener() {
@@ -181,8 +181,10 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
             holder.btDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String docId = dataForItemArrayList.get(position).getUserId()+dataForItemArrayList.get(position).getItemId();
-                    bagItemsFragment.onDeleteItemClick(docId ,position);
+                    String docId = dataForItemArrayList.get(position).getUserId() + dataForItemArrayList.get(position).getItemId();
+                    bagItemsFragment.onDeleteItemClick(docId, position);
+
+                    holder.btDelete.setClickable(false);
                 }
             });
 
@@ -191,24 +193,13 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
                 @Override
                 public void onClick(View view) {
 
-             /*  ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
-               itemDetailFragment.passData(dataForItemArrayList.get(position));
+                    ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
+                    itemDetailFragment.passData(dataForItemArrayList.get(position).getItemObject());
 
-                Log.i("!!!!!", context.getClass().getSimpleName());
-               if(context.getClass().getSimpleName().equals("SearchResultsActivity")){
+                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, itemDetailFragment)
+                            .commit();
 
-                           ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                           .add( R.id.ll_search_results_container, itemDetailFragment)
-                           .commit();
-               }else{
-                   ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                           .add( R.id.drawerLayout, itemDetailFragment)
-                           .commit();
-               }
-*/
-
-
-                    //mainActivity.onrecyclrItemClick(myListData, holder.imageView ,holder.textView);
                 }
             });
 
@@ -228,8 +219,10 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
             holder.btDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String docId = dataForItemArrayList.get(position).getUserId()+dataForItemArrayList.get(position).getItemId();
-                    bagItemsFragment.onDeleteItemClick(docId ,position);
+                    String docId = dataForItemArrayList.get(position).getUserId() + dataForItemArrayList.get(position).getItemId();
+                    bagItemsFragment.onDeleteItemClick(docId, position);
+
+                    holder.btDelete.setClickable(false);
                 }
             });
         }

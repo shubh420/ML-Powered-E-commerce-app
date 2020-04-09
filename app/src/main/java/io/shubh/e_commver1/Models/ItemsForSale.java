@@ -10,7 +10,7 @@ public class ItemsForSale implements Serializable {
 
 
     String category , description ,item_price , name ,root_category ,seller_id ,sub_category ,sub_sub_category ;
-    int order_id ;
+    int item_id;
     long time_of_upload ;
     String varietyName;
     boolean visibility;
@@ -94,13 +94,13 @@ public class ItemsForSale implements Serializable {
         this.sub_sub_category = sub_sub_category;
     }
 
-    @PropertyName("order id")
-    public int getOrder_id() {
-        return order_id;
+    @PropertyName("item id")
+    public int getItem_id() {
+        return item_id;
     }
-    @PropertyName("order id")
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+    @PropertyName("item id")
+    public void setItem_id(int item_id) {
+        this.item_id = item_id;
     }
 
     @PropertyName("time of upload")

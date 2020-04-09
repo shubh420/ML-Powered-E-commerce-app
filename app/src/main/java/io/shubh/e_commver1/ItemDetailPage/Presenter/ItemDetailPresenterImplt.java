@@ -2,37 +2,51 @@ package io.shubh.e_commver1.ItemDetailPage.Presenter;
 
 import io.shubh.e_commver1.ItemDetailPage.Interactor.ItemDetailInteractor;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailView;
+import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 public class ItemDetailPresenterImplt implements ItemDetailPresenter, ItemDetailInteractor.CallbacksToPresnter {
 
-    private ItemDetailView splashview;
+    private ItemDetailView mview;
     private ItemDetailInteractor mInteractor;
 
 
-    public ItemDetailPresenterImplt(ItemDetailView splashview , ItemDetailInteractor mSplashInteractor) {
-       this.splashview=splashview;
-       this.mInteractor = mSplashInteractor;
+    public ItemDetailPresenterImplt(ItemDetailView mview, ItemDetailInteractor mInteractor) {
+        this.mview = mview;
+        this.mInteractor = mInteractor;
 
-       mInteractor.init(this);
-
+        mInteractor.init(this);
 
 
     }
 
 
     @Override
-    public void LoginRelatedWork() {
+    public void onBagItBtClicked(ItemsForSale item, int itemAmount , int chosenVarietyIndex) {
 
+        BagItem bagItem = new BagItem();
+        bagItem.setItemAmount(String.valueOf(itemAmount));
+        bagItem.setItemId(String.valueOf(item.getItem_id()));
+        bagItem.setTime_of_upload(System.currentTimeMillis() / 1000L);
+        bagItem.setUserId(StaticClassForGlobalInfo.UId);
+      if(item.getVarieies().size()!=0){
+        bagItem.setSelectedVarietyIndexInList(String.valueOf(chosenVarietyIndex));
+      }
 
-        mInteractor.checkSomethingInDatabaseWithArgAsCallbackFunction( new ItemDetailInteractor.SeparateCallbackToPresnterForSystemUpdate(){
+mview.showProgressBarAtBagItBt(true);
+        mInteractor.uploadBagItemWithArgAsCallbackFunction(bagItem, new ItemDetailInteractor.SeparateCallbackToPresnterAfterBagItemUpload() {
             @Override
-            public void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck) {
+            public void onFinishedUploading(boolean callbackResultOfTheUpload) {
+                if(callbackResultOfTheUpload){
+                    mview.showToast("added to bag");
+                    mview.showProgressBarAtBagItBt(false);
+                    //TODO-make  a snackbar here or a button in a toast wich reads 'view bag items' or just 'view'
+                }else{
+                    mview.showToast("some error occured");
+                    mview.showProgressBarAtBagItBt(false);
+                }
 
-              if(callbackResultOfTheCheck==true){
-                  //system upadte available ..so throw a dialog asking to download update
-              }else{
-                  //system upadte not available ..so continue
-              }
             }
         });
     }
@@ -40,7 +54,7 @@ public class ItemDetailPresenterImplt implements ItemDetailPresenter, ItemDetail
 
     @Override
     public void onFinishedCheckingSomething1() {
-//this is call from interactor
+
     }
 
     @Override

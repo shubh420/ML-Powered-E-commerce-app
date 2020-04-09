@@ -30,6 +30,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
+import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
@@ -87,7 +89,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void loadtheUI() {
 
+
         set_nav_dr_button_setup();
+        setUpToolBar();
 
         RecyclerView recyclerView =(RecyclerView) findViewById(R.id.id_fr_recycler_view_main_activity_items_list);
         recyclerView.setVisibility(View.VISIBLE);
@@ -96,6 +100,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     }
 
+    private void setUpToolBar() {
+
+        ImageButton btBagItems =(ImageButton)findViewById(R.id.btBagItems);
+        btBagItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout,new BagItemsFragment() )
+                        .commit();
+
+
+            }
+        });
+
+    }
 
 
     private void setSearchViewWork() {

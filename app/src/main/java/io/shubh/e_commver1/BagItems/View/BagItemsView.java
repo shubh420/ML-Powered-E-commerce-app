@@ -1,8 +1,12 @@
-package io.shubh.e_commver1.ItemDetailPage.View;
+package io.shubh.e_commver1.BagItems.View;
 
 import android.content.Context;
 
-public interface ItemDetailView {
+import java.util.List;
+
+import io.shubh.e_commver1.Models.BagItem;
+
+public interface BagItemsView {
 
     void switchActivity(int i);
 
@@ -10,10 +14,12 @@ public interface ItemDetailView {
 
     void showProgressBar(boolean b);
 
-    void showProgressBarAtBagItBt(boolean b);
-
 
     void ShowSnackBarWithAction(String msg, String actionName);
 
     void showToast(String msg);
+
+    void showItemsInRecyclerView(List<BagItem> bagItemlist);
+
+    void updateReclrViewListAfterDeletionOfItem();
 }

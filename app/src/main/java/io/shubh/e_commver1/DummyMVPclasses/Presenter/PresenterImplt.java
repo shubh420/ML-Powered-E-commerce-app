@@ -18,12 +18,12 @@ import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 public class PresenterImplt implements Presenter, Interactor.CallbacksToPresnter {
 
-    private View splashview;
+    private View mView;
     private Interactor mInteractor;
 
 
-    public PresenterImplt(View splashview , Interactor mSplashInteractor) {
-       this.splashview=splashview;
+    public PresenterImplt(View mView , Interactor mSplashInteractor) {
+       this.mView=mView;
        this.mInteractor = mSplashInteractor;
 
        mInteractor.init(this);

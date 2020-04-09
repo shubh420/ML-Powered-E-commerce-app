@@ -1,5 +1,7 @@
 package io.shubh.e_commver1.ItemDetailPage.Presenter;
 
+import io.shubh.e_commver1.Models.ItemsForSale;
+
 public interface ItemDetailPresenter {
 
   //  void checkIfAlreadyLoggedIn();
@@ -8,5 +10,8 @@ public interface ItemDetailPresenter {
 
    // void onGettingThegoogleSignInResult(int code, int requestCode, Intent data);
 
-     void LoginRelatedWork();
+
+
+    void onBagItBtClicked(ItemsForSale item, int itemAmount , int chosenVarietyIndex);
+
 }

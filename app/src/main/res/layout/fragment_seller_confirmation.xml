@@ -282,7 +282,7 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="5dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_button"
+            android:background="@drawable/bg_gradient_gradient"
             android:text="Submit docs"
             android:foreground="?android:attr/selectableItemBackground"
             android:textColor="@color/colorPrimary" />

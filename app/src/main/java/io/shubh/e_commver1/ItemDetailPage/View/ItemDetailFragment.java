@@ -2,13 +2,10 @@ package io.shubh.e_commver1.ItemDetailPage.View;
 
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.core.app.ActivityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
@@ -20,24 +17,25 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
 import io.shubh.e_commver1.Adapters.CustomPagerAdapterForItemDetailImageViewsPager;
-import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
-import io.shubh.e_commver1.CustomPagerAdapter;
+import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
+import io.shubh.e_commver1.ItemDetailPage.Interactor.ItemDetailInteractorImplt;
+import io.shubh.e_commver1.ItemDetailPage.Presenter.ItemDetailPresenter;
+import io.shubh.e_commver1.ItemDetailPage.Presenter.ItemDetailPresenterImplt;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 
@@ -45,6 +43,7 @@ import io.shubh.e_commver1.R;
 public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
 
+    ItemDetailPresenter mPresenter;
     View containerViewGroup;
 
     ItemsForSale item;
@@ -53,7 +52,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     BottomSheetBehavior behavior;
     RelativeLayout rlVpContainer;
     int itemAmount;
-    String chosenvarietyName = "null";
+    int chosenVarietyIndex ;
 
     public ItemDetailFragment() {
         // Required empty public constructor
@@ -87,7 +86,8 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         this.inflater = inflater;
 
         doUiWork();
-
+        mPresenter = new ItemDetailPresenterImplt(this, new ItemDetailInteractorImplt() {
+        });
 
         // Inflate the layout for this fragment
         return containerViewGroup;
@@ -102,9 +102,12 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         setUpAmountBarAndVariety();
 
         setUpToolbar();
+        setUpBottomBagitAndSaveBts();
         //doTheAnimationWorkAtLast
         doAnimationAtDelay();
     }
+
+
 
     private void setUpToolbar() {
         ImageButton btCloseFrag = (ImageButton) containerViewGroup.findViewById(R.id.btCloseFrag);
@@ -114,6 +117,21 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
                 onBackButtonPressed();
             }
         });
+
+        ImageButton btBagItems = (ImageButton) containerViewGroup.findViewById(R.id.btBagItems);
+        btBagItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+              getActivity().getSupportFragmentManager().beginTransaction()
+                        .add( R.id.drawerLayout, new BagItemsFragment())
+                        .commit();
+
+
+            }
+        });
+
+
     }
 
 
@@ -143,6 +161,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         int topMarginForBottomSheetInPixFromDp = (int) (285 * this.getResources().getDisplayMetrics().density + 0.5f);
         Log.i("***", "bs hieght =" + (heightInPixels - topMarginForBottomSheetInPixFromDp));
 
+        //this below line is for giving the top margin for toolbar to show when the whole btmsheet is expanded to top
         bottomSheet.getLayoutParams().height = heightInPixels - (int) (65 * this.getResources().getDisplayMetrics().density + 0.5f);
 
         behavior.setPeekHeight(heightInPixels - topMarginForBottomSheetInPixFromDp);
@@ -212,12 +231,13 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         });
 //---------------------------------------------
 
+
         if (item.getVarieies().size() != 0) {
             RelativeLayout rlContainerFrVariety = (RelativeLayout) containerViewGroup.findViewById(R.id.rlContainerFrVariety);
             rlContainerFrVariety.setVisibility(View.VISIBLE);
             TextView tvVarietyName = (TextView) containerViewGroup.findViewById(R.id.tvVarietyName);
             LinearLayout llVarietyContainer = (LinearLayout) containerViewGroup.findViewById(R.id.llVarietyContainer);
-
+            tvVarietyName.setText(item.getVarietyName());
 
             for (int i = 0; i < item.getVarieies().size(); i++) {
                 View inflatedVarietyBox = inflater.inflate(R.layout.infalte_variety_boxes_in_item_detail_frag, llVarietyContainer, false);
@@ -225,10 +245,13 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
                 TextView tvIndivVarietyNmae = (TextView) inflatedVarietyBox.findViewById(R.id.tvIndivVarietyNmae);
                 tvIndivVarietyNmae.setText(item.getVarieies().get(i));
 
+                int finalI = i;
                 tvIndivVarietyNmae.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                       // chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                        chosenVarietyIndex= finalI;
+                        Log.i("*****", "chosen variety index"+chosenVarietyIndex);
                         //removing color from every other if they have it
                         final int childCount = llVarietyContainer.getChildCount();
                         for (int i = 0; i < childCount; i++) {
@@ -242,7 +265,8 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
                 });
 //chosing the first variety as selected by default
                 if (i == 0) {
-                    chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                  //  chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                    chosenVarietyIndex= 0;
                     tvIndivVarietyNmae.setBackgroundColor(getResources().getColor(R.color.colorSecondaryAtHalfTransparency));
                 }
             }
@@ -268,6 +292,30 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         }, 50);
 
     }
+
+    private void setUpBottomBagitAndSaveBts() {
+        ImageButton ib_like_item = (ImageButton) containerViewGroup.findViewById(R.id.ib_like_item);
+        RelativeLayout rl_bt_bag_it = (RelativeLayout) containerViewGroup.findViewById(R.id.rl_bt_bag_it);
+
+        rl_bt_bag_it.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mPresenter.onBagItBtClicked(item ,itemAmount ,chosenVarietyIndex);
+
+
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
 
 
     //below function is for catching back button pressed
@@ -330,6 +378,21 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     }
 
     @Override
+    public void showProgressBarAtBagItBt(boolean b) {
+
+        ImageView ivBagItbt = (ImageView) containerViewGroup.findViewById(R.id.ivBagItbt);
+        ProgressBar progressBarFrBtBagIt = (ProgressBar) containerViewGroup.findViewById(R.id.progressBarFrBtBagIt);
+        if(b==true) {
+            ivBagItbt.setVisibility(View.GONE);
+            progressBarFrBtBagIt.setVisibility(View.VISIBLE);
+        }else {
+            ivBagItbt.setVisibility(View.VISIBLE);
+            progressBarFrBtBagIt.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
     public void ShowSnackBarWithAction(String msg, String actionName) {
 
     }
@@ -337,5 +400,6 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     @Override
     public void showToast(String msg) {
 
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

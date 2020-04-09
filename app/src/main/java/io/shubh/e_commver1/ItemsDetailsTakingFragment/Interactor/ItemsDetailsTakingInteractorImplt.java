@@ -1,10 +1,8 @@
 package io.shubh.e_commver1.ItemsDetailsTakingFragment.Interactor;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -24,9 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.shubh.e_commver1.ItemToSellDetailsActivity;
 import io.shubh.e_commver1.Models.ItemsForSale;
-import io.shubh.e_commver1.seller_items_list;
 
 public class ItemsDetailsTakingInteractorImplt implements ItemsDetailsTakingInteractor {
 
@@ -42,6 +38,8 @@ public class ItemsDetailsTakingInteractorImplt implements ItemsDetailsTakingInte
         mStorageRef = FirebaseStorage.getInstance().getReference();
         this.mPresenter = mPresenter;
     }
+
+    //TODO- if you are making delete items functionality..make sure u dleete the objects from people saved lists
 
     @Override
     public void getLastItemUploadedItemNo(SeparateSecondCallbackToPresnterForSystemUpdate l) {
@@ -115,7 +113,7 @@ public class ItemsDetailsTakingInteractorImplt implements ItemsDetailsTakingInte
     @Override
     public void uploadItemFunctionWithArgAsCallbackFunction(ItemsForSale item, SeparateThirdCallbackToPresnterAfterItemUploaded l) {
 
-        db.collection("items for sale").document(String.valueOf(item.getOrder_id()))
+        db.collection("items for sale").document(String.valueOf(item.getItem_id()))
                 .set(item)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

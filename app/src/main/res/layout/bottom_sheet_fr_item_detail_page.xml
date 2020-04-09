@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorTransparent"
-    android:paddingTop="6dp"
+
     app:behavior_hideable="true"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
 
@@ -18,7 +18,9 @@
         android:layout_marginBottom="-20dp"
         android:paddingBottom="20dp"
         app:cardCornerRadius="20dp"
-        app:cardElevation="20dp">
+        app:cardElevation="15dp"
+        android:layout_marginTop="8dp"
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,6 +28,11 @@
             android:background="@color/colorPrimary"
 
             android:padding="25dp">
+            <View
+                android:layout_width="90dp"
+                android:layout_height="3dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorLightGrayForSubSubHeaderTvs" />
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -93,7 +100,7 @@
                     android:id="@+id/rlContainerFrVariety"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@color/colorTransparent"
                     android:orientation="horizontal"
@@ -197,6 +204,7 @@
                     android:weightSum="5">
 
                     <ImageButton
+                        android:id="@+id/ib_like_item"
                         android:layout_width="0dp"
                         android:layout_height="60dp"
                         android:layout_marginRight="10dp"
@@ -207,20 +215,17 @@
                         android:src="@drawable/ic_heart_svg"
                         android:tint="@color/colorSecondary" />
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="60dp"
-                        android:layout_weight="4"
-                        android:background="@drawable/bg_button_border_2_more_round"
-                        android:orientation="horizontal"
-                        android:padding="2.5dp">
+
 
                         <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/bg_button">
+                            android:id="@+id/rl_bt_bag_it"
+                            android:layout_width="0dp"
+                            android:layout_height="60dp"
+                            android:layout_weight="4"
+                            android:background="@drawable/bg_gradient_gradient_2_more_round">
 
                             <ImageView
+                                android:id="@+id/ivBagItbt"
                                 android:layout_width="55dp"
                                 android:layout_height="55dp"
                                 android:layout_marginLeft="-50dp"
@@ -228,6 +233,15 @@
                                 android:padding="8dp"
                                 android:scaleType="fitCenter"
                                 android:src="@drawable/shopping_bag_app_icon" />
+                            <ProgressBar
+                                android:id="@+id/progressBarFrBtBagIt"
+                                android:layout_width="55dp"
+                                android:layout_height="55dp"
+                                android:layout_marginLeft="-50dp"
+                                android:layout_toLeftOf="@id/tv_bt_text"
+                                android:padding="8dp"
+                                android:indeterminateTint="#fff"
+                                android:visibility="gone" />
 
                             <TextView
                                 android:id="@+id/tv_bt_text"
@@ -241,7 +255,7 @@
 
                         </RelativeLayout>
 
-                    </LinearLayout>
+
 
                 </LinearLayout>
             </LinearLayout>

@@ -1,24 +1,30 @@
 package io.shubh.e_commver1.ItemDetailPage.Interactor;
 
 
+import io.shubh.e_commver1.Models.BagItem;
+
 public interface ItemDetailInteractor {
+
+
 
     interface CallbacksToPresnter {
         void onFinishedCheckingSomething1();
 
         void onFinishedCheckingSomething2();
-
     }
-    interface SeparateCallbackToPresnterForSystemUpdate {
 
-        void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck);
+
+    interface SeparateCallbackToPresnterAfterBagItemUpload {
+
+        void onFinishedUploading(boolean callbackResultOfTheUpload);
     }
 
     void init(CallbacksToPresnter mPresenter);
 
 
-    void checkSomethingInDatabase();
 
-    void checkSomethingInDatabaseWithArgAsCallbackFunction(ItemDetailInteractor.SeparateCallbackToPresnterForSystemUpdate l);
+     void uploadBagItemWithArgAsCallbackFunction(BagItem bagItem , ItemDetailInteractor.SeparateCallbackToPresnterAfterBagItemUpload l);
+
+
 }
 

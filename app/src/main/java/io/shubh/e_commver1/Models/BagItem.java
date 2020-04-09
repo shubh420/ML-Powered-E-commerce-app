@@ -1,5 +1,6 @@
 package io.shubh.e_commver1.Models;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
@@ -8,142 +9,93 @@ import java.util.List;
 
 public class BagItem implements Serializable {
 
+    //below  field is not supposed to have the same in the BagItem document in firestore
+    //this below object will be added manually
+    //its purpose is for the time when on the obejct is clicked on am=nd then we have to show the itemdetail page
+    ItemsForSale itemObject;
 
-    /*String category ,item_price , name ,seller_id  ;
-    int order_id ;
-    long time_of_upload ;
+    long time_of_upload;
+    String itemAmount, itemId, userId;
+    //giving it default value in case if item doesnt ahve
+    String selectedVarietyIndexInList = "null";
 
-    List<String> listOfImageURLs = new ArrayList<String>();
-    List<String> varieies = new ArrayList<String>();
+    //these below are false by deafult because if user is able to add the item into bag at first place
+    //then that means both are false ..but in future they might change
+    boolean isTheOriginalItemDeleted=false;
+
 
     public BagItem() {
+
     }
 
-    @PropertyName("category")
-    public String getCategory() {
-        return category;
-    }
-    @PropertyName("category")
-    public void setCategory(String category) {
-        this.category = category;
+    //non property field
+    public ItemsForSale getItemObject() {
+        return itemObject;
     }
 
-    @PropertyName("description")
-    public String getDescription() {
-        return description;
-    }
-    @PropertyName("description")
-    public void setDescription(String description) {
-        this.description = description;
+    public void setItemObject(ItemsForSale itemObject) {
+        this.itemObject = itemObject;
     }
 
-    @PropertyName("item price")
-    public String getItem_price() {
-        return item_price;
-    }
-    @PropertyName("item price")
-    public void setItem_price(String item_price) {
-        this.item_price = item_price;
+
+    @PropertyName("item amount")
+    public String getItemAmount() {
+        return itemAmount;
     }
 
-    @PropertyName("name")
-    public String getName() {
-        return name;
-    }
-    @PropertyName("name")
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @PropertyName("root category")
-    public String getRoot_category() {
-        return root_category;
-    }
-    @PropertyName("root category")
-    public void setRoot_category(String root_category) {
-        this.root_category = root_category;
-    }
-
-    @PropertyName("seller id")
-    public String getSeller_id() {
-        return seller_id;
-    }
-    @PropertyName("seller id")
-    public void setSeller_id(String seller_id) {
-        this.seller_id = seller_id;
-    }
-
-    @PropertyName("sub category")
-    public String getSub_category() {
-        return sub_category;
-    }
-    @PropertyName("sub category")
-    public void setSub_category(String sub_category) {
-        this.sub_category = sub_category;
-    }
-
-    @PropertyName("sub sub category")
-    public String getSub_sub_category() {
-        return sub_sub_category;
-    }
-    @PropertyName("sub sub category")
-    public void setSub_sub_category(String sub_sub_category) {
-        this.sub_sub_category = sub_sub_category;
-    }
-
-    @PropertyName("order id")
-    public int getOrder_id() {
-        return order_id;
-    }
-    @PropertyName("order id")
-    public void setOrder_id(int order_id) {
-        this.order_id = order_id;
+    @PropertyName("item amount")
+    public void setItemAmount(String itemAmount) {
+        this.itemAmount = itemAmount;
     }
 
     @PropertyName("time of upload")
     public long getTime_of_upload() {
         return time_of_upload;
     }
+
     @PropertyName("time of upload")
     public void setTime_of_upload(long time_of_upload) {
         this.time_of_upload = time_of_upload;
     }
 
-
-    @PropertyName("uploaded images urls")
-    public List<String> getListOfImageURLs() {
-        return listOfImageURLs;
-    }
-    @PropertyName("uploaded images urls")
-    public void setListOfImageURLs(List<String> listOfImageURLs) {
-        this.listOfImageURLs = listOfImageURLs;
+    @PropertyName("item id")
+    public String getItemId() {
+        return itemId;
     }
 
-    //the variety list is uploaded only when variety name is not null
-    @PropertyName("variety name")
-    public String getVarietyName() {
-        return varietyName;
-    }
-    @PropertyName("variety name")
-    public void setVarietyName(String varietyName) {
-        this.varietyName = varietyName;
+    @PropertyName("item id")
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
-    @PropertyName("visibility")
-    public boolean isVisibility() {
-        return visibility;
-    }
-    @PropertyName("visibility")
-    public void setVisibility(boolean visibility) {
-        this.visibility = visibility;
+    @PropertyName("user id")
+    public String getUserId() {
+        return userId;
     }
 
-    @PropertyName("varieties")
-    public List<String> getVarieies() {
-        return varieies;
+    @PropertyName("user id")
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-    @PropertyName("varieties")
-    public void setVarieies(List<String> varieies) {
-        this.varieies = varieies;
-    }*/
+
+    @PropertyName("selected variety index in list")
+    public String getSelectedVarietyIndexInList() {
+        return selectedVarietyIndexInList;
+    }
+
+    @PropertyName("selected variety index in list")
+    public void setSelectedVarietyIndexInList(String selectedVarietyIndexInList) {
+        this.selectedVarietyIndexInList = selectedVarietyIndexInList;
+    }
+
+
+    public boolean isTheOriginalItemDeleted() {
+        return isTheOriginalItemDeleted;
+    }
+
+    public void setTheOriginalItemDeleted(boolean theOriginalItemDeleted) {
+        isTheOriginalItemDeleted = theOriginalItemDeleted;
+    }
+
+
 }

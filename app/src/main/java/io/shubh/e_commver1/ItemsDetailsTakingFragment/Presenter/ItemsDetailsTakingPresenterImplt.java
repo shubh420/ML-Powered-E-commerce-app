@@ -1,8 +1,6 @@
 package io.shubh.e_commver1.ItemsDetailsTakingFragment.Presenter;
 
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +83,7 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
                         item.setRoot_category(rootctgr);
                         item.setSub_category(subctgr);
                         item.setSub_sub_category(subsubctgr);
-                        item.setOrder_id(Integer.parseInt(idForThisItem));
+                        item.setItem_id(Integer.parseInt(idForThisItem));
                         item.setSeller_id(StaticClassForGlobalInfo.UId);
                         item.setTime_of_upload(System.currentTimeMillis() / 1000L);
                         item.setVisibility(visible);

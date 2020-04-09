@@ -33,17 +33,6 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     public void LoginRelatedWork() {
 
 
-       /* mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(new CategoryItemsInteractor.SeparateCallbackToPresnterAfterGettingItemsForRclrView(){
-            @Override
-            public void onFinishedGettingItems(boolean callbackResultOfTheCheck) {
-
-              if(callbackResultOfTheCheck==true){
-                  //system upadte available ..so throw a dialog asking to download update
-              }else{
-                  //system upadte not available ..so continue
-              }
-            }
-        });*/
     }
 
     @Override

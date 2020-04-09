@@ -52,21 +52,28 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
         if(ifItsALoadMorecall==false){
               //  this.ctgrPath=  ctgrPath ;
 
+            //below 15 lines of code can be just replaced by just searching on category path ..but let it be this way for now..bacause it tells me we can do multiple where to in here
+            //.whereEqualTo("category", ctgrPath)
+
+
                 Query query = null;
                 if (ctgrPath.indexOf('/') == -1) {
                     //means ctgrpath has ctgr only..no subctgr or subsubctgr
                     //this means we need to get all documents which belong to this ctgr
-                    query = db.collection("items for sale")
-                            .whereEqualTo("root category", ctgrPath)
-                            .orderBy("order id", Query.Direction.ASCENDING)
-                            .limit(1);
+                        query = db.collection("items for sale")
+                                .whereEqualTo("root category", ctgrPath)
+                                .whereEqualTo("visibility", true)
+                                .orderBy("item id", Query.Direction.ASCENDING)
+                                .limit(1);
                 } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") == -1) {
                     //means ctgrpath has subctgr no subsubctgr
                     //this means we need to get all documents which belong to this subctgr
                     query = db.collection("items for sale")
                             .whereEqualTo("sub category", ctgrName)
                             .whereEqualTo("root category", rootCtgr)
-                            .orderBy("order id", Query.Direction.ASCENDING)
+                           .whereEqualTo("visibility", true)
+                            .orderBy("item id", Query.Direction.ASCENDING)
+
                             .limit(1);
                 } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") != -1) {
                     //means ctgrpath has subsubctgr
@@ -75,7 +82,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                             .whereEqualTo("sub sub category", ctgrName)
                             .whereEqualTo("root category", rootCtgr)
                             .whereEqualTo("sub category", subCtgr)
-                            .orderBy("order id", Query.Direction.ASCENDING)
+                           .whereEqualTo("visibility", true)
+                            .orderBy("item id", Query.Direction.ASCENDING)
                             .limit(1);
                 }
 
@@ -94,16 +102,14 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                                             itemsList.add(list.get(0));
                                             Log.i("***SizeOfo/pOf1stCall:", String.valueOf(itemsList.size()));
 
-                                            idodLastItemRetrived=itemsList.get(0).getOrder_id();
+                                            idodLastItemRetrived=itemsList.get(0).getItem_id();
 
-                                            Log.i("******id", String.valueOf(itemsList.get(0).getOrder_id()));
+                                            Log.i("******id", String.valueOf(itemsList.get(0).getItem_id()));
                                             Log.i("******name", String.valueOf(itemsList.get(0).getName()));
-                                            //adding image urls maually now -TODO make a arraylist field for it in firestore document later
-
 
                                             getItemsFromFirebaseWithResultsOnSeparateCallback(ctgrName,ctgrPath,rootCtgr,subCtgr,subSubCtgr,false  ,itemsList);
                                         } else {
-                                            //TODO-show toast of no items found
+
                                             Log.i("***", "first call result has 0 size ");
                                             mPresenter.onFinishedGettingItems(itemsList, false, ctgrName ,ifItsALoadMorecall);
 
@@ -147,7 +153,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                     //this means we need to get all documents which belong to this ctgr
                     query = db.collection("items for sale")
                             .whereEqualTo("root category", ctgrPath)
-                            .orderBy("order id", Query.Direction.ASCENDING)
+                            .whereEqualTo("visibility", true)
+                            .orderBy("item id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                     //for first time I will pass it the very first function,after that the last document i have
                             //Also the field of orderBy and startafter should be same
@@ -159,7 +166,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                     query = db.collection("items for sale")
                             .whereEqualTo("sub category", ctgrName)
                             .whereEqualTo("root category", rootCtgr)
-                            .orderBy("order id", Query.Direction.ASCENDING)
+                            .whereEqualTo("visibility", true)
+                            .orderBy("item id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                             //for first time I will pass it the very first function,after that the last document i have
                             .limit(pageSize);
@@ -170,7 +178,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
                             .whereEqualTo("sub sub category", ctgrName)
                             .whereEqualTo("root category", rootCtgr)
                             .whereEqualTo("sub category", subCtgr)
-                            .orderBy("order id", Query.Direction.ASCENDING)
+                            .whereEqualTo("visibility", true)
+                            .orderBy("item id", Query.Direction.ASCENDING)
                             .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
                             //for first time I will pass it the very first function,after that the last document i have
                             .limit(pageSize);
@@ -194,10 +203,10 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
 
                                             Log.i("***SizeOfo/pOf2ndCall:", String.valueOf(itemsList.size()));
                                             for(int i=0;i<itemsList.size();i++) {
-                                                Log.i("******id", String.valueOf(itemsList.get(i).getOrder_id()));
+                                                Log.i("******id", String.valueOf(itemsList.get(i).getItem_id()));
                                                 Log.i("******name", itemsList.get(i).getName());
                                             }
-                                            idodLastItemRetrived=itemsList.get(itemsList.size()-1).getOrder_id();
+                                            idodLastItemRetrived=itemsList.get(itemsList.size()-1).getItem_id();
                                             mPresenter.onFinishedGettingItems(itemsList ,true, ctgrName,ifItsALoadMorecall);
 
 

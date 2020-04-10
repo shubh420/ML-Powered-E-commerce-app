@@ -4,7 +4,7 @@ public interface AddressSelectionPresenter {
 
 
 
-    void getBagItemsData();
+    void getAddressData();
 
     void deleteBagItem(String docId);
 }

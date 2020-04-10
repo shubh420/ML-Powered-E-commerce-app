@@ -6,93 +6,78 @@ import java.io.Serializable;
 
 public class AdressItem implements Serializable {
 
-    //below  field is not supposed to have the same in the BagItem document in firestore
-    //this below object will be added manually
-    //its purpose is for the time when on the obejct is clicked on am=nd then we have to show the itemdetail page
-    ItemsForSale itemObject;
 
-    long time_of_upload;
-    String itemAmount, itemId, userId;
-    //giving it default value in case if item doesnt ahve
-    String selectedVarietyIndexInList = "null";
+    String recieverName, pinCode, houseNo , area , city , state;
 
-    //these below are false by deafult because if user is able to add the item into bag at first place
-    //then that means both are false ..but in future they might change
-    boolean isTheOriginalItemDeleted=false;
+    /*Todo -set the phone no through OTP in next update*/
+    String phoneNo;
 
 
     public AdressItem() {
 
     }
 
-    //non property field
-    public ItemsForSale getItemObject() {
-        return itemObject;
+
+    @PropertyName("reciever name")
+    public String getRecieverName() {
+        return recieverName;
+    }
+    @PropertyName("reciever name")
+    public void setRecieverName(String recieverName) {
+        this.recieverName = recieverName;
     }
 
-    public void setItemObject(ItemsForSale itemObject) {
-        this.itemObject = itemObject;
+    @PropertyName("pin code")
+    public String getPinCode() {
+        return pinCode;
+    }
+    @PropertyName("pin code")
+    public void setPinCode(String pinCode) {
+        this.pinCode = pinCode;
     }
 
-
-    @PropertyName("item amount")
-    public String getItemAmount() {
-        return itemAmount;
+    @PropertyName("house no")
+    public String getHouseNo() {
+        return houseNo;
+    }
+    @PropertyName("house no")
+    public void setHouseNo(String houseNo) {
+        this.houseNo = houseNo;
     }
 
-    @PropertyName("item amount")
-    public void setItemAmount(String itemAmount) {
-        this.itemAmount = itemAmount;
+    @PropertyName("area")
+    public String getArea() {
+        return area;
+    }
+    @PropertyName("area")
+    public void setArea(String area) {
+        this.area = area;
     }
 
-    @PropertyName("time of upload")
-    public long getTime_of_upload() {
-        return time_of_upload;
+    @PropertyName("city")
+    public String getCity() {
+        return city;
+    }
+    @PropertyName("city")
+    public void setCity(String city) {
+        this.city = city;
     }
 
-    @PropertyName("time of upload")
-    public void setTime_of_upload(long time_of_upload) {
-        this.time_of_upload = time_of_upload;
+    @PropertyName("state")
+    public String getState() {
+        return state;
+    }
+    @PropertyName("state")
+    public void setState(String state) {
+        this.state = state;
     }
 
-    @PropertyName("item id")
-    public String getItemId() {
-        return itemId;
+    @PropertyName("phone no")
+    public String getPhoneNo() {
+        return phoneNo;
     }
-
-    @PropertyName("item id")
-    public void setItemId(String itemId) {
-        this.itemId = itemId;
+    @PropertyName("phone no")
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
     }
-
-    @PropertyName("user id")
-    public String getUserId() {
-        return userId;
-    }
-
-    @PropertyName("user id")
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    @PropertyName("selected variety index in list")
-    public String getSelectedVarietyIndexInList() {
-        return selectedVarietyIndexInList;
-    }
-
-    @PropertyName("selected variety index in list")
-    public void setSelectedVarietyIndexInList(String selectedVarietyIndexInList) {
-        this.selectedVarietyIndexInList = selectedVarietyIndexInList;
-    }
-
-
-    public boolean isTheOriginalItemDeleted() {
-        return isTheOriginalItemDeleted;
-    }
-
-    public void setTheOriginalItemDeleted(boolean theOriginalItemDeleted) {
-        isTheOriginalItemDeleted = theOriginalItemDeleted;
-    }
-
-
 }

@@ -40,8 +40,6 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
         this.bagItemsFragment = bagItemsFragment;
        /* this.categoryItemsFragment = categoryItemsFragment;
         this.activity = activity;*/
-
-
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

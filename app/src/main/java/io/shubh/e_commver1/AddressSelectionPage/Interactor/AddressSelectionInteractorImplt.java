@@ -32,7 +32,7 @@ public class AddressSelectionInteractorImplt implements AddressSelectionInteract
     }
 
     @Override
-    public void getbagItemsDataWithArgAsCallbackFunction(SeparateCallbackToPresnterAfterGettingTheObjectList l) {
+    public void getAddressDataWithArgAsCallbackFunction(SeparateCallbackToPresnterAfterGettingTheObjectList l) {
 
         Log.i(TAG, "getbagitem called ");
 

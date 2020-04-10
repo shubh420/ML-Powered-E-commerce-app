@@ -1,14 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhiteSecondary"
+    android:clickable="true"
     tools:context=".AddressSelectionPage.View.AddressSelectionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="0dp"
+
+        android:gravity="center_vertical"
+        android:minHeight="?attr/actionBarSize"
+        android:padding="4dp"
+        android:visibility="visible"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <!--TODo -make the below bt color more light-->
+        <ImageButton
+            android:id="@+id/btCloseFrag"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_gravity="left"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:padding="9dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_close_svg"
+            android:tint="#757575"
+
+            />
+
+        <ImageButton
+            android:id="@+id/btAddAddress"
+            android:layout_width="33dp"
+            android:layout_height="33dp"
+            android:layout_gravity="right"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:padding="9dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_add_svg"
+            android:tint="#757575"/>
+
+    </androidx.appcompat.widget.Toolbar>
+
     <TextView
+        android:id="@+id/id_fr_tv_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/adamina"
+        android:maxLines="1"
+        android:paddingLeft="15dp"
+        android:paddingTop="13dp"
+        android:paddingRight="15dp"
+        android:text="Address"
+        android:textColor="#A60C0C0C"
+        android:textSize="35sp"
+        android:layout_below="@id/toolbar"/>
+
+
+    <include
+        layout="@layout/shimmer_layout_file_fr_include_in_bag_items_list"
+        android:layout_below="@id/id_fr_tv_header"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent" />
+
+
+    <Button
+        android:id="@+id/btContinue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="15dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg_gradient_gradient"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:text="Continue"
+        android:textColor="@color/colorPrimary" />
+
+
+    <!--below cooordinatorlayout id for bootomsheet to inflate-->
+    <!--below cooordinatorlayout id for bootomsheet to inflate-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/cl_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/colorTransparent">
 
-</FrameLayout>
+        <View
+            android:id="@+id/touch_to_dismiss_bottom_sheet_dim_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#9000"
+            android:clickable="true"
+            android:visibility="gone" />
+
+        <include layout="@layout/bottom_sheet_fr_address_detail_taking"
+
+            />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+</RelativeLayout>

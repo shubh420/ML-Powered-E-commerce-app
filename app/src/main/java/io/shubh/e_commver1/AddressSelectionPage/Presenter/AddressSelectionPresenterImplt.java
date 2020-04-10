@@ -6,13 +6,13 @@ import io.shubh.e_commver1.AddressSelectionPage.Interactor.AddressSelectionInter
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionView;
 import io.shubh.e_commver1.Models.BagItem;
 
-public class AddressSelectionImplt implements AddressSelectionPresenter, AddressSelectionInteractor.CallbacksToPresnter {
+public class AddressSelectionPresenterImplt implements AddressSelectionPresenter, AddressSelectionInteractor.CallbacksToPresnter {
 
     private AddressSelectionView mView;
     private AddressSelectionInteractor mInteractor;
 
 
-    public AddressSelectionImplt(AddressSelectionView mView , AddressSelectionInteractor mSplashInteractor) {
+    public AddressSelectionPresenterImplt(AddressSelectionView mView , AddressSelectionInteractor mSplashInteractor) {
        this.mView=mView;
        this.mInteractor = mSplashInteractor;
 
@@ -23,11 +23,11 @@ public class AddressSelectionImplt implements AddressSelectionPresenter, Address
     }
 
     @Override
-    public void getBagItemsData() {
+    public void getAddressData() {
 
-        mView.showProgressBar(true);
+      /*  mView.showProgressBar(true);
 
-        mInteractor.getbagItemsDataWithArgAsCallbackFunction( new AddressSelectionInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList(){
+        mInteractor.getAddressDataWithArgAsCallbackFunction( new AddressSelectionInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList(){
             @Override
             public void onFinished(boolean callbackResultOfTheCheck, List<BagItem> bagItemlist) {
 
@@ -49,13 +49,13 @@ public class AddressSelectionImplt implements AddressSelectionPresenter, Address
                      mView.showToast("Some Problem Ocuured");
                 }
             }
-        });
+        });*/
 
     }
 
     @Override
     public void deleteBagItem(String docId) {
-        mInteractor.deletebagItemsWithArgAsCallbackFunction(docId,new AddressSelectionInteractor.SeparateCallbackToPresnterAfterDeletingBagItem() {
+        /*mInteractor.deletebagItemsWithArgAsCallbackFunction(docId,new AddressSelectionInteractor.SeparateCallbackToPresnterAfterDeletingBagItem() {
             @Override
             public void onFinished(boolean callbackResultOfTheCheck) {
 
@@ -65,7 +65,7 @@ public class AddressSelectionImplt implements AddressSelectionPresenter, Address
                     mView.showToast("Some Problem Ocuured");
                 }
             }
-        });
+        });*/
     }
 
 

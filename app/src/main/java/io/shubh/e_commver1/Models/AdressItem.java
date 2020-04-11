@@ -7,10 +7,11 @@ import java.io.Serializable;
 public class AdressItem implements Serializable {
 
 
-    String recieverName, pinCode, houseNo , area , city , state;
+    String recieverName, pinCode, houseNo , area , city , state ,Uid;
 
     /*Todo -set the phone no through OTP in next update*/
     String phoneNo;
+    long timeOfUpload;
 
 
     public AdressItem() {
@@ -79,5 +80,23 @@ public class AdressItem implements Serializable {
     @PropertyName("phone no")
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    @PropertyName("user id")
+    public String getUid() {
+        return Uid;
+    }
+    @PropertyName("user id")
+    public void setUid(String uid) {
+        Uid = uid;
+    }
+
+    @PropertyName("time of upload")
+    public long getTimeOfUpload() {
+        return timeOfUpload;
+    }
+    @PropertyName("time of upload")
+    public void setTimeOfUpload(long timeOfUpload) {
+        this.timeOfUpload = timeOfUpload;
     }
 }

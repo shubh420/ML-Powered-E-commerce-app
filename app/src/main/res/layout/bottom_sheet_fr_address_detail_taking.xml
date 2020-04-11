@@ -12,6 +12,7 @@
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,6 +20,8 @@
         android:elevation="6dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="20dp">
+
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,8 +62,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
+
                         android:gravity="center"
-                        android:text="Pick from Map"
+                        android:text="Map"
                         android:textColor="@color/colorSecondary"
                         android:textSize="18sp"
                     android:textStyle="bold"
@@ -79,6 +83,15 @@
 
             </LinearLayout>
 
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:clickable="true">
             <EditText
                 android:id="@+id/edRecieverName"
                 android:layout_width="match_parent"
@@ -105,7 +118,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_layout_border"
                 android:hint="House No"
-                android:inputType="number"
+
                 android:padding="10dp" />
 
             <EditText
@@ -115,7 +128,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_layout_border"
                 android:hint="Area"
-                android:inputType="number"
+
                 android:padding="10dp" />
 
             <EditText
@@ -125,7 +138,6 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_layout_border"
                 android:hint="City"
-                android:inputType="number"
                 android:padding="10dp" />
 
             <EditText
@@ -135,12 +147,13 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_layout_border"
                 android:hint="State "
-                android:inputType="number"
-                android:padding="10dp" />
 
+                android:padding="10dp" />
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
             <Button
-                android:id="@+id/btContinue"
+                android:id="@+id/btContinue2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -148,7 +161,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/bg_gradient_gradient"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:text="Continue"
+                android:text="Create"
                 android:textColor="@color/colorPrimary" />
         </LinearLayout>
 

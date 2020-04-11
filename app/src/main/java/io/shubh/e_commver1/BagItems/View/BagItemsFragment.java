@@ -4,6 +4,7 @@ package io.shubh.e_commver1.BagItems.View;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,6 +25,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import java.util.List;
 
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForBagItemsList;
+import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.Interactor.BagItemsInteractorImplt;
 import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenter;
 import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenterImplt;
@@ -83,6 +86,25 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
 
         //logic work start here
         mPresenter.getBagItemsData();
+
+        Button btContinue = (Button) containerViewGroup.findViewById(R.id.btContinue);
+        btContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(bagItemlist != null && bagItemlist.size()!=0){
+
+                    AddressSelectionFragment addressSelectionFragment =new AddressSelectionFragment();
+                    addressSelectionFragment.setLocalVariables(true,new BagItem());
+
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout,addressSelectionFragment)
+                            .commit();
+
+                }else{
+                    showToast("bag is empty");
+                }
+            }
+        });
     }
 
 
@@ -126,7 +148,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
         bagItemlist.remove(postionFromItemtoDelete);
 
         adapter.notifyItemRemoved(postionFromItemtoDelete);
-        adapter.notifyItemRangeChanged(postionFromItemtoDelete,bagItemlist.size());
+        adapter.notifyItemRangeChanged(postionFromItemtoDelete, bagItemlist.size());
 
     }
 
@@ -176,15 +198,15 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
 
     @Override
     public void showProgressBar(boolean b) {
-        if(b==true) {
+        if (b == true) {
 
-            if(recyclerView!=null) {
+            if (recyclerView != null) {
                 recyclerView.setVisibility(View.GONE);
             }
             mShimmerViewContainer.startShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.VISIBLE);
-        }else {
-            if(recyclerView!=null) {
+        } else {
+            if (recyclerView != null) {
                 recyclerView.setVisibility(View.VISIBLE);
             }
             mShimmerViewContainer.stopShimmerAnimation();

@@ -30,11 +30,13 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
+import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
@@ -152,6 +154,19 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
             }
         });
+
+
+        LinearLayout profileBt = (LinearLayout) findViewById(R.id.id_fr_nav_bt_profile);
+        profileBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                switchActivity(4);
+
+            }
+        });
+
+
 //------------------------------------
 //doinf a bit changes in ui first ..setting logou icon if user is logged in and vice versa
 
@@ -294,6 +309,22 @@ public class MainActivity extends AppCompatActivity implements MainView {
             startActivity(in);*/
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.drawerLayout,new SellerConfirmationFragment() )
+                    .commit();
+
+
+            //animation for sliding activity
+            //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        }else if(i==4){
+    /*        Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
+            startActivity(in);*/
+
+            drawerLayout.closeDrawer(Gravity.LEFT);
+
+            AddressSelectionFragment addressSelectionFragment =new AddressSelectionFragment();
+            addressSelectionFragment.setLocalVariables(false,new BagItem());
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.drawerLayout, addressSelectionFragment)
                     .commit();
 
 

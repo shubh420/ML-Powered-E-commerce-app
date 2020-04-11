@@ -14,7 +14,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorTransparent"
         android:elevation="0dp"
 
         android:gravity="center_vertical"
@@ -46,10 +46,12 @@
             android:layout_height="33dp"
             android:layout_gravity="right"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:padding="9dp"
+            android:padding="7dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_add_svg"
-            android:tint="#757575"/>
+            android:tint="#757575"
+            android:layout_marginRight="15dp"
+            />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -57,6 +59,7 @@
         android:id="@+id/id_fr_tv_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
         android:layout_gravity="center"
         android:layout_marginBottom="5dp"
         android:ellipsize="end"
@@ -67,15 +70,26 @@
         android:paddingRight="15dp"
         android:text="Address"
         android:textColor="#A60C0C0C"
-        android:textSize="35sp"
-        android:layout_below="@id/toolbar"/>
+        android:textSize="35sp" />
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/id_fr_tv_header">
+    <LinearLayout
+        android:id="@+id/llContainerFrAddressItems"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp"
+        android:animateLayoutChanges="true"
+        />
+    </ScrollView>
     <include
         layout="@layout/shimmer_layout_file_fr_include_in_bag_items_list"
-        android:layout_below="@id/id_fr_tv_header"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent" />
+        android:layout_below="@id/id_fr_tv_header" />
 
 
     <Button

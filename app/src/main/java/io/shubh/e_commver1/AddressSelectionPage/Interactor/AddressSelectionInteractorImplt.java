@@ -15,8 +15,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.shubh.e_commver1.Models.BagItem;
-import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.Models.AdressItem;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 public class AddressSelectionInteractorImplt implements AddressSelectionInteractor {
@@ -34,105 +33,61 @@ public class AddressSelectionInteractorImplt implements AddressSelectionInteract
     @Override
     public void getAddressDataWithArgAsCallbackFunction(SeparateCallbackToPresnterAfterGettingTheObjectList l) {
 
-        Log.i(TAG, "getbagitem called ");
+//the data is in the subcollection indise  a user document inside user collection
+        //the address item is kept seperately ,unlike keeping it inside  a single global collection like items
+        //because items for sale documents were for to show to everyone..but address are for the to show to one who put them
 
 
-        Query query = db.collection("bag or cart items")
-                .whereEqualTo("user id", StaticClassForGlobalInfo.UId)
-                .orderBy("time of upload", Query.Direction.DESCENDING);
-
-
-        query
+        db.collection("users").document(StaticClassForGlobalInfo.UId).collection("addresses")
+             .orderBy("time of upload",Query.Direction.DESCENDING)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+                    List<AdressItem> list = task.getResult().toObjects(AdressItem.class);
+                    l.onFinished(true, list);
+
+                } else {
+
+                    List<AdressItem> list = new ArrayList<>();
+                    l.onFinished(false,list );
+                    Log.d("TAG", "Errorgettingdocuments:", task.getException());
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void addAddressObjectWithArgAsCallbackFunction(AdressItem adressItem, SeparateCallbackToPresnterAfterAddingAddressObject l) {
+
+        Log.i("####", "call for craete reached to interactor");
+
+        db.collection("users").document(StaticClassForGlobalInfo.UId).collection("addresses").document(String.valueOf(adressItem.getTimeOfUpload()))
+                .set(adressItem)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        List<BagItem> list = null;
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                if (task.getResult().size() != 0) {
-                                    list = task.getResult().toObjects(BagItem.class);
+                    public void onSuccess(Void aVoid) {
+                        Log.i("####", "ityem uploadwd ");
 
-                                    Log.i(TAG, "getbagitem retrived ..size of list" + list.size());
-
-                                    getTheItemObjectIndivisually(0, list, l);
-                                } else {
-                                    //TODO-show toast of no items found
-                                    //no items found ..so just sending an empty bagitemlist back to presenter ..it will check it itself
-                                    List<BagItem> BagItemlist = new ArrayList<>();
-                                    l.onFinished(true, BagItemlist);
-
-                                }
-                            }
-
-                        } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
-                            l.onFinished(false, list);
-                        }
+                        l.onFinished(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "Error uploading image", e);
+                        l.onFinished(false);
                     }
                 });
-
-
     }
-
-
-    //below is a recursive function
-    private void getTheItemObjectIndivisually(int index, List<BagItem> BagItemlist, SeparateCallbackToPresnterAfterGettingTheObjectList l) {
-
-
-        if (index < BagItemlist.size()) {
-
-            Query query = db.collection("items for sale")
-                    .whereEqualTo("item id", Integer.valueOf(BagItemlist.get(index).getItemId()));
-
-            query.get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    //below list contain only one object
-                                    List<ItemsForSale> itemsForSaleObject = task.getResult().toObjects(ItemsForSale.class);
-
-                                    if (itemsForSaleObject.size() != 0) {
-                                        BagItemlist.get(index).setItemObject(itemsForSaleObject.get(0));
-
-                                        getTheItemObjectIndivisually(index + 1, BagItemlist, l);
-
-
-                                    } else {
-                                        BagItemlist.get(index).setTheOriginalItemDeleted(true);
-
-                                        getTheItemObjectIndivisually(index + 1, BagItemlist, l);
-                                    }
-                                }
-                            }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG, "Error getting documents: ", e);
-
-                            l.onFinished(false, BagItemlist);
-                        }
-                    });
-        } else {
-
-            //   Log.i(TAG, "finished all work");
-
-
-            l.onFinished(true, BagItemlist);
-            //calling back to presenter
-        }
-
-    }
-
 
     @Override
     public void deletebagItemsWithArgAsCallbackFunction(String docId, SeparateCallbackToPresnterAfterDeletingBagItem l) {
 
-        Task<Void> query = db.collection("bag or cart items")
+      db.collection("users").document(StaticClassForGlobalInfo.UId).collection("addresses")
                 .document(docId).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

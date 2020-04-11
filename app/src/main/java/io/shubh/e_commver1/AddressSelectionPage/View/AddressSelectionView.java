@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.AdressItem;
 
 public interface AddressSelectionView {
 
@@ -19,7 +19,7 @@ public interface AddressSelectionView {
 
     void showToast(String msg);
 
-    void showItemsInRecyclerView(List<BagItem> bagItemlist);
+    void showItemsInRecyclerView(List<AdressItem> bagItemlist);
 
     void updateReclrViewListAfterDeletionOfItem();
 

@@ -1,10 +1,13 @@
 package io.shubh.e_commver1.AddressSelectionPage.Presenter;
 
+import android.util.Log;
+
 import java.util.List;
 
 import io.shubh.e_commver1.AddressSelectionPage.Interactor.AddressSelectionInteractor;
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionView;
-import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.AdressItem;
+import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 public class AddressSelectionPresenterImplt implements AddressSelectionPresenter, AddressSelectionInteractor.CallbacksToPresnter {
 
@@ -25,18 +28,18 @@ public class AddressSelectionPresenterImplt implements AddressSelectionPresenter
     @Override
     public void getAddressData() {
 
-      /*  mView.showProgressBar(true);
+        mView.showProgressBar(true);
 
-        mInteractor.getAddressDataWithArgAsCallbackFunction( new AddressSelectionInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList(){
+        mInteractor.getAddressDataWithArgAsCallbackFunction(new AddressSelectionInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList() {
             @Override
-            public void onFinished(boolean callbackResultOfTheCheck, List<BagItem> bagItemlist) {
+            public void onFinished(boolean callbackResultOfTheCheck, List<AdressItem> addressItemlist) {
 
                 if(callbackResultOfTheCheck==true){
                     //system upadte available ..so throw a dialog asking to download update
-                    if(bagItemlist.size()!=0){
+                    if(addressItemlist.size()!=0){
 
                         mView.showProgressBar(false);
-                        mView.showItemsInRecyclerView(bagItemlist);
+                        mView.showItemsInRecyclerView(addressItemlist);
                     }else{
                         mView.showProgressBar(false);
                         mView.showEmptyListMessage();
@@ -44,29 +47,50 @@ public class AddressSelectionPresenterImplt implements AddressSelectionPresenter
 
 
                 }else{
-                    //system upadte not available ..so continue
                     mView.showProgressBar(false);
-                     mView.showToast("Some Problem Ocuured");
+                    mView.showToast("Some Problem Ocuured");
                 }
+
             }
-        });*/
+        });
+
 
     }
 
     @Override
+    public void addAdressObject(AdressItem adressItem) {
+        adressItem.setUid(StaticClassForGlobalInfo.UId);
+
+        mInteractor.addAddressObjectWithArgAsCallbackFunction(adressItem,new AddressSelectionInteractor.SeparateCallbackToPresnterAfterAddingAddressObject() {
+            @Override
+            public void onFinished(boolean callbackResultOfTheCheck) {
+
+                getAddressData();
+              mView.showToast("added");
+            }
+        });
+    }
+
+
+
+
+    @Override
     public void deleteBagItem(String docId) {
-        /*mInteractor.deletebagItemsWithArgAsCallbackFunction(docId,new AddressSelectionInteractor.SeparateCallbackToPresnterAfterDeletingBagItem() {
+        mInteractor.deletebagItemsWithArgAsCallbackFunction(docId,new AddressSelectionInteractor.SeparateCallbackToPresnterAfterDeletingBagItem() {
             @Override
             public void onFinished(boolean callbackResultOfTheCheck) {
 
                 if(callbackResultOfTheCheck==true){
                     mView.updateReclrViewListAfterDeletionOfItem();
                 }else{
+                    getAddressData();
                     mView.showToast("Some Problem Ocuured");
                 }
             }
-        });*/
+        });
     }
+
+
 
 
 }

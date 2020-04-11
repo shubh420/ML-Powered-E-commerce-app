@@ -5,10 +5,8 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,14 +15,11 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -417,7 +412,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                 if (categoriesList.get(i).isHaveSubCatgr()) {
                     iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_right_svg));
                 } else {
-                    iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+                    iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_radio_button_unchecked_svg));
                 }
 
 
@@ -488,7 +483,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                         if (subCategoriesList.get(j).isHaveSubSubCatgr()) {
                             iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_arrow_right_svg));
                         } else {
-                            iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+                            iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_radio_button_unchecked_svg));
                         }
 
 
@@ -558,7 +553,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                                 ImageView iv = (ImageView) inflatedRow.findViewById(R.id.iv_ctgr_indicator);
 
                                 tv.setText(subsubCategoriesList.get(k).getName());
-                                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+                                iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_radio_button_unchecked_svg));
 
 
                                 int finalK = k;
@@ -680,7 +675,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
             ImageView iv = (ImageView) rlContainingOtherTv.findViewById(R.id.iv_ctgr_indicator);
             String imageName2 = (String) iv.getTag();
             if (imageName2 == "ic_check_svg") {
-                iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
+                iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_radio_button_unchecked_svg));
             }
         }
     }

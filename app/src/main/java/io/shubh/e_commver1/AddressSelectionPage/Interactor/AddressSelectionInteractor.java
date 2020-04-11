@@ -4,7 +4,6 @@ package io.shubh.e_commver1.AddressSelectionPage.Interactor;
 import java.util.List;
 
 import io.shubh.e_commver1.Models.AdressItem;
-import io.shubh.e_commver1.Models.BagItem;
 
 public interface AddressSelectionInteractor {
 
@@ -19,6 +18,10 @@ public interface AddressSelectionInteractor {
 
         void onFinished(boolean callbackResultOfTheCheck, List<AdressItem> addressItemlist);
     }
+    interface SeparateCallbackToPresnterAfterAddingAddressObject {
+
+        void onFinished(boolean callbackResultOfTheCheck);
+    }
     interface SeparateCallbackToPresnterAfterDeletingBagItem {
 
         void onFinished(boolean callbackResultOfTheCheck);
@@ -27,6 +30,8 @@ public interface AddressSelectionInteractor {
     void init(CallbacksToPresnter mPresenter);
 
     void getAddressDataWithArgAsCallbackFunction(AddressSelectionInteractor.SeparateCallbackToPresnterAfterGettingTheObjectList l);
+
+    void addAddressObjectWithArgAsCallbackFunction(AdressItem adressItem, SeparateCallbackToPresnterAfterAddingAddressObject l);
 
     void deletebagItemsWithArgAsCallbackFunction(String docId, SeparateCallbackToPresnterAfterDeletingBagItem l);
 }

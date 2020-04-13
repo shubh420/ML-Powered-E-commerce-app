@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +29,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.razorpay.PaymentResultListener;
 
 import java.util.ArrayList;
 
@@ -38,6 +41,8 @@ import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
 import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
+import io.shubh.e_commver1.Models.Order;
+import io.shubh.e_commver1.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SellerConfirmationFragment;
@@ -45,7 +50,7 @@ import io.shubh.e_commver1.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForMainActivity;
 
-public class MainActivity extends AppCompatActivity implements MainView {
+public class MainActivity extends AppCompatActivity implements MainView, PaymentResultListener {
 
     MainPresenter mPresenter;
 
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     //below is the loading placeholder view
     ShimmerFrameLayout mShimmerViewContainer;
-     DrawerLayout drawerLayout;
+    DrawerLayout drawerLayout;
 
 
     @Override
@@ -84,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setSearchViewWork();
 
 
-
-
     }
 
     @Override
@@ -95,21 +98,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
         set_nav_dr_button_setup();
         setUpToolBar();
 
-        RecyclerView recyclerView =(RecyclerView) findViewById(R.id.id_fr_recycler_view_main_activity_items_list);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.id_fr_recycler_view_main_activity_items_list);
         recyclerView.setVisibility(View.VISIBLE);
-
 
 
     }
 
     private void setUpToolBar() {
 
-        ImageButton btBagItems =(ImageButton)findViewById(R.id.btBagItems);
+        ImageButton btBagItems = (ImageButton) findViewById(R.id.btBagItems);
         btBagItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout,new BagItemsFragment() )
+                        .add(R.id.drawerLayout, new BagItemsFragment())
                         .commit();
 
 
@@ -120,15 +122,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
 
     private void setSearchViewWork() {
- CardView cv_search =(CardView)findViewById(R.id.cv_search);
- cv_search.setOnClickListener(new View.OnClickListener() {
-     @Override
-     public void onClick(View view) {
-         startActivity(new Intent(MainActivity.this, SearchActivity.class));
-         finish();
+        CardView cv_search = (CardView) findViewById(R.id.cv_search);
+        cv_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                finish();
 
-     }
- });
+            }
+        });
 
     }
 
@@ -170,26 +172,26 @@ public class MainActivity extends AppCompatActivity implements MainView {
 //------------------------------------
 //doinf a bit changes in ui first ..setting logou icon if user is logged in and vice versa
 
-        TextView tv_fr_button_signin_in_navdr = (TextView)findViewById(R.id.id_fr_tv_nav_login_);
+        TextView tv_fr_button_signin_in_navdr = (TextView) findViewById(R.id.id_fr_tv_nav_login_);
         ImageView iv_fr_icon_button_signin_in_navdr = (ImageView) findViewById(R.id.id_fr_iv_nav_login_icon);
         LinearLayout Login_or_logout_button = (LinearLayout) findViewById(R.id.id_fr_nav_bt_login_or_logout);
 
-        if(StaticClassForGlobalInfo.isLoggedIn ==true){
+        if (StaticClassForGlobalInfo.isLoggedIn == true) {
             tv_fr_button_signin_in_navdr.setText("Logout");
             iv_fr_icon_button_signin_in_navdr.setImageResource(R.drawable.logout_icon_);
-        }else{
+        } else {
             //by default both have login text and image ..so no changes
         }
         //doing some ui work now....the default height for this button linearlayout is different from others button because ll here is depending on child's heighth  and its icon aint android studio rather imported from web so just copying the height of prev button nad setting to it
-      //  iv_fr_icon_button_signin_in_navdr.setLayoutParams( new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,switchToSellerbutton.getHeight()));
+        //  iv_fr_icon_button_signin_in_navdr.setLayoutParams( new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,switchToSellerbutton.getHeight()));
 
-         //doing actual backend work
+        //doing actual backend work
         Login_or_logout_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(StaticClassForGlobalInfo.isLoggedIn ==true){
-                        //make user sign out and redirect to welcome screen in case he wants to switch id
+                if (StaticClassForGlobalInfo.isLoggedIn == true) {
+                    //make user sign out and redirect to welcome screen in case he wants to switch id
 
                     FirebaseAuth.getInstance().signOut();
 
@@ -198,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
                     //animation for sliding activity
                     overridePendingTransition(R.anim.right_out, R.anim.left_in);
-                }else{
+                } else {
                     startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                     finish();
 
@@ -213,10 +215,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private void navigationDrawerSetUp() {
 
 
-
-    drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         final CoordinatorLayout content = (CoordinatorLayout) findViewById(R.id.content);
-
 
 
         //removing the feature where the main content of activity gets dark as the drawer opoens
@@ -234,12 +234,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
 //-----------------------------
-       ImageButton menu =(ImageButton)findViewById(R.id.id_fr_menu_bt);
-       menu.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
+        ImageButton menu = (ImageButton) findViewById(R.id.id_fr_menu_bt);
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-               //below logic is commentisized because one the drawer is open ..then any touch outside of drwer will closes the drawer ...
+                //below logic is commentisized because one the drawer is open ..then any touch outside of drwer will closes the drawer ...
               /* if(is_nav_drawer_open == false){
                    is_nav_drawer_open=true;
                    drawerLayout.openDrawer(Gravity.LEFT);
@@ -249,15 +249,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
                    drawerLayout.closeDrawer(Gravity.LEFT);
 
                }*/
-               drawerLayout.openDrawer(Gravity.LEFT);
+                drawerLayout.openDrawer(Gravity.LEFT);
 
-           }
-       });
+            }
+        });
 
 
 //Setting up the name ,email in drawer if user is not guest user.......do profile pic later
 
-        if(StaticClassForGlobalInfo.isLoggedIn !=false) {
+        if (StaticClassForGlobalInfo.isLoggedIn != false) {
             TextView tv_name = (TextView) findViewById(R.id.tv_for_nav_dr_name);
             TextView tv_email = (TextView) findViewById(R.id.tv_for_nav_dr_email);
 
@@ -267,17 +267,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
 
 
-
-
     @Override
     public void onBackPressed() {
         //below code is for "click two time to exit the application"
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
-        {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             finishAffinity();
             System.exit(0);
+        } else {
+            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
         }
-        else { Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show(); }
         mBackPressed = System.currentTimeMillis();
 
         //just adding an animatiion here whic makes it go with animation sliding to right
@@ -288,40 +286,40 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void switchActivity(int i) {
-       // progressBar.setVisibility(android.view.View.GONE);
+        // progressBar.setVisibility(android.view.View.GONE);
 
-        if(i==1) {
+        if (i == 1) {
             Intent in = new Intent(MainActivity.this, MainActivity.class);
             startActivity(in);
-        } else if(i==2){
+        } else if (i == 2) {
 
             drawerLayout.closeDrawer(Gravity.LEFT);
           /*  Intent in = new Intent(MainActivity.this, seller_items_list.class);
             startActivity(in);*/
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout,new SellerConfirmationFragment() )
+                    .add(R.id.drawerLayout, new SellerConfirmationFragment())
                     .commit();
 
             //animation for sliding activity
-          //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        } else if(i==3){
+            //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        } else if (i == 3) {
     /*        Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
             startActivity(in);*/
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout,new SellerConfirmationFragment() )
+                    .add(R.id.drawerLayout, new SellerConfirmationFragment())
                     .commit();
 
 
             //animation for sliding activity
             //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        }else if(i==4){
+        } else if (i == 4) {
     /*        Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
             startActivity(in);*/
 
             drawerLayout.closeDrawer(Gravity.LEFT);
 
-            AddressSelectionFragment addressSelectionFragment =new AddressSelectionFragment();
-            addressSelectionFragment.setLocalVariables(false,new BagItem());
+            AddressSelectionFragment addressSelectionFragment = new AddressSelectionFragment();
+            addressSelectionFragment.setLocalVariables(false, new Order());
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.drawerLayout, addressSelectionFragment)
@@ -337,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public Context getContext(boolean getActvityContext) {
 
 
-        if(getActvityContext==true){
+        if (getActvityContext == true) {
             return this;
         }
         return this.getApplicationContext();
@@ -345,12 +343,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showProgressBar(boolean b) {
-        if(b==true) {
-         //   progressBar.setVisibility(android.view.View.VISIBLE);
+        if (b == true) {
+            //   progressBar.setVisibility(android.view.View.VISIBLE);
             mShimmerViewContainer.startShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.VISIBLE);
-        }else {
-          //  progressBar.setVisibility(android.view.View.INVISIBLE);
+        } else {
+            //  progressBar.setVisibility(android.view.View.INVISIBLE);
             mShimmerViewContainer.stopShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.GONE);
 
@@ -359,13 +357,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void ShowSnackBarWithAction(String msg, String actionName) {
-        LinearLayout ll_Root = (LinearLayout)findViewById(R.id.layoutsplash);
+        LinearLayout ll_Root = (LinearLayout) findViewById(R.id.layoutsplash);
         Snackbar snackbar = Snackbar
-                .make(ll_Root , msg, BaseTransientBottomBar.LENGTH_INDEFINITE)
+                .make(ll_Root, msg, BaseTransientBottomBar.LENGTH_INDEFINITE)
                 .setAction(actionName, new android.view.View.OnClickListener() {
                     @Override
                     public void onClick(android.view.View view) {
-                    //    mPresenter.LoginRelatedWork();
+                        //    mPresenter.LoginRelatedWork();
 
                     }
                 });
@@ -375,7 +373,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show    ();
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 
     }
 
@@ -395,14 +393,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
 
-
-
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this, listOfDataObjectsForAdapter ,drawerLayout);
+        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this, listOfDataObjectsForAdapter, drawerLayout);
         recyclerView.setAdapter(adapter);
 
 
-        AppBarLayout appBarLayout = (AppBarLayout)findViewById(R.id.appBarLayout);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appBarLayout);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -416,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         });
 
 
-
         if (listOfDataObjectsForAdapter.size() == 0) {
             Toast.makeText(this, "No Categories found", Toast.LENGTH_SHORT).show();
         }
@@ -426,20 +421,33 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @Override
     public void showProgressBarOfDrwrBtSwitchToSeller(boolean b) {
 
-        ImageView iv_icon_bt_drwr_switch_to_seller =(ImageView)findViewById(R.id.iv_icon_bt_drwr_switch_to_seller);
+        ImageView iv_icon_bt_drwr_switch_to_seller = (ImageView) findViewById(R.id.iv_icon_bt_drwr_switch_to_seller);
         ProgressBar progressBar_fr_bt_switch_to_seller = (ProgressBar) findViewById(R.id.progressBar_fr_bt_switch_to_seller);
         progressBar_fr_bt_switch_to_seller.setLayoutParams(new LinearLayout.LayoutParams(iv_icon_bt_drwr_switch_to_seller.getWidth(), iv_icon_bt_drwr_switch_to_seller.getHeight()));
 
-        if(b==true) {
+        if (b == true) {
             progressBar_fr_bt_switch_to_seller.setVisibility(View.VISIBLE);
 
             iv_icon_bt_drwr_switch_to_seller.setVisibility(View.GONE);
-        }else{
+        } else {
 
             progressBar_fr_bt_switch_to_seller.setVisibility(View.GONE);
 
             iv_icon_bt_drwr_switch_to_seller.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onPaymentSuccess(String s) {
+            PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
+            fragment.onPaymentSuccessCallbackFromMainActivty(s);
+    }
+
+    @Override
+    public void onPaymentError(int i, String s) {
+            PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
+            fragment.onPaymentFailiureCallbackFromMainActivty(s);
+
     }
 
 /*    @Override

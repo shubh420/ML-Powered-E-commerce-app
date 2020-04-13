@@ -32,13 +32,15 @@ import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresen
 import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresenter;
 import io.shubh.e_commver1.Models.AdressItem;
 import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.Order;
+import io.shubh.e_commver1.PaymentFragment;
 import io.shubh.e_commver1.R;
 
 
 public class AddressSelectionFragment extends Fragment implements AddressSelectionView {
 
     private boolean isThisFragCalledFromBagItemsFrag = false;
-    private BagItem bagItem;
+    private Order order;
 
     View containerViewGroup;
     LayoutInflater inflater;
@@ -49,21 +51,23 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
     ShimmerFrameLayout mShimmerViewContainer;
 
     BottomSheetBehavior behavior_bttm_sheet_address_taking;
-    int PLACE_PICKER_REQUEST = 1;
+
+    Button btContinue;
     boolean ifDataIsBeingFetched = true;
     boolean ifAnyItemIsBeingDeleted = false;
     int sizeOfAddresList = 0;
+
+    AdressItem selectedAdressItem ;
 
     public AddressSelectionFragment() {
         // Required empty public constructor
     }
 
 
-    public void setLocalVariables(boolean isThisFragCalledFromBagItemsFrag, BagItem bagItem) {
+    public void setLocalVariables(boolean isThisFragCalledFromBagItemsFrag, Order order) {
         this.isThisFragCalledFromBagItemsFrag = isThisFragCalledFromBagItemsFrag;
         //if above value is false then a null bag item onject is given to the below one
-        this.bagItem = bagItem;
-
+        this.order = order;
     }
 
 
@@ -94,13 +98,37 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
         setUpToolbar();
         setUpAddressTakingBttmSheet();
 
-        if(isThisFragCalledFromBagItemsFrag==false){
-            Button btContinue = (Button) containerViewGroup.findViewById(R.id.btContinue);
-            btContinue.setVisibility(View.GONE);
-        }
+        setUpBTContinue();
 
         //logic work start here
         mPresenter.getAddressData();
+
+    }
+
+    private void setUpBTContinue() {
+
+        btContinue = (Button) containerViewGroup.findViewById(R.id.btContinue);
+        btContinue.setEnabled(false);
+
+        if(isThisFragCalledFromBagItemsFrag==false){
+
+            btContinue.setVisibility(View.GONE);
+        }
+
+        btContinue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                order.setAdressItem(selectedAdressItem);
+                PaymentFragment paymentFragment =new PaymentFragment();
+                paymentFragment.setLocalVariables(true,order);
+
+                getFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, paymentFragment ,"payment")
+                        .commit();
+
+            }
+        });
 
     }
 
@@ -250,6 +278,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
             if(isThisFragCalledFromBagItemsFrag==true) {
               //  iv.setImageDrawable(getResources().getDrawable(R.drawable.radio_bt));
 
+                int finalI = i;
                 inflatedVarietyBox.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -257,6 +286,9 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
                         setRadioBtToAllOtherRowsWhichHadThemOriginally();
                         iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_check_svg));
 
+
+                        selectedAdressItem= addressItemlist.get(finalI);
+                        btContinue.setEnabled(true);
                //         iv.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorSecondary), android.graphics.PorterDuff.Mode.SRC_IN);
                    //     iv.setTag("ic_check_svg");
 

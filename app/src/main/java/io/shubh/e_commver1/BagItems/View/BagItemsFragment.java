@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForBagItemsList;
@@ -30,6 +31,7 @@ import io.shubh.e_commver1.BagItems.Interactor.BagItemsInteractorImplt;
 import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenter;
 import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenterImplt;
 import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.R;
 
 
@@ -91,20 +93,49 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
         btContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(bagItemlist != null && bagItemlist.size()!=0){
+                if(bagItemlist != null && bagItemlist.size()!=0 ){
 
-                    AddressSelectionFragment addressSelectionFragment =new AddressSelectionFragment();
-                    addressSelectionFragment.setLocalVariables(true,new BagItem());
+                    if(noDeactivatedItemIsInBag()) {
 
-                    getFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout,addressSelectionFragment)
-                            .commit();
+                        Order order =makeOrderObject();
+                        AddressSelectionFragment addressSelectionFragment = new AddressSelectionFragment();
+                        addressSelectionFragment.setLocalVariables(true, order);
+
+                        getFragmentManager().beginTransaction()
+                                .add(R.id.drawerLayout, addressSelectionFragment)
+                                .commit();
+                    }else{
+                        showToast("Delete deactivated items first");
+                    }
 
                 }else{
                     showToast("bag is empty");
                 }
             }
         });
+    }
+
+    private Order makeOrderObject() {
+        Order order =new Order() ;
+        ArrayList<BagItem> bagItems = new ArrayList<>();
+
+        for(int i =0 ;i<bagItemlist.size() ;i++){
+        if (bagItemlist.get(i).isTheOriginalItemDeleted() == false && bagItemlist.get(i).getItemObject().isVisibility() == true) {
+        bagItems.add(bagItemlist.get(i));
+        }
+        }
+        order.setBagItems(bagItems);
+        return order;
+    }
+
+    private boolean noDeactivatedItemIsInBag() {
+        boolean b = true;
+        for(int i =0 ;i<bagItemlist.size() ;i++){
+            if(bagItemlist.get(i).isTheOriginalItemDeleted()==true ||bagItemlist.get(i).getItemObject().isVisibility() ==false){
+                b= false;
+            }
+        }
+        return b ;
     }
 
 

@@ -10,8 +10,8 @@
     <color name="colorWhiteSecondary">#EFF0EF</color>
 
 
-    <color name="colorBlackForHeaderTvs">#000</color>
-    <color name="colorBlackForSubHeaderTvs">#141414</color>
+    <color name="colorBlackForHeaderTvs">#111111</color>
+    <color name="colorBlackForSubHeaderTvs">#161616</color>
     <color name="colorGrayForHeaderTvs">#A60C0C0C</color>
     <color name="colorLightGrayForSubHeaderTvs">#A6222222</color>
     <color name="colorLightGrayForSubSubHeaderTvs">#A64E4D4D</color>

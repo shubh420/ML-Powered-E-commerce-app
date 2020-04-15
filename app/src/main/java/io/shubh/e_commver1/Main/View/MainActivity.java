@@ -20,7 +20,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,14 +34,12 @@ import java.util.ArrayList;
 
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
-import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
-import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.PaymentFragment;
+import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SellerConfirmationFragment;
@@ -439,14 +436,23 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
     @Override
     public void onPaymentSuccess(String s) {
+        try {
             PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
             fragment.onPaymentSuccessCallbackFromMainActivty(s);
+        } catch (Error e) {
+            Log.e("###", "onPaymentSuccess: "+e.getMessage() );
+        }
     }
 
     @Override
     public void onPaymentError(int i, String s) {
+        try {
             PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
             fragment.onPaymentFailiureCallbackFromMainActivty(s);
+        } catch (Error e) {
+            Log.e("###", "onPaymentSuccess: "+e.getMessage() );
+
+        }
 
     }
 

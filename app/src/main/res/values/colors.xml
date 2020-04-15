@@ -24,4 +24,7 @@
     <color name="colorTransparent">#00ffffff</color>
     <color name="colorBlur">#46111111</color>
 
+
+    <color name="colorGreen">#388E3C</color>
+    <color name="colorRed">#D32F2F</color>
 </resources>

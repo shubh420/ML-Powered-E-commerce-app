@@ -31,9 +31,8 @@ import io.shubh.e_commver1.AddressSelectionPage.Interactor.AddressSelectionInter
 import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresenterImplt;
 import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresenter;
 import io.shubh.e_commver1.Models.AdressItem;
-import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.PaymentFragment;
+import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 
 
@@ -289,7 +288,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
 
                         selectedAdressItem= addressItemlist.get(finalI);
                         btContinue.setEnabled(true);
-               //         iv.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorSecondary), android.graphics.PorterDuff.Mode.SRC_IN);
+                       iv.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorSecondary), android.graphics.PorterDuff.Mode.SRC_IN);
                    //     iv.setTag("ic_check_svg");
 
                     }
@@ -330,7 +329,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
             RelativeLayout rlContainingOtherTv = (RelativeLayout) llContainerFrAddressItems.getChildAt(i);
             ImageView iv = (ImageView) rlContainingOtherTv.findViewById(R.id.iv_ctgr_indicator);
                 iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_radio_button_unchecked_svg));
-       //     iv.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorLightGrayForSubHeaderTvs), android.graphics.PorterDuff.Mode.SRC_IN);
+            iv.setColorFilter(ContextCompat.getColor(getContext(), R.color.colorLightGrayForSubHeaderTvs), android.graphics.PorterDuff.Mode.SRC_IN);
 
         }
     }

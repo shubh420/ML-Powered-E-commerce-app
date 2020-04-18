@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -45,11 +46,24 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
         setContentView(R.layout.activity_splash);
 
 
+        //todo-when the app is open and then the view bt of notif is clicked then this activty opens but it doesnt load further ..so fix that
+        Bundle extras = getIntent().getExtras();
+        String type;
+        if (extras != null) {
+            type = extras.getString("type");
+            Log.i("##", "splash  from notif ..type is "+type);
+            // and get whatever type user account id is
+        }else{
+            Log.i("##", "splash not from notif ");
+        }
+
+
         DoUiWork();
 
         //always do presenter related work at last in Oncreate
         mPresenter = new SplashPresenterImplt(this, new SplashInteractorImplt() {
         });
+
 
 
     }

@@ -23,7 +23,7 @@ import io.shubh.e_commver1.Welcome.Interactor.WelcomeInteractorImplt;
 import io.shubh.e_commver1.Welcome.Presenter.WelcomePresenter;
 import io.shubh.e_commver1.Welcome.Presenter.WelcomePresenterImplt;
 
-public class WelcomeActivity extends AppCompatActivity implements WelcomeView {
+public class  WelcomeActivity extends AppCompatActivity implements WelcomeView {
 
     private String TAG = "WelcomeActivity";
 

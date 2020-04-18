@@ -118,18 +118,33 @@ public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteracto
                                     public void onFinished(boolean callbackResultOfTheCheck) {
                                         if (callbackResultOfTheCheck == true) {
                                             mView.updateProgressTv(70);
-                                            mInteractor.updateLastOrderIdWithArgAsCallbackFunction(finalOrderId,new PaymentInteractor.SeparateCallbackToPresnterAfterUpdatingLastOrdreId() {
+                                            mInteractor.updateLastOrderIdWithArgAsCallbackFunction(finalOrderId, new PaymentInteractor.SeparateCallbackToPresnterAfterUpdatingLastOrdreId() {
                                                 @Override
                                                 public void onFinished(boolean callbackResultOfTheCheck) {
                                                     if (callbackResultOfTheCheck == true) {
                                                         mView.updateProgressTv(90);
-                                                        mInteractor.deleteAllBagItemsWithArgAsCallbackFunction( order ,new PaymentInteractor.SeparateCallbackToPresnterAfterDeletingBagItems() {
+                                                        mInteractor.deleteAllBagItemsWithArgAsCallbackFunction(order, new PaymentInteractor.SeparateCallbackToPresnterAfterDeletingBagItems() {
                                                             @Override
                                                             public void onFinished(boolean callbackResultOfTheCheck) {
 
                                                                 if (callbackResultOfTheCheck == true) {
-                                                                    mView.showProgressBar(false);
-                                                                    mView.showSuccessScreen(true);
+
+                                                                    //since order plced successfully I will just send an notif to seller.
+                                                                    //I aint not using a on finished callback ..because it is not required and it will happen in background tho in thread
+                                                                    mInteractor.sendNotifToSellerWithArgAsCallbackFunction(order, new PaymentInteractor.SeparateCallbackToPresnterAfterSendNotifToSeller() {
+                                                                        @Override
+                                                                        public void onFinished(boolean callbackResultOfTheCheck) {
+
+                                                                          if(callbackResultOfTheCheck==true) {
+                                                                              mView.showProgressBar(false);
+                                                                              mView.showSuccessScreen(true);
+                                                                          }else {
+                                                                              mView.showToast("Some problem Occured");
+                                                                              mView.switchActivity(1);
+                                                                          }
+                                                                        }
+                                                                    });
+
 
                                                                 } else {
                                                                     mView.showToast("Some problem Occured");

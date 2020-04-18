@@ -1,9 +1,15 @@
 package io.shubh.e_commver1.Main.View;
 
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -19,6 +25,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.razorpay.PaymentResultListener;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
@@ -43,6 +51,7 @@ import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SellerConfirmationFragment;
+import io.shubh.e_commver1.Splash.View.SplashActivity;
 import io.shubh.e_commver1.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForMainActivity;
@@ -87,6 +96,9 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
 
     }
+
+
+
 
     @Override
     public void loadtheUI() {

@@ -2,6 +2,7 @@ package io.shubh.e_commver1;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
@@ -11,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -22,8 +28,8 @@ import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
  * A simple {@link Fragment} subclass.
  */
 public class SellerConfirmationFragment extends Fragment {
-//this fragment doesnt have factory methods like ''newinstance' method ..and bundle args passed
-View containerViewGroup;
+    //this fragment doesnt have factory methods like ''newinstance' method ..and bundle args passed
+    View containerViewGroup;
 
     public SellerConfirmationFragment() {
         // Required empty public constructor
@@ -34,30 +40,46 @@ View containerViewGroup;
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        containerViewGroup =inflater.inflate(R.layout.fragment_seller_confirmation, container, false);
+        containerViewGroup = inflater.inflate(R.layout.fragment_seller_confirmation, container, false);
 
         attachOnBackBtPressedlistener();
 
 
-        Button btLater =(Button)containerViewGroup.findViewById(R.id.bt_later);
+        Button btLater = (Button) containerViewGroup.findViewById(R.id.bt_later);
         btLater.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                getFragmentManager().beginTransaction()
-                        //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, new SellerDashboardFragment())
-                        .commit();
+                //Todo- this subscription below is invoked each time seller confirmation fragment is open
+                //todo -so make the user become a seller for one time opnly...in the future
+                //since the user has chose to become seller ..we need it to be subscribed to the notification meant for sellers
+                FirebaseMessaging.getInstance().subscribeToTopic("notificationsForSellers").addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        getFragmentManager().beginTransaction()
+                                //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
+                                .add(R.id.drawerLayout, new SellerDashboardFragment())
+                                .commit();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "some thing went wrong", Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
 
             }
         });
 
-        ImageButton btCloseFrag =(ImageButton)containerViewGroup.findViewById(R.id.btCloseFrag);
+        ImageButton btCloseFrag = (ImageButton) containerViewGroup.findViewById(R.id.btCloseFrag);
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-            onBackButtonPressed();
+                onBackButtonPressed();
 
             }
         });

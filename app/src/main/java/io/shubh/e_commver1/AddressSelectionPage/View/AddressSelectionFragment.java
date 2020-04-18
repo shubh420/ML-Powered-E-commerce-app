@@ -62,6 +62,8 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
         // Required empty public constructor
     }
 
+    //TODO-id the address list is empty then on clicking the continue button ..doesnt show any toast
+    //TODO- also add a  toast of
 
     public void setLocalVariables(boolean isThisFragCalledFromBagItemsFrag, Order order) {
         this.isThisFragCalledFromBagItemsFrag = isThisFragCalledFromBagItemsFrag;

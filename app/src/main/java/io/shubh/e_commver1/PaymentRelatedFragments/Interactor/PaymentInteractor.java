@@ -35,6 +35,10 @@ public interface PaymentInteractor {
 
         void onFinished(boolean callbackResultOfTheCheck);
     }
+    interface SeparateCallbackToPresnterAfterSendNotifToSeller{
+
+        void onFinished(boolean callbackResultOfTheCheck);
+    }
 
 
     void init(CallbacksToPresnter mPresenter);
@@ -44,6 +48,7 @@ public interface PaymentInteractor {
     void setSubItemsInsubCollectionWithArgAsCallbackFunction(int orderOfCall, Order order, ArrayList<Order.SubOrderItem> subOrderItems, SeparateCallbackToPresnterAfterUploadingSubCollections l);
     void updateLastOrderIdWithArgAsCallbackFunction(String finalOrderId, SeparateCallbackToPresnterAfterUpdatingLastOrdreId l);
     void deleteAllBagItemsWithArgAsCallbackFunction(Order order, SeparateCallbackToPresnterAfterDeletingBagItems l);
+    void sendNotifToSellerWithArgAsCallbackFunction(Order order, SeparateCallbackToPresnterAfterSendNotifToSeller l);
 
 }
 

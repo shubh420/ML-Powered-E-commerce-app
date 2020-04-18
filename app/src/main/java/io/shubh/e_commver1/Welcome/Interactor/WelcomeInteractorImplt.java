@@ -19,12 +19,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.shubh.e_commver1.MyFirebaseMessagingService;
+
 public class WelcomeInteractorImplt implements WelcomeInteractor {
 
     FirebaseFirestore db ;
     CallbacksToPresnter mPresenter;
-    String TAG ="&&&&";
+    String TAG ="WelcomeInteractorImplt";
 
+
+    @Override
+    public void init(CallbacksToPresnter mPresenter) {
+        db = FirebaseFirestore.getInstance();
+        this.mPresenter =mPresenter;
+    }
 
     @Override
     public void push_the_uid_to_users_node(Context context) {
@@ -44,13 +52,32 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
                         //user has alraedy used logged to this app in past
                         Log.d(TAG, "Document exists!");
 
-                        mPresenter.onFinishedPushingTheUidToUsersNode();
+                        //storing the token (on every login) of user from local storage in case if it would have refresged
+                        db = FirebaseFirestore.getInstance();
+                        Map<String, Object> userMap = new HashMap<>();
+                        userMap.put("token", MyFirebaseMessagingService.getToken(context));
+                        db.collection("users")
+                                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .update(userMap)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                                mPresenter.onFinishedPushingTheUidToUsersNode();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG, "onFailure: "+"of storing the token on login ");
+                            }
+                        });
+
+
 
 
                     } else {
 
                         //user is first time login
-
                         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(context);
 
                         Log.d(TAG, "user does not exist!");
@@ -59,6 +86,8 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
                         user_node_data.put("uid", currentFirebaseUser.getUid());
                         user_node_data.put("name", acct.getDisplayName());
                         user_node_data.put("email", acct.getEmail());
+                        //storing the token online after retriving it from local storage
+                        user_node_data.put("token", MyFirebaseMessagingService.getToken(context));
                         //below value is false by default
                         user_node_data.put("is a seller also ?", false);
 
@@ -88,11 +117,7 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
 
     }
 
-    @Override
-    public void init(CallbacksToPresnter mPresenter) {
-        db = FirebaseFirestore.getInstance();
-        this.mPresenter =mPresenter;
-    }
+
 
  /*   @Override
     public void checkSomethingInDatabase() {

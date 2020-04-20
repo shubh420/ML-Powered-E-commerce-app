@@ -1,4 +1,7 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.Utils;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -12,7 +15,5 @@ public final class StaticClassForGlobalInfo {
     public static String UserEmail;
     public static String UId;
 
-    public static boolean isLoggedIn =false;
-
-    public static ArrayList<Category> categoriesList ;
-    }
+    public static ArrayList<Category> categoriesList;
+}

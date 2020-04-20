@@ -60,6 +60,80 @@
             android:orientation="vertical"
             android:padding="5dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="5dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="2dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="0dp"
+                    android:text="Thu,Feb 27,2020"
+                    android:textColor="#779C57"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="0dp"
+                    android:text="Welcome Back!"
+                    android:textColor="#4A7227"
+                    android:textSize="25sp"
+                    android:textStyle="bold" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/view2"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:elevation="0dp"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    app:cardCornerRadius="40dp"
+                    android:layout_marginRight="5dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:srcCompat="@drawable/profile_avatar_placeholder_large" />
+                </androidx.cardview.widget.CardView>
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="8dp"
+                        android:shape="ring"
+                        app:cardCornerRadius="40dp"
+                        app:background="@color/colorTransparent">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/edit_bt"
+                            android:tint="@color/colorSecondary"
+                           android:padding="1dp"
+                            />
+                    </androidx.cardview.widget.CardView>
+
+                </RelativeLayout>
+            </LinearLayout>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv1"
@@ -160,6 +234,14 @@
                         android:textColor="@color/colorBlackForSubHeaderTvs"
                         android:textSize="20sp"
                         android:textStyle="bold" />
+                    <ProgressBar
+                        android:id="@+id/progressBarFrTrnsctSummryTvs"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="10dp"
+                        android:indeterminateTint="@color/colorSecondary"
+                        android:visibility="visible" />
 
 
                     <HorizontalScrollView
@@ -176,11 +258,14 @@
                             android:paddingBottom="0dp">
 
                             <androidx.cardview.widget.CardView
+                                android:id="@+id/cvNewOrderBt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
                                 android:elevation="10dp"
-                                app:cardCornerRadius="10dp">
+                                app:cardCornerRadius="10dp"
+                                android:foreground="?android:attr/selectableItemBackground"
+                                >
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
@@ -199,6 +284,7 @@
                                         android:textSize="15sp" />
 
                                     <TextView
+                                        android:id="@+id/newOrderTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@id/tvText1"
@@ -212,6 +298,7 @@
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:id="@+id/cvProcessedBt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -235,6 +322,7 @@
                                         android:textSize="15sp" />
 
                                     <TextView
+                                        android:id="@+id/processedOrederTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@id/tvText1"
@@ -248,6 +336,7 @@
                             </androidx.cardview.widget.CardView>
 
                             <androidx.cardview.widget.CardView
+                                android:id="@+id/cvReturnedBt"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_margin="5dp"
@@ -271,6 +360,7 @@
                                         android:textSize="15sp" />
 
                                     <TextView
+                                        android:id="@+id/returnedOrderTv"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@id/tvText1"
@@ -293,9 +383,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
-                android:padding="10dp"
-                android:layout_marginTop="20dp">
+                android:padding="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -318,6 +408,7 @@
         android:id="@+id/cl_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <View
             android:id="@+id/touch_to_dismiss_bottom_sheet_dim_background"
             android:layout_width="match_parent"
@@ -327,9 +418,7 @@
             android:visibility="gone" />
 
 
-        <include
-            layout="@layout/bottom_sheet_fr_item_lists_fr_seller_dashboard"
-            />
+        <include layout="@layout/bottom_sheet_fr_item_lists_fr_seller_dashboard" />
 
         <!--    <androidx.cardview.widget.CardView
                 android:id="@+id/cv_container_loaading_iv"

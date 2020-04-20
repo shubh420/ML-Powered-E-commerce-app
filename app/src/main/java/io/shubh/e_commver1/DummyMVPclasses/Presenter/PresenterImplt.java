@@ -1,20 +1,7 @@
 package io.shubh.e_commver1.DummyMVPclasses.Presenter;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.util.Log;
-
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-
 import io.shubh.e_commver1.DummyMVPclasses.Interactor.Interactor;
-
 import io.shubh.e_commver1.DummyMVPclasses.View.View;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 public class PresenterImplt implements Presenter, Interactor.CallbacksToPresnter {
 

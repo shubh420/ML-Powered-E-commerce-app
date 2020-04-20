@@ -11,6 +11,8 @@ public class Order implements Serializable {
     //below fields are the one which are used in app but are not sent to database
     @Exclude
     ArrayList<BagItem> bagItems;
+    @Exclude
+    ArrayList<SubOrderItem> subOrderItems;
 
     //------------------------------------------
     //below are sent to database
@@ -23,6 +25,9 @@ public class Order implements Serializable {
     String orderId;
     String buyerId;
     String transactionId;
+    String totalPrice;
+
+    ArrayList<String> sellersInOrder;
 
 
     //if below var is 2 -that means ..order have payment done
@@ -39,21 +44,60 @@ public class Order implements Serializable {
     //this class objects will be stored in the sub collection inside the order document
     public static class SubOrderItem {
 
-        String itemAmount, itemId ,sellerId ,varietyName ,imageUrl , buyerId;;
+        String itemAmount, itemId ,sellerId ,varietyName ,imageUrl , buyerId ,itemPrice ,itemName ;
         String selectedVarietyName = "null";
         long timeOfPackagedOfItem;
         long timeOfShippedOfItem;
         long timeOfDeliveryOfItem;
-        long timeOfCancellationOfItem;
+        long timeOfCancellationOfItemBySeller;
+        long timeOfCancellationOfItemByBuyer;
+        long timeOfReturnOfItem;
+
+        @Exclude
+        String parentOrderId;//parent order id ..//this field aint stored online
+        @Exclude
+        long timeOfCreationOfOrder;
+        @Exclude
+        AdressItem adressItem;
 
         //if below var is 2 -that means ..order have payment done
         //if below var is 3 -that means ..order is packaged and ready to be shipped .
         //if below var is 4 -that means ..order is shipped .
         //if below var is 5 -that means ..order is delivered .
         //if below var is 6 -that means ..order is cancelled by seller .
+        //if below var is 7 -that means ..order is returned by buyer .
+        //if below var is 8 -that means ..order is cancelled by buyer after pacing the order and before the order is shipped .
         //below var by default is 2 becuase ..this class objects will be created once the payment is done.
         int statusOfOrder = 2;
 
+        @Exclude
+        public String getParentOrderId() {
+            return parentOrderId;
+        }
+        @Exclude
+        public void setParentOrderId(String parentOrderId) {
+            this.parentOrderId = parentOrderId;
+        }
+
+        @Exclude
+        public long getTimeOfCreationOfOrder() {
+            return timeOfCreationOfOrder;
+        }
+        @Exclude
+        public void setTimeOfCreationOfOrder(long timeOfCreationOfOrder) {
+            this.timeOfCreationOfOrder = timeOfCreationOfOrder;
+        }
+
+        @Exclude
+        public AdressItem getAdressItem() {
+            return adressItem;
+        }
+        @Exclude
+        public void setAdressItem(AdressItem adressItem) {
+            this.adressItem = adressItem;
+        }
+
+        //----------------------------------------------------------
 
         @PropertyName("ItemAmount")
         public String getItemAmount() {
@@ -103,12 +147,12 @@ public class Order implements Serializable {
         }
 
         @PropertyName("TimeOfCancellationOfItem")
-        public long getTimeOfCancellationOfItem() {
-            return timeOfCancellationOfItem;
+        public long getTimeOfCancellationOfItemBySeller() {
+            return timeOfCancellationOfItemBySeller;
         }
         @PropertyName("TimeOfCancellationOfItem")
-        public void setTimeOfCancellationOfItem(long timeOfCancellationOfItem) {
-            this.timeOfCancellationOfItem = timeOfCancellationOfItem;
+        public void setTimeOfCancellationOfItemBySeller(long timeOfCancellationOfItemBySeller) {
+            this.timeOfCancellationOfItemBySeller = timeOfCancellationOfItemBySeller;
         }
 
         @PropertyName("StatusOfOrder")
@@ -160,12 +204,46 @@ public class Order implements Serializable {
         public String getBuyerId() {
             return buyerId;
         }
-
         @PropertyName("buyer id")
         public void setBuyerId(String buyerId) {
             this.buyerId = buyerId;
         }
 
+        @PropertyName("item price")
+        public String getItemPrice() {
+            return itemPrice;
+        }
+        @PropertyName("item price")
+        public void setItemPrice(String itemPrice) {
+            this.itemPrice = itemPrice;
+        }
+
+        @PropertyName("item name")
+        public String getItemName() {
+            return itemName;
+        }
+        @PropertyName("item name")
+        public void setItemName(String itemName) {
+            this.itemName = itemName;
+        }
+
+        @PropertyName("TimeOfCancellationOfItemByBuyer")
+        public long getTimeOfCancellationOfItemByBuyer() {
+            return timeOfCancellationOfItemByBuyer;
+        }
+        @PropertyName("TimeOfCancellationOfItemByBuyer")
+        public void setTimeOfCancellationOfItemByBuyer(long timeOfCancellationOfItemByBuyer) {
+            this.timeOfCancellationOfItemByBuyer = timeOfCancellationOfItemByBuyer;
+        }
+
+        @PropertyName("TimeOfReturnOfItem")
+        public long getTimeOfReturnOfItem() {
+            return timeOfReturnOfItem;
+        }
+        @PropertyName("TimeOfReturnOfItem")
+        public void setTimeOfReturnOfItem(long timeOfReturnOfItem) {
+            this.timeOfReturnOfItem = timeOfReturnOfItem;
+        }
     }
 
     @Exclude
@@ -177,16 +255,26 @@ public class Order implements Serializable {
         this.bagItems = bagItems;
     }
 
-    public void setAdressItem(AdressItem adressItem) {
-        this.adressItem = adressItem;
+    @Exclude
+    public ArrayList<SubOrderItem> getSubOrderItems() {
+        return subOrderItems;
     }
-
-    public AdressItem getAdressItem() {
-        return adressItem;
+    //I should have used setSubOrderItems while uploading order item..but i went without it..but nayway code is kinds clean without it..but for getting order item I need getSubOrder...
+    @Exclude
+    public void setSubOrderItems(ArrayList<SubOrderItem> subOrderItems) {
+        this.subOrderItems = subOrderItems;
     }
 
     //--------------------------------------------------------------------------------
 
+    @PropertyName("address item")
+    public void setAdressItem(AdressItem adressItem) {
+        this.adressItem = adressItem;
+    }
+    @PropertyName("address item")
+    public AdressItem getAdressItem() {
+        return adressItem;
+    }
 
     @PropertyName("status of order")
     public int getStatusOfOrder() {
@@ -264,4 +352,22 @@ public class Order implements Serializable {
     }
 
 
+    @PropertyName("total price")
+    public String getTotalPrice() {
+        return totalPrice;
+    }
+    @PropertyName("total price")
+    public void setTotalPrice(String totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+
+    @PropertyName("sellers in order")
+    public ArrayList<String> getSellersInOrder() {
+        return sellersInOrder;
+    }
+    @PropertyName("sellers in order")
+    public void setSellersInOrder(ArrayList<String> sellersInOrder) {
+        this.sellersInOrder = sellersInOrder;
+    }
 }

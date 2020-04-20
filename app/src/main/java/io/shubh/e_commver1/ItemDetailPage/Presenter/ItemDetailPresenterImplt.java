@@ -4,7 +4,7 @@ import io.shubh.e_commver1.ItemDetailPage.Interactor.ItemDetailInteractor;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailView;
 import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.ItemsForSale;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class ItemDetailPresenterImplt implements ItemDetailPresenter, ItemDetailInteractor.CallbacksToPresnter {
 

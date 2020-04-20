@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.shubh.e_commver1.Models.AdressItem;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class AddressSelectionInteractorImplt implements AddressSelectionInteractor {
 

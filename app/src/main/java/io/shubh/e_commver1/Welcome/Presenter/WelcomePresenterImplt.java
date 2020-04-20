@@ -20,7 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Welcome.Interactor.WelcomeInteractor;
 import io.shubh.e_commver1.Welcome.View.WelcomeView;
 
@@ -183,7 +183,7 @@ welcomeView.showProgressBar(false);
             StaticClassForGlobalInfo.UId  = currentFirebaseUser.getUid();
             StaticClassForGlobalInfo.UserEmail  = acct.getEmail();
             StaticClassForGlobalInfo.UserName  =  acct.getDisplayName();
-            StaticClassForGlobalInfo.isLoggedIn  =  true;
+           // StaticClassForGlobalInfo.isLoggedIn  =  true;
 
             welcomeView.showProgressBar(false);
         }
@@ -194,7 +194,7 @@ welcomeView.showProgressBar(false);
 
     @Override
     public void onClickingNotNowButton() {
-        StaticClassForGlobalInfo.isLoggedIn =false;
+       // StaticClassForGlobalInfo.isLoggedIn =false;
 
         welcomeView.switchActivity(1);
     }

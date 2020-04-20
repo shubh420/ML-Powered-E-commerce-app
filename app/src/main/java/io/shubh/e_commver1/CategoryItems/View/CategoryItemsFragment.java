@@ -33,7 +33,7 @@ import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenterImplt;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 
 /**

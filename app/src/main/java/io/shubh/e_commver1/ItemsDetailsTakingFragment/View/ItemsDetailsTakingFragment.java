@@ -44,7 +44,7 @@ import io.shubh.e_commver1.ItemsDetailsTakingFragment.Presenter.ItemsDetailsTaki
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.Presenter.ItemsDetailsTakingPresenterImplt;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 
 // ItemsDetailsTaking

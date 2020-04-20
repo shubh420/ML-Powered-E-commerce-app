@@ -90,6 +90,8 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
                         user_node_data.put("token", MyFirebaseMessagingService.getToken(context));
                         //below value is false by default
                         user_node_data.put("is a seller also ?", false);
+                        //below i m giving sellerbusiness a default name ..even when now user is not a seller now..I m giving here now just in case user become  seller then a default name for him ..//todo ..ask for seller name at sellelr confiramtion ..if this app is ever used for actual business
+                        user_node_data.put("seller or business name",acct.getDisplayName() );
 
                         db.collection("users").document(currentFirebaseUser.getUid())
                                 .set(user_node_data)

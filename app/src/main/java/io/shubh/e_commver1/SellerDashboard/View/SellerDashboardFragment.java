@@ -1,8 +1,10 @@
 package io.shubh.e_commver1.SellerDashboard.View;
 
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.KeyEvent;
@@ -11,17 +13,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import java.util.ArrayList;
 
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
+import io.shubh.e_commver1.Models.Order;
+import io.shubh.e_commver1.NewOrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerConfirmationFragment;
+import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractorImplt;
+import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenter;
+import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenterImplt;
 
 
-public class SellerDashboardFragment extends Fragment {
+public class SellerDashboardFragment extends Fragment  implements SellerDashboardView{
 
     View containerViewGroup;
+    LayoutInflater inflater;
+    SellerDashboardPresenter mPresenter;
 
     public SellerDashboardFragment() {
         // Required empty public constructor
@@ -33,9 +44,18 @@ public class SellerDashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        this.inflater=inflater;
          containerViewGroup= inflater.inflate(R.layout.fragment_seller_dashboard, container, false);
-
+        mPresenter = new SellerDashboardPresenterImplt(this, new SellerDashboardInteractorImplt() {
+        });
  //------------------------------------
+   doUiWork();
+mPresenter.getSellerData();
+
+        return containerViewGroup;
+    }
+
+    private void doUiWork() {
         attachOnBackBtPressedlistener();
 
         Button btAddNewItem = (Button) containerViewGroup.findViewById(R.id.btAddNewItem);
@@ -62,10 +82,53 @@ public class SellerDashboardFragment extends Fragment {
             }
         });
 
-
-
-        return containerViewGroup;
     }
+
+    @Override
+    public void updateTransactionSummaryTvs(ArrayList<Order.SubOrderItem> subOrderItems, int newOrders, int processed, int returnedOrders) {
+
+       TextView newOrderTv =(TextView)containerViewGroup.findViewById(R.id.newOrderTv);
+       TextView processedOrederTv =(TextView)containerViewGroup.findViewById(R.id.processedOrederTv);
+       TextView returnedOrderTv =(TextView)containerViewGroup.findViewById(R.id.returnedOrderTv);
+
+        newOrderTv.setText(String.valueOf(newOrders));
+        processedOrederTv.setText(String.valueOf(processed));
+        returnedOrderTv.setText(String.valueOf(returnedOrders));
+
+
+        //since the data has been retrived ..now we can open the new order list
+        CardView cvNewOrderBt =(CardView)containerViewGroup.findViewById(R.id.cvNewOrderBt);
+        CardView cvProcessedBt =(CardView)containerViewGroup.findViewById(R.id.cvProcessedBt);
+        CardView cvReturnedBt =(CardView)containerViewGroup.findViewById(R.id.cvReturnedBt);
+
+        cvNewOrderBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                NewOrderListFrSellerFragment newOrderListFrSellerFragment = new NewOrderListFrSellerFragment();
+                newOrderListFrSellerFragment.setLocalvariables(subOrderItems);
+
+                getFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, newOrderListFrSellerFragment)
+                        .commit();
+            }
+        });
+
+        cvProcessedBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        cvReturnedBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+    }
+
 
 
     //below function is for catching back button pressed
@@ -97,5 +160,40 @@ public class SellerDashboardFragment extends Fragment {
         //now closing this activty
         getFragmentManager().beginTransaction().remove(SellerDashboardFragment.this).commit();
     }
+
+    @Override
+    public void showProgressBar(boolean b) {
+
+        ProgressBar progressBarFrTrnsctSummryTvs =(ProgressBar)containerViewGroup.findViewById(R.id.progressBarFrTrnsctSummryTvs);
+        if(b==true) {
+            progressBarFrTrnsctSummryTvs.setVisibility(View.VISIBLE);
+        }else {
+            progressBarFrTrnsctSummryTvs.setVisibility(View.GONE);
+        }
+    }
+
+
+    @Override
+    public void switchActivity(int i) {
+
+    }
+
+    @Override
+    public Context getContext(boolean getActvityContext) {
+        return null;
+    }
+
+
+
+    @Override
+    public void ShowSnackBarWithAction(String msg, String actionName) {
+
+    }
+
+    @Override
+    public void showToast(String msg) {
+
+    }
+
 
 }

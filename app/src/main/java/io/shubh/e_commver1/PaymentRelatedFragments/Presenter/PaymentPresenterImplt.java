@@ -13,13 +13,14 @@ import java.util.ArrayList;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.PaymentRelatedFragments.Interactor.PaymentInteractor;
 import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentView;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteractor.CallbacksToPresnter {
 
     private PaymentView mView;
     private PaymentInteractor mInteractor;
     String TAG = "####";
+    int totalPaymentAmount;
 
     public PaymentPresenterImplt(PaymentView mView, PaymentInteractor mSplashInteractor) {
         this.mView = mView;
@@ -33,6 +34,7 @@ public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteracto
 
     @Override
     public void startPayment(int totalPaymentAmount, Context context) {
+        this.totalPaymentAmount =totalPaymentAmount;
 /**
  * You need to pass current activity in order to let Razorpay create CheckoutActivity
  */
@@ -73,6 +75,13 @@ public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteracto
         order.setBuyerId(StaticClassForGlobalInfo.UId);
         order.setTimeOfPaymentSuccessOfOrder(System.currentTimeMillis() / 1000L);
         order.setTransactionId(s);
+        order.setTotalPrice(String.valueOf(totalPaymentAmount));
+        //setting seller in order attribute of order object
+        ArrayList<String> sellersInOrder = new ArrayList<>();
+        for(int i=0;i<order.getBagItems().size();i++){
+            sellersInOrder.add(order.getBagItems().get(i).getItemObject().getSeller_id());
+        }
+        order.setSellersInOrder(sellersInOrder);
 
         //   mView.showSuccessScreen(true);
         mView.showProgressBar(true);
@@ -107,7 +116,9 @@ public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteracto
                                     subOrderItem.setStatusOfOrder(2);
                                     subOrderItem.setImageUrl(order.getBagItems().get(i).getItemObject().getListOfImageURLs().get(0));
                                     subOrderItem.setSellerId(order.getBagItems().get(i).getItemObject().getSeller_id());
+                                    subOrderItem.setItemPrice(order.getBagItems().get(i).getItemObject().getItem_price());
                                     subOrderItem.setBuyerId(StaticClassForGlobalInfo.UId);
+                                    subOrderItem.setItemName(order.getBagItems().get(i).getItemObject().getName());
 
 
                                     subOrderItems.add(subOrderItem);

@@ -8,7 +8,9 @@ public interface SellerDashboardPresenter {
 
    // void onGettingThegoogleSignInResult(int code, int requestCode, Intent data);
 
-     void LoginRelatedWork();
+     //void LoginRelatedWork();
+
+    void getSellerData();
 
     //void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath, boolean ifItsALoadMorecall);
 

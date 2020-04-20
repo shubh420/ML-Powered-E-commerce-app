@@ -360,6 +360,38 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/id_fr_nav_bt_my_orders"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="2dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_order_svg"
+                android:tint="@color/colorPrimary"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="3"
+                android:text="My Orders"
+                android:textColor="@android:color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/id_fr_nav_bt_cart"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

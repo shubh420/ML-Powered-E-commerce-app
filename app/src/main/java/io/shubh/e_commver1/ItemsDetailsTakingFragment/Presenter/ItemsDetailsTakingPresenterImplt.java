@@ -8,7 +8,7 @@ import java.util.List;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.Interactor.ItemsDetailsTakingInteractor;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingView;
 import io.shubh.e_commver1.Models.ItemsForSale;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPresenter, ItemsDetailsTakingInteractor.CallbacksToPresnter {
 

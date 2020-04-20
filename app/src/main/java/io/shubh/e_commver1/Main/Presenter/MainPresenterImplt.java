@@ -2,6 +2,8 @@ package io.shubh.e_commver1.Main.Presenter;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -12,7 +14,8 @@ import io.shubh.e_commver1.Main.Interactor.MainInteractor;
 import io.shubh.e_commver1.Main.View.MainView;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.Utils;
 
 public class MainPresenterImplt implements MainPresenter, MainInteractor.CallbacksToPresnter {
 
@@ -123,7 +126,7 @@ public class MainPresenterImplt implements MainPresenter, MainInteractor.Callbac
 
         mainView.showProgressBarOfDrwrBtSwitchToSeller(true);
 
-        if (StaticClassForGlobalInfo.isLoggedIn == true){
+        if (Utils.isUserLoggedIn() == true){
 
            mInteractor.checkIfUserisASellerOrNot(new MainInteractor.SeparateCallbackToPresnterAftercheckingIfUserASellerOrNot() {
                @Override

@@ -68,9 +68,6 @@ public class SellerConfirmationFragment extends Fragment {
 
                     }
                 });
-
-
-
             }
         });
 

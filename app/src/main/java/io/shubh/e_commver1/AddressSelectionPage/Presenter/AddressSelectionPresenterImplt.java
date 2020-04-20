@@ -1,13 +1,11 @@
 package io.shubh.e_commver1.AddressSelectionPage.Presenter;
 
-import android.util.Log;
-
 import java.util.List;
 
 import io.shubh.e_commver1.AddressSelectionPage.Interactor.AddressSelectionInteractor;
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionView;
 import io.shubh.e_commver1.Models.AdressItem;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class AddressSelectionPresenterImplt implements AddressSelectionPresenter, AddressSelectionInteractor.CallbacksToPresnter {
 

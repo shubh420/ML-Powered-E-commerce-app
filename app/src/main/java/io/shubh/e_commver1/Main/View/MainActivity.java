@@ -1,15 +1,9 @@
 package io.shubh.e_commver1.Main.View;
 
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,7 +19,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.NotificationCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,10 +31,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.razorpay.PaymentResultListener;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
+import io.shubh.e_commver1.MyOrders.View.MyOrdersFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
@@ -51,8 +44,8 @@ import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SellerConfirmationFragment;
-import io.shubh.e_commver1.Splash.View.SplashActivity;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.Utils;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForMainActivity;
 
@@ -167,13 +160,16 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         });
 
 
-        LinearLayout profileBt = (LinearLayout) findViewById(R.id.id_fr_nav_bt_profile);
-        profileBt.setOnClickListener(new View.OnClickListener() {
+        LinearLayout myOrderBt = (LinearLayout) findViewById(R.id.id_fr_nav_bt_my_orders);
+        myOrderBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                switchActivity(4);
+                if(Utils.isUserLoggedIn()) {
+                    switchActivity(5);
+                }else{
 
+                }
             }
         });
 
@@ -185,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         ImageView iv_fr_icon_button_signin_in_navdr = (ImageView) findViewById(R.id.id_fr_iv_nav_login_icon);
         LinearLayout Login_or_logout_button = (LinearLayout) findViewById(R.id.id_fr_nav_bt_login_or_logout);
 
-        if (StaticClassForGlobalInfo.isLoggedIn == true) {
+        if (Utils.isUserLoggedIn() == true) {
             tv_fr_button_signin_in_navdr.setText("Logout");
             iv_fr_icon_button_signin_in_navdr.setImageResource(R.drawable.logout_icon_);
         } else {
@@ -199,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             @Override
             public void onClick(View view) {
 
-                if (StaticClassForGlobalInfo.isLoggedIn == true) {
+                if (Utils.isUserLoggedIn() == true) {
                     //make user sign out and redirect to welcome screen in case he wants to switch id
 
                     FirebaseAuth.getInstance().signOut();
@@ -266,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
 //Setting up the name ,email in drawer if user is not guest user.......do profile pic later
 
-        if (StaticClassForGlobalInfo.isLoggedIn != false) {
+        if (Utils.isUserLoggedIn() != false) {
             TextView tv_name = (TextView) findViewById(R.id.tv_for_nav_dr_name);
             TextView tv_email = (TextView) findViewById(R.id.tv_for_nav_dr_email);
 
@@ -337,6 +333,13 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
             //animation for sliding activity
             //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        } else if (i == 5) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.drawerLayout, new MyOrdersFragment())
+                    .commit();
+
         }
     }
 

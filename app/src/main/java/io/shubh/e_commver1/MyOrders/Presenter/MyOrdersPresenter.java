@@ -1,6 +1,6 @@
-package io.shubh.e_commver1.Main.Presenter;
+package io.shubh.e_commver1.MyOrders.Presenter;
 
-public interface MainPresenter {
+public interface MyOrdersPresenter {
 
   //  void checkIfAlreadyLoggedIn();
 
@@ -8,8 +8,7 @@ public interface MainPresenter {
 
    // void onGettingThegoogleSignInResult(int code, int requestCode, Intent data);
 
-     void LoginRelatedWork();
+     //void LoginRelatedWork();
 
-     void checkIfUserIsASellerOrNot();
-
+    void getOrderItemsData();
 }

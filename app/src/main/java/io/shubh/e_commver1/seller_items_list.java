@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.shubh.e_commver1.Main.View.MainActivity;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class seller_items_list extends AppCompatActivity {
 

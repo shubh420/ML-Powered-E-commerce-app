@@ -13,10 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.DummyMVPclasses.Interactor.InteractorImplt;
 import io.shubh.e_commver1.DummyMVPclasses.Presenter.Presenter;
 import io.shubh.e_commver1.DummyMVPclasses.Presenter.PresenterImplt;
-import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 

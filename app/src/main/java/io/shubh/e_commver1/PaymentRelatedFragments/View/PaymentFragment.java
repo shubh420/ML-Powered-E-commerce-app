@@ -2,7 +2,6 @@ package io.shubh.e_commver1.PaymentRelatedFragments.View;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.graphics.Matrix;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -27,7 +26,6 @@ import io.shubh.e_commver1.PaymentRelatedFragments.Interactor.PaymentInteractorI
 import io.shubh.e_commver1.PaymentRelatedFragments.Presenter.PaymentPresenter;
 import io.shubh.e_commver1.PaymentRelatedFragments.Presenter.PaymentPresenterImplt;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
 
 
 public class PaymentFragment extends Fragment implements PaymentView {

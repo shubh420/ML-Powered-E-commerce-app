@@ -14,7 +14,7 @@ import com.google.firebase.auth.UserInfo;
 
 import io.shubh.e_commver1.Splash.Interactor.SplashInteractor;
 import io.shubh.e_commver1.Splash.View.Splashview;
-import io.shubh.e_commver1.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class SplashPresenterImplt implements SplashPresenter, SplashInteractor.CallbacksToPresnter {
 
@@ -129,7 +129,7 @@ public class SplashPresenterImplt implements SplashPresenter, SplashInteractor.C
             StaticClassForGlobalInfo.UId  = currentFirebaseUser.getUid();
             StaticClassForGlobalInfo.UserEmail  = acct.getEmail();
             StaticClassForGlobalInfo.UserName  =  acct.getDisplayName();
-            StaticClassForGlobalInfo.isLoggedIn  =  true;
+          //  StaticClassForGlobalInfo.isLoggedIn  =  true;
         }
 
     }

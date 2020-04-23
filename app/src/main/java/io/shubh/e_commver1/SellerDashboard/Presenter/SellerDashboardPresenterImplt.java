@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractor;
 import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardView;
@@ -53,30 +54,66 @@ public class SellerDashboardPresenterImplt implements SellerDashboardPresenter, 
         });
     }
 
+
+
     private void processTheSubOrderListData(ArrayList<Order.SubOrderItem> subOrderItems) {
 
         //to get the dat like amount of newOrders and processed order .i am calculating it from the list
         //of the orders containing this seller item.The Ideal method of doing this is having field of each
         //in user account document online ..and then retrive from there ..TODO -do that next time
         //if this app is used for real urpose
-        int newOrders =0;
+        /*int newOrders =0;
         int processed =0;
-        int returnedOrders =0;
+        int returnedOrders =0;*/
+
+        ArrayList<Order.SubOrderItem> newOrdersList = new ArrayList<>();
+        ArrayList<Order.SubOrderItem> processedList = new ArrayList<>();
+        ArrayList<Order.SubOrderItem> returnedOrdersList = new ArrayList<>();
 
         for(int i =0 ;i<subOrderItems.size() ;i++){
             if(subOrderItems.get(i).getStatusOfOrder()==2 || subOrderItems.get(i).getStatusOfOrder()==3 ||subOrderItems.get(i).getStatusOfOrder()==4 ){
-                newOrders++;
+            //    newOrders++;
+                newOrdersList.add(subOrderItems.get(i));
             }else if(subOrderItems.get(i).getStatusOfOrder()==5){
-                processed++;
-            }else if(subOrderItems.get(i).getStatusOfOrder()==7){
-                returnedOrders++;
+            //    processed++;
+                processedList.add(subOrderItems.get(i));
+            }else if(subOrderItems.get(i).getStatusOfOrder()==7 || subOrderItems.get(i).getStatusOfOrder()==8){
+             //   returnedOrders++;
+                returnedOrdersList.add(subOrderItems.get(i));
             }
         }
 
-        mView.updateTransactionSummaryTvs(subOrderItems ,newOrders ,processed ,returnedOrders);
+        mView.updateTransactionSummaryTvs(subOrderItems ,newOrdersList ,processedList ,returnedOrdersList );
     }
 
 
+    @Override
+    public void getDataForBottomSheet() {
+
+        mInteractor.getSellerUploadedItemsWithArgAsCallback(new SellerDashboardInteractor.SeparateCallbackToPresnterAfterGettingSellerItems() {
+            @Override
+            public void onFinished(boolean callbackResultOfTheCheck, ArrayList<ItemsForSale> list) {
+                if(callbackResultOfTheCheck==true){
+                    //system upadte available ..so throw a dialog asking to download update
+                    if(list.size()!=0){
+
+                        mView.showProgressBar(false);
+                         mView.showItemsInBottomSheet(list);
+
+                    }else{
+                        mView.showProgressBar(false);
+                          mView.showEmptyListMessage();
+                    }
+
+
+                }else{
+                    //system upadte not available ..so continue
+                    mView.showProgressBar(false);
+                    mView.showToast("Some Problem Ocuured");
+                }
+            }
+        });
+    }
   /*  @Override
     public void LoginRelatedWork() {
 

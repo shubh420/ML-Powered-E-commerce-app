@@ -23,18 +23,21 @@ import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchResultsActivity;
+import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
 
 public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
     private Context context;
+    private boolean ifInitiatedFromSelelrdashboard =false;
    /* private CategoryItemsFragment categoryItemsFragment;
     private FragmentActivity activity*/;
 
 
 
-    public ReclrAdapterClassForCtgrItems( Context context, List<ItemsForSale> dataForItems) {
+    public ReclrAdapterClassForCtgrItems( Context context, List<ItemsForSale> dataForItems ,boolean ifInitiatedFromSelelrdashboard) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
+        this.ifInitiatedFromSelelrdashboard=ifInitiatedFromSelelrdashboard;
        /* this.categoryItemsFragment = categoryItemsFragment;
         this.activity = activity;*/
 
@@ -75,6 +78,21 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
 
         Glide.with(context).load(dataForItemArrayList.get(position).getListOfImageURLs().get(0)).centerCrop().into(holder.iv_item_image);
 
+        if( ifInitiatedFromSelelrdashboard ==true){
+            holder.edit_bt.setImageDrawable( context.getDrawable(R.drawable.edit_bt));
+        }
+
+
+        if( ifInitiatedFromSelelrdashboard ==false){
+            holder.edit_bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                }
+            });
+        }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +101,7 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
                itemDetailFragment.passData(dataForItemArrayList.get(position));
 
                 Log.i("!!!!!", context.getClass().getSimpleName());
+                //todo -fix the below scene
                if(context.getClass().getSimpleName().equals("SearchResultsActivity")){
 
                            ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()

@@ -289,6 +289,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.removeAllViews();
 
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(SearchResultsActivity.this);
         recyclerView.setLayoutManager(layoutManager);
 
@@ -298,7 +299,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(SearchResultsActivity.this, list_of_data_objects__for_adapter);
+        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(SearchResultsActivity.this, list_of_data_objects__for_adapter,false);
         recyclerView.setAdapter(adapter);
 
 

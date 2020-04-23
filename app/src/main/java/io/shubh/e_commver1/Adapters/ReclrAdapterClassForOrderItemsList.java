@@ -18,19 +18,22 @@ import java.util.Date;
 import java.util.List;
 
 import io.shubh.e_commver1.Models.Order;
+import io.shubh.e_commver1.MyOrders.View.MyOrdersFragment;
 import io.shubh.e_commver1.R;
 
 public class ReclrAdapterClassForOrderItemsList extends RecyclerView.Adapter<ReclrAdapterClassForOrderItemsList.ViewHolder> {
     private List<Order> dataForItemArrayList;
     private Context context;
+    private MyOrdersFragment myOrdersFragment
     // BagItemsFragment bagItemsFragment;
    /* private CategoryItemsFragment categoryItemsFragment;
     private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForOrderItemsList(Context context, List<Order> dataForItems) {
+    public ReclrAdapterClassForOrderItemsList(MyOrdersFragment myOrdersFragment, Context context, List<Order> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
+        this.myOrdersFragment =myOrdersFragment;
         //    this.bagItemsFragment = bagItemsFragment;
        /* this.categoryItemsFragment = categoryItemsFragment;
         this.activity = activity;*/
@@ -118,6 +121,14 @@ public class ReclrAdapterClassForOrderItemsList extends RecyclerView.Adapter<Rec
                 }
             }
 
+
+            int finalI = i;
+            inflatedVarietyBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myOrdersFragment.onSubOrderItemClick(dataForItemArrayList.get(position) ,finalI);
+                }
+            });
 
         }
 

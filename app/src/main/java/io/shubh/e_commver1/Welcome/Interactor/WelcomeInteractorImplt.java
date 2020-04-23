@@ -1,5 +1,6 @@
 package io.shubh.e_commver1.Welcome.Interactor;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -15,6 +16,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,20 +58,28 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
                         //storing the token (on every login) of user from local storage in case if it would have refresged
                         db = FirebaseFirestore.getInstance();
                         Map<String, Object> userMap = new HashMap<>();
-                        userMap.put("token", MyFirebaseMessagingService.getToken(context));
-                        db.collection("users")
-                                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                .update(userMap)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context,  new OnSuccessListener<InstanceIdResult>() {
                             @Override
-                            public void onSuccess(Void aVoid) {
+                            public void onSuccess(InstanceIdResult instanceIdResult) {
+                                String newToken = instanceIdResult.getToken();
+                                Log.e("newToken",newToken);
+                                userMap.put("token", newToken);
+                                db.collection("users")
+                                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                        .update(userMap)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
 
-                                mPresenter.onFinishedPushingTheUidToUsersNode();
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG, "onFailure: "+"of storing the token on login ");
+                                                mPresenter.onFinishedPushingTheUidToUsersNode();
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.e(TAG, "onFailure: "+"of storing the token on login ");
+                                    }
+                                });
+
                             }
                         });
 
@@ -86,30 +97,38 @@ public class WelcomeInteractorImplt implements WelcomeInteractor {
                         user_node_data.put("uid", currentFirebaseUser.getUid());
                         user_node_data.put("name", acct.getDisplayName());
                         user_node_data.put("email", acct.getEmail());
-                        //storing the token online after retriving it from local storage
-                        user_node_data.put("token", MyFirebaseMessagingService.getToken(context));
-                        //below value is false by default
-                        user_node_data.put("is a seller also ?", false);
-                        //below i m giving sellerbusiness a default name ..even when now user is not a seller now..I m giving here now just in case user become  seller then a default name for him ..//todo ..ask for seller name at sellelr confiramtion ..if this app is ever used for actual business
-                        user_node_data.put("seller or business name",acct.getDisplayName() );
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) context,  new OnSuccessListener<InstanceIdResult>() {
+                            @Override
+                            public void onSuccess(InstanceIdResult instanceIdResult) {
+                                String newToken = instanceIdResult.getToken();
+                                Log.e("newToken",newToken);
 
-                        db.collection("users").document(currentFirebaseUser.getUid())
-                                .set(user_node_data)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Log.i(TAG, "DocumentSnapshot successfully written!");
+                                user_node_data.put("token", newToken);
+                                //below value is false by default
+                                user_node_data.put("is a seller also ?", false);
+                                //below i m giving sellerbusiness a default name ..even when now user is not a seller now..I m giving here now just in case user become  seller then a default name for him ..//todo ..ask for seller name at sellelr confiramtion ..if this app is ever used for actual business
+                                user_node_data.put("seller or business name",acct.getDisplayName() );
 
-                                        mPresenter.onFinishedPushingTheUidToUsersNode();
+                                db.collection("users").document(currentFirebaseUser.getUid())
+                                        .set(user_node_data)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.i(TAG, "DocumentSnapshot successfully written!");
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error writing document", e);
-                                    }
-                                });
+                                                mPresenter.onFinishedPushingTheUidToUsersNode();
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+                            }
+                        });
+
                     }
                 } else {
                     Log.d(TAG, "Failed with: ", task.getException());

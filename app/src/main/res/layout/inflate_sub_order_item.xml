@@ -47,12 +47,22 @@
           android:textSize="18sp"
           android:textStyle="normal"
           android:layout_below="@id/tvTimeOfCreation"/>-->
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Packaging pending"
+        android:layout_below="@id/tvTimeOfCreation"
+        android:textColor="@color/colorRed"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="2dp"/>
 
     <RelativeLayout
         android:id="@+id/rl_container_of_ordered_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvTimeOfCreation"
+        android:layout_below="@id/tvStatus"
         android:layout_marginTop="5dp">
 
         <androidx.cardview.widget.CardView
@@ -95,22 +105,12 @@
                 android:textColor="#000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-
             <TextView
-                android:id="@+id/tvAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/tvItemName"
-                android:text="Ordered by Ravish "
-                android:textColor="#000"
-                android:textSize="18sp"
-                android:textStyle="normal" />
-
-            <TextView
+                android:layout_marginTop="2dp"
                 android:id="@+id/tvVarietyCtgrName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tvAddress"
+                android:layout_below="@id/tvItemName"
                 android:text="Company"
                 android:textColor="@color/colorSecondary"
                 android:textSize="18sp"
@@ -118,6 +118,7 @@
                 android:visibility="gone"/>
 
             <TextView
+                android:layout_marginTop="2dp"
                 android:id="@+id/tvVarietyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -129,67 +130,25 @@
                 android:textStyle="bold"
                 android:visibility="gone"/>
 
+            <TextView
+                android:layout_marginTop="2dp"
+                android:id="@+id/tvAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvVarietyCtgrName"
+                android:text="Ordered by Ravish "
+
+                android:textSize="18sp"
+                android:textStyle="normal" />
+
+
+
 
         </RelativeLayout>
     </RelativeLayout>
 
 
-   <!-- <LinearLayout
-        android:id="@+id/rlContainerFrInlatedItems"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_container_of_ordered_item"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="horizontal"
-            android:paddingTop="10dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="25dp">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_dot_svg" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginLeft="5dp">
-
-                <TextView
-                    android:id="@+id/tvStatus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:text="Order Placed"
-                    android:textColor="@color/colorSecondary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-                <TextView
-                    android:id="@+id/tvTimeOfCreation2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvOrdreNo"
-                    android:layout_marginTop="3dp"
-                    android:text="12:360Am"
-                    android:textSize="13sp" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>-->
 
 
 </RelativeLayout>

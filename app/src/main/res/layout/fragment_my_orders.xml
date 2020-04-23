@@ -74,13 +74,13 @@
                 android:textSize="35sp" />
         </com.google.android.material.appbar.AppBarLayout>
 
-      <!--  <include
-            layout="@layout/shimmer_layout_file_fr_include_in_bag_items_list"
-            android:layout_width="wrap_content"
+        <include
+            layout="@layout/shimmer_layout_file_fr_include_in_my_orders_list"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
--->
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rclrViewFrMyOrdersList"

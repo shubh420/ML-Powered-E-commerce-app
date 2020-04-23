@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,13 +19,16 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
+import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.NewOrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
+import io.shubh.e_commver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.SellerConfirmationFragment;
 import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractorImplt;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenter;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenterImplt;
@@ -82,18 +88,24 @@ mPresenter.getSellerData();
             }
         });
 
+
+        mPresenter.getDataForBottomSheet();
+        ShimmerFrameLayout mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.startShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.VISIBLE);
     }
 
+
     @Override
-    public void updateTransactionSummaryTvs(ArrayList<Order.SubOrderItem> subOrderItems, int newOrders, int processed, int returnedOrders) {
+    public void updateTransactionSummaryTvs(ArrayList<Order.SubOrderItem> subOrderItems, ArrayList<Order.SubOrderItem> newOrdersList, ArrayList<Order.SubOrderItem> processedList, ArrayList<Order.SubOrderItem> returnedOrdersList) {
 
        TextView newOrderTv =(TextView)containerViewGroup.findViewById(R.id.newOrderTv);
        TextView processedOrederTv =(TextView)containerViewGroup.findViewById(R.id.processedOrederTv);
        TextView returnedOrderTv =(TextView)containerViewGroup.findViewById(R.id.returnedOrderTv);
 
-        newOrderTv.setText(String.valueOf(newOrders));
-        processedOrederTv.setText(String.valueOf(processed));
-        returnedOrderTv.setText(String.valueOf(returnedOrders));
+        newOrderTv.setText(String.valueOf(newOrdersList.size()));
+        processedOrederTv.setText(String.valueOf(processedList.size()));
+        returnedOrderTv.setText(String.valueOf(returnedOrdersList.size()));
 
 
         //since the data has been retrived ..now we can open the new order list
@@ -105,7 +117,7 @@ mPresenter.getSellerData();
             @Override
             public void onClick(View view) {
                 NewOrderListFrSellerFragment newOrderListFrSellerFragment = new NewOrderListFrSellerFragment();
-                newOrderListFrSellerFragment.setLocalvariables(subOrderItems);
+                newOrderListFrSellerFragment.setLocalvariables(newOrdersList ,1);
 
                 getFragmentManager().beginTransaction()
                         .add(R.id.drawerLayout, newOrderListFrSellerFragment)
@@ -116,7 +128,12 @@ mPresenter.getSellerData();
         cvProcessedBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                NewOrderListFrSellerFragment newOrderListFrSellerFragment = new NewOrderListFrSellerFragment();
+                newOrderListFrSellerFragment.setLocalvariables(processedList ,2);
 
+                getFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, newOrderListFrSellerFragment)
+                        .commit();
             }
         });
 
@@ -129,6 +146,36 @@ mPresenter.getSellerData();
 
     }
 
+    @Override
+    public void showEmptyListMessage() {
+
+    }
+
+    @Override
+    public void showItemsInBottomSheet(ArrayList<ItemsForSale> list) {
+        ProgressBar progressBarMyOrder = (ProgressBar)containerViewGroup.findViewById(R.id.progressBarMyOrder);
+        TextView tvMyItemsAmount = (TextView)containerViewGroup.findViewById(R.id.tvMyItemsAmount);
+
+        ShimmerFrameLayout mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        mShimmerViewContainer.stopShimmerAnimation();
+        mShimmerViewContainer.setVisibility(View.GONE);
+
+        progressBarMyOrder.setVisibility(View.GONE);
+        tvMyItemsAmount.setVisibility(View.VISIBLE);
+        tvMyItemsAmount.setText(String.valueOf(list.size()));
+
+
+        RecyclerView recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(getContext(), list ,true);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
 
 
     //below function is for catching back button pressed
@@ -171,6 +218,7 @@ mPresenter.getSellerData();
             progressBarFrTrnsctSummryTvs.setVisibility(View.GONE);
         }
     }
+
 
 
     @Override

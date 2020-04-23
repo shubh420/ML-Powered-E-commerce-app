@@ -12,6 +12,8 @@ public interface SellerDashboardPresenter {
 
     void getSellerData();
 
+    void getDataForBottomSheet();
+
     //void getItemsFromFirebase(String mParam1CategoryName, String mParam2CategoryPath, boolean ifItsALoadMorecall);
 
 }

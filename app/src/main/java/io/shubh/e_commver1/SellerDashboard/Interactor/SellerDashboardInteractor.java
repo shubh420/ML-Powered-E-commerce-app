@@ -3,6 +3,7 @@ package io.shubh.e_commver1.SellerDashboard.Interactor;
 
 import java.util.ArrayList;
 
+import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.Models.Order;
 
 public interface SellerDashboardInteractor {
@@ -18,6 +19,10 @@ public interface SellerDashboardInteractor {
 
         void onFinished(boolean callbackResultOfTheCheck, ArrayList<Order.SubOrderItem> subOrderItems);
     }
+    interface SeparateCallbackToPresnterAfterGettingSellerItems{
+
+        void onFinished(boolean callbackResultOfTheCheck, ArrayList<ItemsForSale> subOrderItems);
+    }
 
     void init(CallbacksToPresnter mPresenter);
 
@@ -25,6 +30,7 @@ public interface SellerDashboardInteractor {
     //void checkSomethingInDatabase();
 
     void getSellerDataWithArgAsCallback(SeparateCallbackToPresnterAfterGettingSellerData l);
+    void getSellerUploadedItemsWithArgAsCallback(SeparateCallbackToPresnterAfterGettingSellerItems l);
 
 }
 

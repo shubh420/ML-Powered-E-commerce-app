@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.NewOrderListFrSellerFragment.View;
+package io.shubh.e_commver1.OrderListFrSellerFragment.View;
 
 import android.content.Context;
 
@@ -14,4 +14,6 @@ public interface NewOrderListFrSellerView {
     void ShowSnackBarWithAction(String msg, String actionName);
 
     void showToast(String msg);
+
+    void OnStatusUpdateDOne(int nextStatusNoToUpdate);
 }

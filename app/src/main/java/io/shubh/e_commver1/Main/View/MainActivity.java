@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
+import io.shubh.e_commver1.LikedItems.View.LikedItemsFragment;
 import io.shubh.e_commver1.MyOrders.View.MyOrdersFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
@@ -169,6 +170,21 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if(Utils.isUserLoggedIn()) {
                     switchActivity(5);
                 }else{
+//todo-show login ask toast here
+                }
+            }
+        });
+
+
+        LinearLayout btDrwrLiked = (LinearLayout) findViewById(R.id.btDrwrLiked);
+        myOrderBt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(Utils.isUserLoggedIn()) {
+                    switchActivity(6);
+                }else{
+//todo-show login ask toast here
 
                 }
             }
@@ -339,6 +355,13 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.drawerLayout, new MyOrdersFragment())
+                    .commit();
+
+        }else if (i == 6) {
+            drawerLayout.closeDrawer(Gravity.LEFT);
+
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.drawerLayout, new LikedItemsFragment())
                     .commit();
 
         }

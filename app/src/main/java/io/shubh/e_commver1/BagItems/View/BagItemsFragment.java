@@ -270,10 +270,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
 
 
 interface InterfaceForClickcCallback {
-
     void onrecyclrItemClick(BagItem bagItem);
 
     void onDeleteItemClick(String docId, int position);
-
-
 }

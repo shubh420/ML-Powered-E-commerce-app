@@ -1,6 +1,7 @@
 package io.shubh.e_commver1.Models;
 
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ public class BagItem implements Serializable {
     //below  field is not supposed to have the same in the BagItem document in firestore
     //this below object will be added manually
     //its purpose is for the time when on the obejct is clicked on am=nd then we have to show the itemdetail page
+    @Exclude
     ItemsForSale itemObject;
 
     long time_of_upload;
@@ -29,15 +31,16 @@ public class BagItem implements Serializable {
     }
 
     //non property field
+    @Exclude
     public ItemsForSale getItemObject() {
         return itemObject;
     }
-
+    @Exclude
     public void setItemObject(ItemsForSale itemObject) {
         this.itemObject = itemObject;
     }
 
-
+//---------------------------------------
     @PropertyName("item amount")
     public String getItemAmount() {
         return itemAmount;

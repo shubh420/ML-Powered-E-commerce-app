@@ -1,10 +1,15 @@
 package io.shubh.e_commver1.CategoryItems.Presenter;
 
+import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractor;
 import io.shubh.e_commver1.CategoryItems.View.CategoryItemsView;
 import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.Models.LikedItem;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, CategoryItemsInteractor.CallbacksToPresnter {
 
@@ -28,13 +33,6 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
 
     }
 
-
-    @Override
-    public void LoginRelatedWork() {
-
-
-    }
-
     @Override
     public void getItemsFromFirebase(String param1CategoryName, String param2CategoryPath, String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall) {
 
@@ -43,11 +41,6 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
      //   mInteractor.getItemsFromFirebaseWithResultsOnSeparateCallback(mParam1CategoryName , mParam2CategoryPath);
     }
 
-
-    @Override
-    public void onFinishedCheckingSomething1() {
-//this is call from interactor
-    }
 
     @Override
     public void onFinishedGettingItems(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName ,boolean ifItsALoadMoreCallResult) {
@@ -69,6 +62,47 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
     public void showToast(String no_more_items_found) {
         categoryItemsView.showToast("No More Items Found");
     }
+
+    @Override
+    public void saveTheItemToLikedItems(String itemID) {
+
+        LikedItem likedItem = new LikedItem();
+        likedItem.setItemId(itemID);
+        likedItem.setLikedItemDocId(itemID+ StaticClassForGlobalInfo.UId);
+        likedItem.setTimeOfsaving(System.currentTimeMillis() /1000l);
+        likedItem.setUserId(StaticClassForGlobalInfo.UId);
+
+        mInteractor.saveItemToUserLikedListWithResultsOnSeparateCallback(likedItem, new CategoryItemsInteractor.SeparateCallbackToPresnterAfterSavingItemToBuyerLikedItems() {
+            @Override
+            public void onFinished(boolean callbackResultOfTheCheck) {
+                if(callbackResultOfTheCheck==true){
+
+                    categoryItemsView.showToast("Item added to liked list");
+                }else{
+                    categoryItemsView.showToast("Some problem occured while adding to liked items list");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void deleteTheItemFromLikedItems(String docId) {
+
+        String fireStoreDocId = docId +StaticClassForGlobalInfo.UId;
+
+        mInteractor.deleteItemFromUserLikedListWithResultsOnSeparateCallback(fireStoreDocId, new CategoryItemsInteractor.SeparateCallbackToPresnterAfterDeletingFromBuyerLikedItems() {
+            @Override
+            public void onFinished(boolean callbackResultOfTheCheck) {
+                if(callbackResultOfTheCheck==true){
+                    categoryItemsView.showToast("Item deleted from liked list");
+                }else{
+                    categoryItemsView.showToast("Some problem occured while deleting from liked items list");
+                }
+            }
+        });
+    }
+
+
 
 
 }

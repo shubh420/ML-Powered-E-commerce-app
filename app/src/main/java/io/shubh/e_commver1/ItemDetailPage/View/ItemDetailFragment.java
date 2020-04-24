@@ -17,7 +17,10 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,7 +55,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     BottomSheetBehavior behavior;
     RelativeLayout rlVpContainer;
     int itemAmount;
-    int chosenVarietyIndex ;
+    int chosenVarietyIndex;
 
     public ItemDetailFragment() {
         // Required empty public constructor
@@ -108,7 +111,6 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     }
 
 
-
     private void setUpToolbar() {
         ImageButton btCloseFrag = (ImageButton) containerViewGroup.findViewById(R.id.btCloseFrag);
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
@@ -123,8 +125,8 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
             @Override
             public void onClick(View view) {
 
-              getActivity().getSupportFragmentManager().beginTransaction()
-                        .add( R.id.drawerLayout, new BagItemsFragment())
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, new BagItemsFragment())
                         .commit();
 
 
@@ -249,9 +251,9 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
                 tvIndivVarietyNmae.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                       // chosenvarietyName = tvIndivVarietyNmae.getText().toString();
-                        chosenVarietyIndex= finalI;
-                        Log.i("*****", "chosen variety index"+chosenVarietyIndex);
+                        // chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                        chosenVarietyIndex = finalI;
+                        Log.i("*****", "chosen variety index" + chosenVarietyIndex);
                         //removing color from every other if they have it
                         final int childCount = llVarietyContainer.getChildCount();
                         for (int i = 0; i < childCount; i++) {
@@ -265,8 +267,8 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
                 });
 //chosing the first variety as selected by default
                 if (i == 0) {
-                  //  chosenvarietyName = tvIndivVarietyNmae.getText().toString();
-                    chosenVarietyIndex= 0;
+                    //  chosenvarietyName = tvIndivVarietyNmae.getText().toString();
+                    chosenVarietyIndex = 0;
                     tvIndivVarietyNmae.setBackgroundColor(getResources().getColor(R.color.colorSecondaryAtHalfTransparency));
                 }
             }
@@ -300,22 +302,32 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         rl_bt_bag_it.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mPresenter.onBagItBtClicked(item, itemAmount, chosenVarietyIndex);
+            }
+        });
 
-                mPresenter.onBagItBtClicked(item ,itemAmount ,chosenVarietyIndex);
 
+        if (item.isItemLiked() == true) {
+            ib_like_item.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart2_svg));
+        } else {
+            ib_like_item.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_svg));
+        }
 
+        ib_like_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (item.isItemLiked() == false) {
+                    animateHeart(ib_like_item);
+                    mPresenter.saveTheItemToLikedItems(String.valueOf(item.getItem_id()));
+                    item.setItemLiked(true);
+                } else {
+                    ib_like_item.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart_svg));
+                    mPresenter.deleteTheItemFromLikedItems(String.valueOf(item.getItem_id()));
+                    item.setItemLiked(false);
+                }
             }
         });
     }
-
-
-
-
-
-
-
-
-
 
 
     //below function is for catching back button pressed
@@ -361,6 +373,46 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
     }
 
+    public void animateHeart(ImageView view) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        prepareAnimation(scaleAnimation);
+
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+        prepareAnimation(alphaAnimation);
+
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(alphaAnimation);
+        animation.addAnimation(scaleAnimation);
+        animation.setDuration(700);
+        animation.setFillAfter(false);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setImageDrawable(getResources().getDrawable(R.drawable.ic_heart2_svg));
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        view.startAnimation(animation);
+
+    }
+
+    private Animation prepareAnimation(Animation animation) {
+        animation.setRepeatCount(1);
+        animation.setRepeatMode(Animation.REVERSE);
+        return animation;
+    }
+
 
     @Override
     public void switchActivity(int i) {
@@ -382,10 +434,10 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
         ImageView ivBagItbt = (ImageView) containerViewGroup.findViewById(R.id.ivBagItbt);
         ProgressBar progressBarFrBtBagIt = (ProgressBar) containerViewGroup.findViewById(R.id.progressBarFrBtBagIt);
-        if(b==true) {
+        if (b == true) {
             ivBagItbt.setVisibility(View.GONE);
             progressBarFrBtBagIt.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             ivBagItbt.setVisibility(View.VISIBLE);
             progressBarFrBtBagIt.setVisibility(View.GONE);
         }

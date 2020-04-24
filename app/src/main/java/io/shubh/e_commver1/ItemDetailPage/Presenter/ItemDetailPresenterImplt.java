@@ -1,9 +1,11 @@
 package io.shubh.e_commver1.ItemDetailPage.Presenter;
 
+import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractor;
 import io.shubh.e_commver1.ItemDetailPage.Interactor.ItemDetailInteractor;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailView;
 import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.Models.LikedItem;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class ItemDetailPresenterImplt implements ItemDetailPresenter, ItemDetailInteractor.CallbacksToPresnter {
@@ -53,13 +55,41 @@ mview.showProgressBarAtBagItBt(true);
 
 
     @Override
-    public void onFinishedCheckingSomething1() {
+    public void saveTheItemToLikedItems(String itemID) {
 
+        LikedItem likedItem = new LikedItem();
+        likedItem.setItemId(itemID);
+        likedItem.setLikedItemDocId(itemID+ StaticClassForGlobalInfo.UId);
+        likedItem.setTimeOfsaving(System.currentTimeMillis() /1000l);
+        likedItem.setUserId(StaticClassForGlobalInfo.UId);
+
+        mInteractor.saveItemToUserLikedListWithResultsOnSeparateCallback(likedItem, new ItemDetailInteractor.SeparateCallbackToPresnterAfterSavingItemToBuyerLikedItems() {
+            @Override
+            public void onFinished(boolean callbackResultOfTheCheck) {
+                if(callbackResultOfTheCheck==true){
+
+                    mview.showToast("Item added to liked list");
+                }else{
+                    mview.showToast("Some problem occured while adding to liked items list");
+                }
+            }
+        });
     }
 
     @Override
-    public void onFinishedCheckingSomething2() {
+    public void deleteTheItemFromLikedItems(String docId) {
 
-        //this is call from interactor
+        String fireStoreDocId = docId +StaticClassForGlobalInfo.UId;
+
+        mInteractor.deleteItemFromUserLikedListWithResultsOnSeparateCallback(fireStoreDocId, new ItemDetailInteractor.SeparateCallbackToPresnterAfterDeletingFromBuyerLikedItems() {
+            @Override
+            public void onFinished(boolean callbackResultOfTheCheck) {
+                if(callbackResultOfTheCheck==true){
+                    mview.showToast("Item deleted from liked list");
+                }else{
+                    mview.showToast("Some problem occured while deleting from liked items list");
+                }
+            }
+        });
     }
 }

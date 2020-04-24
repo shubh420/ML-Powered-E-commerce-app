@@ -30,9 +30,11 @@ import java.util.List;
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractorImplt;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenter;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenterImplt;
+import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 
@@ -43,7 +45,7 @@ import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
  * Use the {@link CategoryItemsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryItemsFragment extends Fragment implements CategoryItemsView {
+public class CategoryItemsFragment extends Fragment implements CategoryItemsView, InterfaceForClickCallbackFromCtgrAdaptr {
 
     private static final String ARG_PARAM1_Category_Name = "param1";
     // private static final String ARG_PARAM2_Level_Of_Category_Name = "param2";
@@ -83,20 +85,20 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
     int pageNoForNewDataToFetchOnReclrScrollToBottom = 1;
     ShimmerFrameLayout mShimmerViewContainer;
-static DrawerLayout drawerLayoutSttatic;
+    static DrawerLayout drawerLayoutSttatic;
 
     public CategoryItemsFragment() {
         // Required empty public constructor
     }
 
 
-    public static CategoryItemsFragment newInstance(String param1, String param2 ,DrawerLayout drawerLayout) {
+    public static CategoryItemsFragment newInstance(String param1, String param2, DrawerLayout drawerLayout) {
         CategoryItemsFragment fragment = new CategoryItemsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1_Category_Name, param1);
         args.putString(ARG_PARAM2_Category_Path, param2);
         fragment.setArguments(args);
-        drawerLayoutSttatic =drawerLayout;
+        drawerLayoutSttatic = drawerLayout;
         return fragment;
     }
 
@@ -158,9 +160,9 @@ static DrawerLayout drawerLayoutSttatic;
         tv_first_slash_directry = (TextView) containerViewGroup.findViewById(R.id.id_fr_tv_first_slash);
         tv_second_slash_directry = (TextView) containerViewGroup.findViewById(R.id.id_fr_tv_scnd_slash);
 
-     //   tv_catgr_dierctory.setPaintFlags(tv_sub_catgr_dierctory.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); //making tv underlined
+        //   tv_catgr_dierctory.setPaintFlags(tv_sub_catgr_dierctory.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); //making tv underlined
         tv_sub_catgr_dierctory.setVisibility(View.GONE);
-       // tv_sub_catgr_dierctory.setPaintFlags(tv_sub_catgr_dierctory.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); //making tv underlined
+        // tv_sub_catgr_dierctory.setPaintFlags(tv_sub_catgr_dierctory.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); //making tv underlined
         tv_sub_sub_catgr_dierctory.setVisibility(View.GONE);
         //tv_sub_sub_catgr_dierctory.setPaintFlags(tv_sub_catgr_dierctory.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG); //making tv underlined
         tv_first_slash_directry.setVisibility(View.GONE);
@@ -177,10 +179,10 @@ static DrawerLayout drawerLayoutSttatic;
         recyclerView.setLayoutManager(gridLayoutManager);
 
         itemsList = new ArrayList<>();
-        adapter = new ReclrAdapterClassForCtgrItems( getContext(), itemsList ,false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromCtgrAdaptr) this, getContext(), itemsList, false);
         recyclerView.setAdapter(adapter);
 
-        AppBarLayout appBarLayout = (AppBarLayout)containerViewGroup.findViewById(R.id.appBarLayout);
+        AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -202,7 +204,7 @@ static DrawerLayout drawerLayoutSttatic;
     }
 
     private void setUpToolbar() {
-        ImageButton btCloseFrag = (ImageButton)containerViewGroup.findViewById(R.id.btCloseFrag);
+        ImageButton btCloseFrag = (ImageButton) containerViewGroup.findViewById(R.id.btCloseFrag);
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -213,7 +215,6 @@ static DrawerLayout drawerLayoutSttatic;
 
 
     private void loadCategorylayoutsInTheSidebar() {
-
 
 
         LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
@@ -274,7 +275,7 @@ static DrawerLayout drawerLayoutSttatic;
 
                                     } else {
 
-                                        removeColorFromOtherCtgrTvsInSideBarIfAny( ll_container_side_bar);
+                                        removeColorFromOtherCtgrTvsInSideBarIfAny(ll_container_side_bar);
                                         tv.setTextColor(getResources().getColor(R.color.colorSecondary));
 
                                         updateHeaderTvAndCtgrStrip();
@@ -356,6 +357,7 @@ static DrawerLayout drawerLayoutSttatic;
             @Override
             public void onAnimationStart(Animation animation) {
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
                 loadCategorylayoutsInTheSidebar();
@@ -364,6 +366,7 @@ static DrawerLayout drawerLayoutSttatic;
                 animate.setDuration(300);
                 ll_container_side_bar.startAnimation(animate);
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
             }
@@ -372,7 +375,7 @@ static DrawerLayout drawerLayoutSttatic;
     }
 
 
-    private void removeColorFromOtherCtgrTvsInSideBarIfAny( LinearLayout ll_container_side_bar) {
+    private void removeColorFromOtherCtgrTvsInSideBarIfAny(LinearLayout ll_container_side_bar) {
 
         final int childCount = ll_container_side_bar.getChildCount();
         for (int i = 0; i < childCount; i++) {
@@ -392,7 +395,7 @@ static DrawerLayout drawerLayoutSttatic;
 
     private void updateHeaderTvAndCtgrStrip() {
 
-     doAnimationOnCtgrPathStrip();
+        doAnimationOnCtgrPathStrip();
         //below code is for setting text on the header tv
         tv_header.setText(mParam1CategoryName);
 
@@ -407,7 +410,7 @@ static DrawerLayout drawerLayoutSttatic;
                 tv_second_slash_directry.setVisibility(View.GONE);
                 tv_sub_sub_catgr_dierctory.setVisibility(View.GONE);
 
-                mParam2CategoryPath = rootCtgr ;
+                mParam2CategoryPath = rootCtgr;
                 mParam1CategoryName = rootCtgr;
 
                 loadCategorylayoutsInTheSidebarWithAnimation();
@@ -425,7 +428,7 @@ static DrawerLayout drawerLayoutSttatic;
                 tv_second_slash_directry.setVisibility(View.GONE);
                 tv_sub_sub_catgr_dierctory.setVisibility(View.GONE);
 
-                mParam2CategoryPath = rootCtgr +"/"+subCtgr ;
+                mParam2CategoryPath = rootCtgr + "/" + subCtgr;
                 mParam1CategoryName = subCtgr;
 
                 loadCategorylayoutsInTheSidebarWithAnimation();
@@ -441,7 +444,7 @@ static DrawerLayout drawerLayoutSttatic;
             @Override
             public void onClick(View view) {
 
-                mParam2CategoryPath = rootCtgr +"/"+subCtgr +"//"+subSubCtgr ;
+                mParam2CategoryPath = rootCtgr + "/" + subCtgr + "//" + subSubCtgr;
                 mParam1CategoryName = subSubCtgr;
 
                 loadCategorylayoutsInTheSidebarWithAnimation();
@@ -457,8 +460,8 @@ static DrawerLayout drawerLayoutSttatic;
 
     private void doAnimationOnCtgrPathStrip() {
 
-        LinearLayout llDirectoryStrip =(LinearLayout)containerViewGroup.findViewById(R.id.id_fr_ll_fr_directory_tvs);
-        TranslateAnimation animate = new TranslateAnimation(0, 0,0 ,-(llDirectoryStrip.getHeight() ));
+        LinearLayout llDirectoryStrip = (LinearLayout) containerViewGroup.findViewById(R.id.id_fr_ll_fr_directory_tvs);
+        TranslateAnimation animate = new TranslateAnimation(0, 0, 0, -(llDirectoryStrip.getHeight()));
         animate.setDuration(300);
         llDirectoryStrip.startAnimation(animate);
         animate.setAnimationListener(new Animation.AnimationListener() {
@@ -466,15 +469,17 @@ static DrawerLayout drawerLayoutSttatic;
             public void onAnimationStart(Animation animation) {
 
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
 
                 setTextOnCtgrStrip();
 
-                TranslateAnimation animate = new TranslateAnimation(0, 0, llDirectoryStrip.getHeight(),0 );
+                TranslateAnimation animate = new TranslateAnimation(0, 0, llDirectoryStrip.getHeight(), 0);
                 animate.setDuration(300);
                 llDirectoryStrip.startAnimation(animate);
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
 
@@ -520,13 +525,14 @@ static DrawerLayout drawerLayoutSttatic;
     private void callForPresenterToGetCtgrItems(boolean ifItsALoadMorecall) {
        /* if(ifItsALoadMorecall==true) {
             pageNoForNewDataToFetchOnReclrScrollToBottom++;
-        }*/if(ifItsALoadMorecall==false) {
+        }*/
+        if (ifItsALoadMorecall == false) {
             showProgressBar(true);
-        }else{
-        //ToDO--- add shimmer layout containig two views
+        } else {
+            //ToDO--- add shimmer layout containig two views
         }
 
-        mPresenter.getItemsFromFirebase(mParam1CategoryName, mParam2CategoryPath,rootCtgr,subCtgr,subSubCtgr, ifItsALoadMorecall);
+        mPresenter.getItemsFromFirebase(mParam1CategoryName, mParam2CategoryPath, rootCtgr, subCtgr, subSubCtgr, ifItsALoadMorecall);
     }
 
     @Override
@@ -574,7 +580,7 @@ static DrawerLayout drawerLayoutSttatic;
                     }
                 });
             }
-        }else{
+        } else {
             showProgressBar(false);
         }
     }
@@ -590,12 +596,11 @@ static DrawerLayout drawerLayoutSttatic;
         itemsList.clear();
         adapter.notifyDataSetChanged();
         LinearLayout ll_container_side_bar = (LinearLayout) containerViewGroup.findViewById(R.id.container_fr_ctgr);
-        if(mParam2CategoryPath.indexOf('/')==-1){
+        if (mParam2CategoryPath.indexOf('/') == -1) {
             ll_container_side_bar.removeAllViews();
         }
 
     }
-
 
 
     @Override
@@ -620,12 +625,12 @@ static DrawerLayout drawerLayoutSttatic;
 
     @Override
     public void showProgressBar(boolean b) {
-        if(b==true) {
+        if (b == true) {
             //   progressBar.setVisibility(android.view.View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             mShimmerViewContainer.startShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             //  progressBar.setVisibility(android.view.View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
             mShimmerViewContainer.stopShimmerAnimation();
@@ -668,7 +673,7 @@ static DrawerLayout drawerLayoutSttatic;
         //if its the only one opened ..that means after closing it the mainactivty will appear ..so I have to enable the drawer layout open on swipe for the activty
 
         List<Fragment> fragments = getFragmentManager().getFragments();
-        if(fragments.size()==1){
+        if (fragments.size() == 1) {
             drawerLayoutSttatic.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }
 
@@ -677,26 +682,18 @@ static DrawerLayout drawerLayoutSttatic;
     }
 
 
- /*   *//**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     *//*
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentClosingCheckIfItsTheOnlyOneToEnableDrawrOPenOnSwipe();
+    @Override
+    public void onClickOnSaveToLikedItemsBt(String docId) {
+        mPresenter.saveTheItemToLikedItems(docId);
+
+    }
+
+    @Override
+    public void onClickOnDeleteFromLikedItemsBt(String docId) {
+        mPresenter.deleteTheItemFromLikedItems(docId);
     }
 
 
-    public void attachParentInteractingClass(OnFragmentInteractionListener callback) {
-
-        //well recycleradapter of main class will be passing it itself
-        //this.callback = callback;
-    }*/
-
 }
+
+

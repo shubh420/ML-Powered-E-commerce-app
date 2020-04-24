@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.LikedItem;
 
 public class ItemDetailInteractorImplt implements ItemDetailInteractor {
 
@@ -46,6 +47,47 @@ public class ItemDetailInteractorImplt implements ItemDetailInteractor {
                 });
 
 
+    }
+
+    @Override
+    public void saveItemToUserLikedListWithResultsOnSeparateCallback(LikedItem likedItem, SeparateCallbackToPresnterAfterSavingItemToBuyerLikedItems l) {
+        //I m proceeding to save everyone's liked items inside one node 'liked items'...rather than putting it inside collection inside user node
+        //because if this would have been used for real purpose ,so then to do statsistic or operation related work on liked items will get easier
+
+
+        db.collection("liked items").document(likedItem.getLikedItemDocId())
+                .set(likedItem)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        l.onFinished(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        l.onFinished(false);
+                    }
+                });
+
+    }
+
+    @Override
+    public void deleteItemFromUserLikedListWithResultsOnSeparateCallback(String docId, SeparateCallbackToPresnterAfterDeletingFromBuyerLikedItems l) {
+        db.collection("liked items").document(docId)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        l.onFinished(true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        l.onFinished(false);
+                    }
+                });
     }
 
 

@@ -324,15 +324,15 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="3"
-                android:text="My profile"
+                android:text="My Profile"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/id_fr_nav_bt_wishlist"
+            android:id="@+id/btDrwrLiked"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="8dp"
             android:clickable="true"
             android:foreground="?attr/selectableItemBackground"
@@ -345,7 +345,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="4dp"
-                app:srcCompat="@drawable/my_wishlist" />
+                app:srcCompat="@drawable/ic_heart2_svg"
+                android:tint="#fff"/>
 
             <TextView
                 android:layout_width="0dp"
@@ -354,7 +355,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="5dp"
                 android:layout_weight="3"
-                android:text="My wishlist"
+                android:text="Liked Items"
                 android:textColor="@android:color/white"
                 android:textSize="20sp" />
         </LinearLayout>

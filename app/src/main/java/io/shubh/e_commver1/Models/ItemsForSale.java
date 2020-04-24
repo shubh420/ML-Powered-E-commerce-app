@@ -1,5 +1,6 @@
 package io.shubh.e_commver1.Models;
 
+import com.google.firebase.firestore.Exclude;
 import com.google.firebase.firestore.PropertyName;
 
 import java.io.Serializable;
@@ -19,7 +20,19 @@ public class ItemsForSale implements Serializable {
     List<String> listOfImageURLs = new ArrayList<String>();
     List<String> varieies = new ArrayList<String>();
 
+    @Exclude
+    boolean isItemLiked =false;
+
     public ItemsForSale() {
+    }
+
+    @Exclude
+    public boolean isItemLiked() {
+        return isItemLiked;
+    }
+    @Exclude
+    public void setItemLiked(boolean itemLiked) {
+        isItemLiked = itemLiked;
     }
 
     @PropertyName("category")

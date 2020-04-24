@@ -32,9 +32,10 @@ import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractorImplt;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenter;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenterImplt;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
 
 
-public class SellerDashboardFragment extends Fragment  implements SellerDashboardView{
+public class SellerDashboardFragment extends Fragment  implements SellerDashboardView , InterfaceForClickCallbackFromCtgrAdaptr {
 
     View containerViewGroup;
     LayoutInflater inflater;
@@ -172,7 +173,7 @@ mPresenter.getSellerData();
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(getContext(), list ,true);
+        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(this, getContext(), list ,true);
         recyclerView.setAdapter(adapter);
         recyclerView.setVisibility(View.VISIBLE);
     }
@@ -244,4 +245,13 @@ mPresenter.getSellerData();
     }
 
 
+    @Override
+    public void onClickOnSaveToLikedItemsBt(String docId) {
+
+    }
+
+    @Override
+    public void onClickOnDeleteFromLikedItemsBt(String docId) {
+
+    }
 }

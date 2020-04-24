@@ -5,13 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -22,24 +25,22 @@ import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.SearchResultsActivity;
-import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
 
 public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
     private Context context;
-    private boolean ifInitiatedFromSelelrdashboard =false;
-   /* private CategoryItemsFragment categoryItemsFragment;
-    private FragmentActivity activity*/;
+    private boolean ifInitiatedFromSelelrdashboard = false;
+    private InterfaceForClickCallbackFromCtgrAdaptr interfaceForClickCallbackFromCtgrAdaptr;
+    /* private FragmentActivity activity*/;
 
 
-
-    public ReclrAdapterClassForCtgrItems( Context context, List<ItemsForSale> dataForItems ,boolean ifInitiatedFromSelelrdashboard) {
+    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromCtgrAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
-        this.ifInitiatedFromSelelrdashboard=ifInitiatedFromSelelrdashboard;
-       /* this.categoryItemsFragment = categoryItemsFragment;
-        this.activity = activity;*/
+        this.ifInitiatedFromSelelrdashboard = ifInitiatedFromSelelrdashboard;
+        this.interfaceForClickCallbackFromCtgrAdaptr = interfaceForClickCallbackFromCtgrAdaptr;
+        /*   this.activity = activity;*/
 
 
     }
@@ -78,41 +79,56 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
 
         Glide.with(context).load(dataForItemArrayList.get(position).getListOfImageURLs().get(0)).centerCrop().into(holder.iv_item_image);
 
-        if( ifInitiatedFromSelelrdashboard ==true){
-            holder.edit_bt.setImageDrawable( context.getDrawable(R.drawable.edit_bt));
+        if (dataForItemArrayList.get(position).isItemLiked() == true) {
+            holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.ic_heart2_svg));
+        }else{
+            holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.ic_heart_svg));
+        }
+
+        if (ifInitiatedFromSelelrdashboard == true) {
+            holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.edit_bt));
         }
 
 
-        if( ifInitiatedFromSelelrdashboard ==false){
+        if (ifInitiatedFromSelelrdashboard == false) {
             holder.edit_bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-
+                   if(dataForItemArrayList.get(position).isItemLiked() ==false) {
+                       animateHeart(holder.edit_bt);
+                       interfaceForClickCallbackFromCtgrAdaptr.onClickOnSaveToLikedItemsBt(String.valueOf(dataForItemArrayList.get(position).getItem_id()));
+                       dataForItemArrayList.get(position).setItemLiked(true);
+                   }else {
+                       holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.ic_heart_svg));
+                       interfaceForClickCallbackFromCtgrAdaptr.onClickOnDeleteFromLikedItemsBt(String.valueOf(dataForItemArrayList.get(position).getItem_id()));
+                       dataForItemArrayList.get(position).setItemLiked(false);
+                   }
                 }
             });
         }
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
-               itemDetailFragment.passData(dataForItemArrayList.get(position));
+                ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
+                itemDetailFragment.passData(dataForItemArrayList.get(position));
 
                 Log.i("!!!!!", context.getClass().getSimpleName());
                 //todo -fix the below scene
-               if(context.getClass().getSimpleName().equals("SearchResultsActivity")){
+                if (context.getClass().getSimpleName().equals("SearchResultsActivity")) {
 
-                           ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                           .add( R.id.ll_search_results_container, itemDetailFragment)
-                           .commit();
-               }else{
-                   ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                           .add( R.id.drawerLayout, itemDetailFragment)
-                           .commit();
-               }
-
+                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                            .add(R.id.ll_search_results_container, itemDetailFragment)
+                            .commit();
+                } else {
+                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, itemDetailFragment)
+                            .commit();
+                }
 
 
             }
@@ -127,5 +143,43 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
         return dataForItemArrayList.size();
     }
 
+
+    public void animateHeart( ImageView view) {
+        ScaleAnimation scaleAnimation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        prepareAnimation(scaleAnimation);
+
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.0f, 1.0f);
+        prepareAnimation(alphaAnimation);
+
+        AnimationSet animation = new AnimationSet(true);
+        animation.addAnimation(alphaAnimation);
+        animation.addAnimation(scaleAnimation);
+        animation.setDuration(700);
+        animation.setFillAfter(false);
+
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.setImageDrawable(context.getDrawable(R.drawable.ic_heart2_svg));
+
+            }
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        view.startAnimation(animation);
+
+    }
+
+    private Animation prepareAnimation(Animation animation){
+        animation.setRepeatCount(1);
+        animation.setRepeatMode(Animation.REVERSE);
+        return animation;
+    }
 
 }

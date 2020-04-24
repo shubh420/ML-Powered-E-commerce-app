@@ -12,11 +12,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -26,11 +24,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
-import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
 
-public class SearchResultsActivity extends AppCompatActivity {
+public class SearchResultsActivity extends AppCompatActivity implements InterfaceForClickCallbackFromCtgrAdaptr {
 
     String searchQuery;
     RecyclerView recyclerView;
@@ -299,7 +297,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(SearchResultsActivity.this, list_of_data_objects__for_adapter,false);
+        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(this, SearchResultsActivity.this, list_of_data_objects__for_adapter,false);
         recyclerView.setAdapter(adapter);
 
 
@@ -317,6 +315,16 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         //just adding an animatiion here whic makes it go with animation sliding to right
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
+
+    }
+
+    @Override
+    public void onClickOnSaveToLikedItemsBt(String docId) {
+
+    }
+
+    @Override
+    public void onClickOnDeleteFromLikedItemsBt(String docId) {
 
     }
 }

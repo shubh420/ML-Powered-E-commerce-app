@@ -10,8 +10,10 @@ public interface ItemDetailPresenter {
 
    // void onGettingThegoogleSignInResult(int code, int requestCode, Intent data);
 
-
-
     void onBagItBtClicked(ItemsForSale item, int itemAmount , int chosenVarietyIndex);
+
+    void saveTheItemToLikedItems(String docId);
+
+    void deleteTheItemFromLikedItems(String docId);
 
 }

@@ -32,6 +32,7 @@
     <color name="colorPrimaryLight">#ffffff</color><!--white-->
     <color name="colorSubPrimaryLight">#F4FDEA</color><!--green grey-->
     <color name="colorGreyForObjectsLight">#9E9E9E</color><!--grey 500-->
+    <color name="colorGreySecondaryForObjectsLight">#E0E0E0</color><!--grey 300-->
     <color name="colorGreyForBlackTextLight">#212121</color><!--grey 900-->
     <color name="colorGreyForGreyTextLight">#757575</color><!--grey 600-->
 
@@ -40,6 +41,7 @@
     <color name="colorPrimaryDark">#212121</color><!--green 900-->
     <color name="colorSubPrimaryDark">#000000</color><!--black-->
     <color name="colorGreyForObjectsDark">#616161</color><!--grey 700-->
+    <color name="colorGreySecondaryForObjectsdark">#E0E0E0</color><!--grey 300-->
     <color name="colorGreyForWhiteTextDark">#E0E0E0</color><!--grey 300-->
     <color name="colorGreyForGreyTextDark">#757575</color><!--grey 600-->
 

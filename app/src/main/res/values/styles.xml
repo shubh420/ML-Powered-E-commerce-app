@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
                 <!--  previously the style was this ->      parent="Theme.AppCompat.Light.DarkActionBar">
@@ -10,6 +10,60 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+
+
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!--to make the below custom item ..we need to first define the name in other file ..I have done in attrs.xml-->
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorSubPrimary">@color/colorSubPrimaryLight</item>
+        <item name="colorForObjects">@color/colorGreyForObjectsLight</item>
+        <item name="colorForObjectsSecondary">@color/colorGreySecondaryForObjectsLight</item>
+        <item name="colorPrimaryText">@color/colorGreyForBlackTextLight</item>
+        <item name="colorSecondaryText">@color/colorGreyForGreyTextLight</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="colorPrimaryDark">@color/colorPrimaryLight</item><!--this is status bar color used directly by app-->
+        <item name="android:navigationBarColor">@color/colorPrimaryLight</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/colorGreySecondaryForObjectsLight</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item><!--this item sets the nav bar keys color as dark..so no need of it in dark teheme-->
+        <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">true</item><!--this item sets the status bar icon color as dark..so no need of it in dark teheme-->
+
+        <!--   <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>-->
+    </style>
+
+
+
+    <style name="AppThemeDark" parent="Theme.AppCompat.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimaryDark</item>
+        <item name="colorSubPrimary">@color/colorSubPrimaryDark</item>
+        <item name="colorForObjects">@color/colorGreyForObjectsDark</item>
+        <item name="colorForObjectsSecondary">@color/colorGreySecondaryForObjectsdark</item>
+        <item name="colorPrimaryText">@color/colorGreyForWhiteTextDark</item>
+        <item name="colorSecondaryText">@color/colorGreyForGreyTextDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--this is status bar color used directly by app-->
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/colorGreySecondaryForObjectsdark</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item><!--this item sets the nav bar keys color as dark..so no need of it in dark teheme-->
+        <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item><!--this item sets the status bar icon color as dark..so no need of it in dark teheme-->
+
+
+        <!--    <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>-->
+    </style>
+
+
+    <!-- This will set the fade in animation on all your activities by default -->
+ <!--   <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>-->
+
+
 
 
 <!--Theme for item details fragment ..given to it dynamically in oncreate view-->

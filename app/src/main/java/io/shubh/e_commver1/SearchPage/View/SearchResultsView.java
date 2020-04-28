@@ -6,7 +6,7 @@ import java.util.List;
 
 import io.shubh.e_commver1.Models.ItemsForSale;
 
-public interface CategoryItemsView {
+public interface SearchResultsView {
 
     void switchActivity(int i);
 
@@ -19,9 +19,9 @@ public interface CategoryItemsView {
 
     void showToast(String msg);
 
-    void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> itemList, Boolean listNotEmpty, String ctgrName, boolean ifItsALoadMoreCallResult);
+    void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> itemList);
 
-    void onNoItemsFoundResult(String ctgrName, boolean ifItsALoadMoreCallResult);
+    void onNoItemsFoundResult();
 
 
     // void onCategoryButtonsClicked(int levelOfCategory , String name);

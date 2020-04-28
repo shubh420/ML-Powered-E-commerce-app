@@ -20,6 +20,11 @@ public class ItemsForSale implements Serializable {
     List<String> listOfImageURLs = new ArrayList<String>();
     List<String> varieies = new ArrayList<String>();
 
+    List<String> arrayOfNameKeywords = new ArrayList<String>(); //this array will make search in array easy ..I would just have
+    //to use WhereArrayContains function for searching an item in firestore .I can use algolia like service for search functionality
+    //but it will need maintain another third party service
+    //also with this method pagination is easy..but I aint doing with this app
+
     @Exclude
     boolean isItemLiked =false;
 
@@ -161,5 +166,14 @@ public class ItemsForSale implements Serializable {
     @PropertyName("varieties")
     public void setVarieies(List<String> varieies) {
         this.varieies = varieies;
+    }
+
+    @PropertyName("array of item name keywords")
+    public List<String> getArrayOfNameKeywords() {
+        return arrayOfNameKeywords;
+    }
+    @PropertyName("array of item name keywords")
+    public void setArrayOfNameKeywords(List<String> arrayOfNameKeywords) {
+        this.arrayOfNameKeywords = arrayOfNameKeywords;
     }
 }

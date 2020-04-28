@@ -68,13 +68,17 @@ import java.util.PriorityQueue;
 import io.shubh.e_commver1.Adapters.CustomPagerAdapterForItemDetailImageViewsPager;
 import io.shubh.e_commver1.Adapters.CustomPagerAdapterForSearchFragment;
 import io.shubh.e_commver1.Main.View.MainActivity;
+import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.Notification.Interactor.NotificationInteractorImplt;
 import io.shubh.e_commver1.Notification.Presenter.NotificationPresenter;
 import io.shubh.e_commver1.Notification.Presenter.NotificationPresenterImplt;
 import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
+import io.shubh.e_commver1.SearchPage.View.SearchResultsFragment;
 import io.shubh.e_commver1.SearchResultsActivity;
+import io.shubh.e_commver1.Utils.TensorflowMlkitObjectDetection;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -179,13 +183,11 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                /*startActivity(new Intent(SearchActivity.this, SearchResultsActivity.class));
-                finish();
-
-                Intent i = new Intent(SearchActivity.this, SearchResultsActivity.class);
-                String strName = null;
-                i.putExtra("string", query);
-                startActivity(i);*/
+                SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
+                searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(query));
+                getFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, searchResultsFragment )
+                        .commit();
 
                 return true;
             }
@@ -420,6 +422,9 @@ public class SearchFragment extends Fragment {
     private void runImgTextDetection(Bitmap bitmap) {
         //the below if is because both the function of mlkit get called at the same time no matter called for what
         if (pageNoForMlFeature == 2) {
+
+
+
             FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
             FirebaseVisionTextRecognizer textRecognizer =
                     FirebaseVision.getInstance().getOnDeviceTextRecognizer();
@@ -427,24 +432,11 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onSuccess(FirebaseVisionText firebaseVisionText) {
 
-                    //  processTxt(firebaseVisionText);
-
-                    //   startActivity(new Intent(SearchActivity.this, SearchResultsActivity.class));
-
-
-                    Log.i("&&&&&&&&", "got firebaseVisiontext ");
-                    Log.i("&&&&&&&&", firebaseVisionText.getText());
-
-                  /*  Log.i("&&&&",topLabels.get(topLabels.size()-1) );
-                    String name= extractTheNamesWithoutProbabilityScoreFromTheList(topLabels);
-                    Log.i("&&&&",name);
-
-                Intent i = new Intent(SearchActivity.this, SearchResultsActivity.class);
-                    String strName = null;
-                    i.putExtra("string", firebaseVisionText.getText());
-                    //page no indicates the ml kit feature
-                    i.putExtra("page no", 2);
-                    startActivity(i);*/
+                    SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
+                    searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(firebaseVisionText.getText()));
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, searchResultsFragment )
+                            .commit();
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -467,35 +459,34 @@ public class SearchFragment extends Fragment {
 
     private void runImageLabeling(Bitmap bitmap) {
 
+        if (pageNoForMlFeature == 1) {
+         /*   TensorflowMlkitObjectDetection tensorflowMlkitObjectDetection = new TensorflowMlkitObjectDetection((AppCompatActivity) getContext(), (InterfaceForCallbackOnGettingLabelsAfterObjectDetection) getContext());
+            tensorflowMlkitObjectDetection.runModelInference(bitmap);*/
 
-
-
-
-
-        FirebaseVisionLabelDetectorOptions options = new FirebaseVisionLabelDetectorOptions.Builder()
+            FirebaseVisionLabelDetectorOptions options = new FirebaseVisionLabelDetectorOptions.Builder()
 
 //Set the confidence threshold//
 
-                .setConfidenceThreshold(0.7f)
-                .build();
+                    .setConfidenceThreshold(0.7f)
+                    .build();
 
 //Create a FirebaseVisionImage object//
 
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
+            FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(bitmap);
 
 //Create an instance of FirebaseVisionLabelDetector//
 
-        FirebaseVisionLabelDetector detector =
-                FirebaseVision.getInstance().getVisionLabelDetector(options);
+            FirebaseVisionLabelDetector detector =
+                    FirebaseVision.getInstance().getVisionLabelDetector(options);
 
-        detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionLabel>>() {
-            @Override
+            detector.detectInImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionLabel>>() {
+                @Override
 
 //Implement the onSuccess callback//
 
-            public void onSuccess(List<FirebaseVisionLabel> labels) {
+                public void onSuccess(List<FirebaseVisionLabel> labels) {
 
-                showTheResultsInBottomSheet(labels);
+                    showTheResultsInBottomSheet(labels);
                /* for (FirebaseVisionLabel label : labels) {
 
 //Display the label and confidence score in our TextView//
@@ -503,22 +494,23 @@ public class SearchFragment extends Fragment {
                     Log.i("!!!!",  label.getLabel() + "\n");
                     Log.i("!!!!",  label.getConfidence() + "\n\n");
                 }*/
-            }
+                }
 
 //Register an OnFailureListener//
 
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                //      mTextView.setText(e.getMessage());
-                Log.i("!!!!",  "error");
-            }
-        });
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    //      mTextView.setText(e.getMessage());
+                    Log.i("!!!!", "error");
+                }
+            });
 
 
 //keeping these below statements before the above ml relted code ..hinders the ml code getting executed
-        behaviorBotttomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
+            behaviorBotttomSheet.setState(BottomSheetBehavior.STATE_EXPANDED);
 
+        }
     }
 
 
@@ -526,6 +518,11 @@ public class SearchFragment extends Fragment {
 
         LinearLayout containerForDetectedItemsThroughMl = containerViewGroup.findViewById(R.id.containerForDetectedItemsThroughMl);
         containerForDetectedItemsThroughMl.removeAllViews();
+
+        if(firebaseVisionLabels.size()==0){
+            showToast("No Object Identified");
+        }
+
         for (FirebaseVisionLabel label : firebaseVisionLabels) {
             View row = inflater.inflate(R.layout.infalte_rows_fr_ml_results_search_frag, containerForDetectedItemsThroughMl, false);
             containerForDetectedItemsThroughMl.addView(row);
@@ -540,6 +537,12 @@ public class SearchFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
 
+                    SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
+                    searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(label.getLabel()));
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, searchResultsFragment )
+                            .commit();
+
                 }
             });
 
@@ -547,6 +550,27 @@ public class SearchFragment extends Fragment {
 
 
     }
+
+
+    private List<String> getListOfNameKeywordsFromSentence(String name) {
+
+
+        String[] words = name.split("\\s+");
+        List<String> wordsList = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) {
+            // You may want to check for a non-word character before blindly
+            // performing a replacement
+            // It may also be necessary to adjust the character class
+            words[i] = words[i].replaceAll("[^\\w]", "");//removes any puctuation like ?,!
+
+            wordsList.add(words[i]);
+        }
+
+
+        return wordsList;
+    }
+
+
 
     private void attachOnBackBtPressedlistener() {
         containerViewGroup.setFocusableInTouchMode(true);
@@ -571,4 +595,7 @@ public class SearchFragment extends Fragment {
 
     }
 
+
 }
+
+

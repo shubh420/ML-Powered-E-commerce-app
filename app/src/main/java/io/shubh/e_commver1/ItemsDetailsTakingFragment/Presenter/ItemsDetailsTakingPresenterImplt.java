@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.Interactor.ItemsDetailsTakingInteractor;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingView;
 import io.shubh.e_commver1.Models.ItemsForSale;
@@ -86,6 +87,7 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
                         item.setItem_id(Integer.parseInt(idForThisItem));
                         item.setSeller_id(StaticClassForGlobalInfo.UId);
                         item.setTime_of_upload(System.currentTimeMillis() / 1000L);
+                        item.setArrayOfNameKeywords(getArrayOfNameKeywords(itemName ,item));
                         item.setVisibility(visible);
                         if (varieties.size() != 0) {
                             item.setVarietyName(nameOfVariety);
@@ -112,6 +114,8 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
 
                     }
 
+
+
                 });
 
 
@@ -121,7 +125,27 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
 
     }
 
+    private List<String> getArrayOfNameKeywords(String itemName, ItemsForSale item) {
 
+
+        String[] words = itemName.split("\\s+");
+        List<String> wordsList = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) {
+            // You may want to check for a non-word character before blindly
+            // performing a replacement
+            // It may also be necessary to adjust the character class
+            words[i] = words[i].replaceAll("[^\\w]", "");//removes any puctuation like ?,!
+
+            wordsList.add(words[i]);
+        }
+
+        //also adding the categories
+        wordsList.add(item.getSub_category());
+        wordsList.add(item.getRoot_category());
+        wordsList.add(item.getSub_sub_category());
+
+        return wordsList;
+    }
     //--------------------------------------------------------------------------
     @Override
     public void LoginRelatedWork() {

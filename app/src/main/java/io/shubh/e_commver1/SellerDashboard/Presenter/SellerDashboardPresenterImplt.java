@@ -35,7 +35,7 @@ public class SellerDashboardPresenterImplt implements SellerDashboardPresenter, 
                     //system upadte available ..so throw a dialog asking to download update
                     if(subOrderItems.size()!=0){
 
-                        mView.showProgressBar(false);
+
                        // mView.showItemsInRecyclerView(subOrderItems);
                        processTheSubOrderListData(subOrderItems);
                     }else{
@@ -83,6 +83,7 @@ public class SellerDashboardPresenterImplt implements SellerDashboardPresenter, 
             }
         }
 
+        mView.showProgressBar(false);
         mView.updateTransactionSummaryTvs(subOrderItems ,newOrdersList ,processedList ,returnedOrdersList );
     }
 

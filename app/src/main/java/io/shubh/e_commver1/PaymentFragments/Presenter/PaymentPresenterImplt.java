@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.PaymentRelatedFragments.Presenter;
+package io.shubh.e_commver1.PaymentFragments.Presenter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,8 +11,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.PaymentRelatedFragments.Interactor.PaymentInteractor;
-import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentView;
+import io.shubh.e_commver1.PaymentFragments.Interactor.PaymentInteractor;
+import io.shubh.e_commver1.PaymentFragments.View.PaymentView;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteractor.CallbacksToPresnter {

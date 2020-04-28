@@ -32,7 +32,7 @@ import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresen
 import io.shubh.e_commver1.AddressSelectionPage.Presenter.AddressSelectionPresenter;
 import io.shubh.e_commver1.Models.AdressItem;
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentFragment;
+import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 
 
@@ -297,7 +297,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
                 });
             }else{
 
-                iv.setImageDrawable(getResources().getDrawable(R.drawable.delete_bt));
+                iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_svg));
 
                 int finalI1 = i;
                 iv.setOnClickListener(new View.OnClickListener() {

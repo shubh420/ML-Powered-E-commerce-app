@@ -50,16 +50,22 @@ public class SellerConfirmationFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                //Todo- this subscription below is invoked each time seller confirmation fragment is open
+                getFragmentManager().beginTransaction()
+                        //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
+                        .add(R.id.drawerLayout, new SellerDashboardFragment())
+                        .commit();
+
+                //I have commented the below code because I m using tokens instead of topics for now
+                //for the purpose of notifs but ..Tokens are also neccessary in case I nedd to give a
+                //announcement kind of notif to every seller..but since this app is not have real purpose tus commented for now
+                
+               /* //Todo- this subscription below is invoked each time seller confirmation fragment is open
                 //todo -so make the user become a seller for one time opnly...in the future
                 //since the user has chose to become seller ..we need it to be subscribed to the notification meant for sellers
                 FirebaseMessaging.getInstance().subscribeToTopic("notificationsForSellers").addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        getFragmentManager().beginTransaction()
-                                //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                                .add(R.id.drawerLayout, new SellerDashboardFragment())
-                                .commit();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -67,7 +73,7 @@ public class SellerConfirmationFragment extends Fragment {
                         Toast.makeText(getContext(), "some thing went wrong", Toast.LENGTH_LONG).show();
 
                     }
-                });
+                });*/
             }
         });
 

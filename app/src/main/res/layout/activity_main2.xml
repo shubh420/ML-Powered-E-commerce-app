@@ -51,84 +51,91 @@
 
 
                 <TextView
-                    android:id="@+id/id_fr_tv_welcome_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
-                    android:text="Use text based search"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/tv_or"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_below="@id/id_fr_tv_welcome_text"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="3dp"
-                    android:text="OR"
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/id_fr_tv_AMO_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_or"
-                    android:layout_centerHorizontal="true"
-                    android:text="Use The Image Search"
-
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
-
-                <TextView
                     android:id="@+id/tv1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/id_fr_tv_AMO_text"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="Search Via Object Image"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="?attr/colorPrimaryText"
+                    android:textSize="28sp" />
 
-                    android:layout_marginTop="2dp"
-                    android:text="Powered by ML"
-                    android:textSize="20sp" />
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@id/tv1"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/tv1"
+                    app:cardCornerRadius="8dp">
 
-                <!--   <TextView
-                       android:id="@+id/textView"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_below="@+id/ll1"
-                       android:layout_centerHorizontal="true"
-                       android:layout_marginTop="29dp"
-                       android:text="Explore us"
-                       android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                       android:textSize="24sp"
-                       android:textStyle="bold|italic" />-->
+                    <ImageButton
+                        android:id="@+id/ibt1Info"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@color/colorSecondary"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_info_svg"
+                        android:tint="@color/colorPrimary"
+
+                        />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="Provide an Image of object and let the app identify the object(using object recognition Machine Learning algo.) and search the same on the platform"
+                    android:textColor="?attr/colorSecondaryText"
+                    android:textSize="18sp" />
+
+
             </RelativeLayout>
 
 
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.2">
+                android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/iv1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     app:srcCompat="@drawable/object_detection" />
 
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv1"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Tip : Use white background such as a sheet of paper for better results."
+                    android:textColor="?attr/colorSecondaryText"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".8">
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
@@ -138,10 +145,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
 
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_marginTop="30dp"
 
-                        android:layout_marginRight="40dp"
+                        android:layout_marginRight="30dp"
 
 
                         android:elevation="6dp"
@@ -149,7 +156,7 @@
                         app:cardElevation="6dp">
 
                         <LinearLayout
-                            android:id="@+id/bt_camera"
+                            android:id="@+id/bt_camera1"
 
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -172,16 +179,16 @@
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout
-                        android:id="@+id/bt_gallery"
+                        android:id="@+id/bt_gallery1"
 
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
 
                         android:layout_below="@id/cv1"
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="30dp"
 
                         android:layout_marginTop="8dp"
-                        android:layout_marginRight="40dp"
+                        android:layout_marginRight="30dp"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground">
 
@@ -214,84 +221,92 @@
 
 
                 <TextView
-                    android:id="@+id/id_fr_tv_welcome_text2"
+                    android:id="@+id/tv11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
                     android:layout_centerHorizontal="true"
-                    android:layout_marginTop="50dp"
-                    android:text="Use text based search"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/tv_or2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_below="@id/id_fr_tv_welcome_text2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="3dp"
-                    android:text="OR"
-                    android:textAlignment="center"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/id_fr_tv_AMO_text2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_or2"
-                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="40dp"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="Use The Text on Image Search"
-                    android:textSize="30sp"
-                    android:textStyle="bold" />
+                    android:text="Search Via Text On Image"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    android:textColor="?attr/colorPrimaryText"
+                    android:textSize="28sp" />
 
-                <TextView
-                    android:id="@+id/tv12"
+                <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/id_fr_tv_AMO_text2"
+                    android:layout_alignTop="@id/tv11"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/tv11"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageButton
+                        android:id="@+id/ibt2Info"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:background="@color/colorSecondary"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:padding="4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_info_svg"
+                        android:tint="@color/colorPrimary"
+
+                        />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/tv22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv11"
                     android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
 
-                    android:layout_marginTop="2dp"
-                    android:text="Powered by ML"
-                    android:textSize="20sp" />
+                    android:gravity="center"
+                    android:padding="15dp"
+                    android:text="Provide an Image of object and let the app identify the text in the image(using Text recognition Machine Learning algo.) and search the same on the platform"
+                    android:textColor="?attr/colorSecondaryText"
+                    android:textSize="18sp" />
 
-                <!--   <TextView
-                       android:id="@+id/textView"
-                       android:layout_width="wrap_content"
-                       android:layout_height="wrap_content"
-                       android:layout_below="@+id/ll1"
-                       android:layout_centerHorizontal="true"
-                       android:layout_marginTop="29dp"
-                       android:text="Explore us"
-                       android:textAppearance="@style/TextAppearance.AppCompat.Large"
-                       android:textSize="24sp"
-                       android:textStyle="bold|italic" />-->
+
             </RelativeLayout>
 
 
             <RelativeLayout
 
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.2">
+                android:layout_height="wrap_content">
 
                 <ImageView
+                    android:id="@+id/iv2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/text_recognition" />
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/object_detection" />
 
+                <TextView
+                    android:id="@+id/tv33"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv2"
+                    android:layout_marginTop="0dp"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:text="Tip : Use white background such as a sheet of paper for better results."
+                    android:textColor="?attr/colorSecondaryText"
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight=".8">
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
@@ -301,10 +316,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
 
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_marginTop="30dp"
 
-                        android:layout_marginRight="40dp"
+                        android:layout_marginRight="30dp"
 
 
                         android:elevation="6dp"
@@ -328,23 +343,23 @@
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:gravity="center"
-                                android:text="Camera"
+                                android:text="Camera2"
                                 android:textColor="#ffffff"
                                 android:textSize="21sp" />
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <LinearLayout
-                        android:id="@+id/bt_gallery2"
+                        android:id="@+id/bt_gallery"
 
                         android:layout_width="match_parent"
                         android:layout_height="42dp"
 
                         android:layout_below="@id/cv2"
-                        android:layout_marginLeft="40dp"
+                        android:layout_marginLeft="30dp"
 
                         android:layout_marginTop="8dp"
-                        android:layout_marginRight="40dp"
+                        android:layout_marginRight="30dp"
                         android:clickable="true"
                         android:foreground="?attr/selectableItemBackground">
 

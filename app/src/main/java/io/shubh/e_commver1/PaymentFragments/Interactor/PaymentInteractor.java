@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.PaymentRelatedFragments.Interactor;
+package io.shubh.e_commver1.PaymentFragments.Interactor;
 
 
 import java.util.ArrayList;

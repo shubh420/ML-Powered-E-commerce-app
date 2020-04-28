@@ -25,16 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.custom.FirebaseModelDataType;
-import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
-import com.google.firebase.ml.custom.FirebaseModelInputs;
-import com.google.firebase.ml.custom.FirebaseModelInterpreter;
-import com.google.firebase.ml.custom.FirebaseModelManager;
-import com.google.firebase.ml.custom.FirebaseModelOptions;
-import com.google.firebase.ml.custom.FirebaseModelOutputs;
-import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
-import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
-import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
+
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
@@ -53,49 +44,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
+import io.shubh.e_commver1.Adapters.CustomPagerAdapterForSearchFragment;
 import io.shubh.e_commver1.Main.View.MainActivity;
 
 
 public class SearchActivity extends AppCompatActivity {
 
+
     int pageNoForMlFeature;
-    private FirebaseModelInterpreter mInterpreter;
+/*
+
     String TAG = "SearchActivity";
 
-    /**
+
+    private FirebaseModelInterpreter mInterpreter;
+    *//**
      * Name of the model file hosted with Firebase.
-     */
+     *//*
     private static final String HOSTED_MODEL_NAME = "cloud_model_1";
     private static final String LOCAL_MODEL_ASSET = "mobilenet_v1_1.0_224_quant.tflite";
-
-    /**
+    *//**
      * Number of results to show in the UI.
-     */
+     *//*
     private static final int RESULTS_TO_SHOW = 3;
-    /**
+    *//**
      * Dimensions of inputs.
-     */
+     *//*
     private static final int DIM_BATCH_SIZE = 1;
     private static final int DIM_PIXEL_SIZE = 3;
     private static final int DIM_IMG_SIZE_X = 224;
     private static final int DIM_IMG_SIZE_Y = 224;
 
-    /* Preallocated buffers for storing image data. */
+    *//* Preallocated buffers for storing image data. *//*
     private final int[] intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
     private Bitmap mSelectedImage;
 
-    /**
+    *//**
      * Data configuration of input & output data of model.
-     */
+     *//*
     private FirebaseModelInputOutputOptions mDataOptions;
 
-    /**
+    *//**
      * Labels corresponding to the output of the vision model.
-     */
+     *//*
     private List<String> mLabelList;
-    /**
+    *//**
      * Name of the label file stored in Assets.
-     */
+     *//*
     private static final String LABEL_PATH = "labels.txt";
 
     private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
@@ -107,7 +102,7 @@ public class SearchActivity extends AppCompatActivity {
                                 o2) {
                             return (o1.getValue()).compareTo(o2.getValue());
                         }
-                    });
+                    });*/
 
     private Uri imageUri;
     TextView tv_output;
@@ -121,7 +116,7 @@ public class SearchActivity extends AppCompatActivity {
         SearchViewInit();
 
 
-        mSelectedImage =getBitmapFromAsset(this, "tennis.jpg");
+       // mSelectedImage =getBitmapFromAsset(this, "tennis.jpg");
 
         initViews();
         initCustomModel();
@@ -160,7 +155,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 //----------------------------------------------------------------
 
-        CustomPagerAdapter adapter = new CustomPagerAdapter();
+        CustomPagerAdapterForSearchFragment adapter = new CustomPagerAdapterForSearchFragment();
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
 
@@ -169,11 +164,11 @@ public class SearchActivity extends AppCompatActivity {
 
     private void initViews() {
 
-        LinearLayout bt_cmaera =(LinearLayout)findViewById(R.id.bt_camera);
+        //LinearLayout bt_cmaera =(LinearLayout)findViewById(R.id.bt_camera);
         LinearLayout bt_gallery =(LinearLayout)findViewById(R.id.bt_gallery);
 
 
-        bt_cmaera.setOnClickListener(new View.OnClickListener() {
+       /* bt_cmaera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -182,7 +177,7 @@ public class SearchActivity extends AppCompatActivity {
 
                 pageNoForMlFeature = 1;
             }
-        });
+        });*/
 
         bt_gallery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +196,7 @@ public class SearchActivity extends AppCompatActivity {
  //======================================================================================================
         //page 2 views initialisation
         LinearLayout bt_cmaera2 =(LinearLayout)findViewById(R.id.bt_camera2);
-        LinearLayout bt_gallery2 =(LinearLayout)findViewById(R.id.bt_gallery2);
+     //   LinearLayout bt_gallery2 =(LinearLayout)findViewById(R.id.bt_gallery2);
 
 
         bt_cmaera2.setOnClickListener(new View.OnClickListener() {
@@ -215,7 +210,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        bt_gallery2.setOnClickListener(new View.OnClickListener() {
+    /*    bt_gallery2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -227,13 +222,13 @@ public class SearchActivity extends AppCompatActivity {
 
                 pageNoForMlFeature = 2;
             }
-        });
+        });*/
 
 
     }
 
     private void initCustomModel() {
-        mLabelList = loadLabelList(this);
+      /*  mLabelList = loadLabelList(this);
 
         int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
         int[] outputDims = {DIM_BATCH_SIZE, mLabelList.size()};
@@ -270,12 +265,12 @@ public class SearchActivity extends AppCompatActivity {
         } catch (FirebaseMLException e) {
             showToast("Error while setting up the model");
             e.printStackTrace();
-        }
+        }*/
     }
 
-    /**
+  /*  *//**
      * Reads label list from Assets.
-     */
+     *//*
     private List<String> loadLabelList(AppCompatActivity activity) {
         List<String> labelList = new ArrayList<>();
         try (BufferedReader reader =
@@ -289,11 +284,11 @@ public class SearchActivity extends AppCompatActivity {
             Log.e(TAG, "Failed to read label list.", e);
         }
         return labelList;
-    }
+    }*/
 
 
     private void runModelInference() {
-        if (mInterpreter == null) {
+       /* if (mInterpreter == null) {
             Log.e(TAG, "Image classifier has not been initialized; Skipped.");
             return;
         }
@@ -346,11 +341,11 @@ public class SearchActivity extends AppCompatActivity {
         } catch (FirebaseMLException e) {
             e.printStackTrace();
             showToast("Error running model inference");
-        }
+        }*/
 
     }
 
-    private String extractTheNamesWithoutProbabilityScoreFromTheList(List<String> labels) {
+   /* private String extractTheNamesWithoutProbabilityScoreFromTheList(List<String> labels) {
 
         String stringContainingAllLabels="";
         for(int i=0 ; i<labels.size() ; i++) {
@@ -365,9 +360,9 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    /**
+    *//**
      * Gets the top labels in the results.
-     */
+     *//*
     private synchronized List<String> getTopLabels(byte[][] labelProbArray) {
         for (int i = 0; i < mLabelList.size(); ++i) {
             sortedLabels.add(
@@ -386,9 +381,9 @@ public class SearchActivity extends AppCompatActivity {
         Log.d(TAG, "labels: " + result.toString());
         return result;
     }
-    /**
+    *//**
      * Writes Image data into a {@code ByteBuffer}.
-     */
+     *//*
     private synchronized ByteBuffer convertBitmapToByteBuffer(
             Bitmap bitmap, int width, int height) {
         ByteBuffer imgData =
@@ -412,7 +407,7 @@ public class SearchActivity extends AppCompatActivity {
         }
         return imgData;
     }
-
+*/
     public static Bitmap getBitmapFromAsset(Context context, String filePath) {
         AssetManager assetManager = context.getAssets();
 
@@ -446,7 +441,7 @@ public class SearchActivity extends AppCompatActivity {
                     try {
                          bitmap = (Bitmap) data.getExtras().get("data");
 
-                        mSelectedImage = bitmap;
+                        //mSelectedImage = bitmap;
 
                         runModelInference();
 
@@ -466,7 +461,7 @@ public class SearchActivity extends AppCompatActivity {
                         Uri imageUri = data.getData();
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-                        mSelectedImage = bitmap;
+                     //   mSelectedImage = bitmap;
 
                         runModelInference();
 
@@ -490,7 +485,7 @@ public class SearchActivity extends AppCompatActivity {
                     try {
                         bitmap = (Bitmap) data.getExtras().get("data");
 
-                        mSelectedImage = bitmap;
+                  //      mSelectedImage = bitmap;
 
                         runImgTextDetection(bitmap);
 
@@ -510,7 +505,7 @@ public class SearchActivity extends AppCompatActivity {
                         Uri imageUri = data.getData();
                         bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
 
-                        mSelectedImage = bitmap;
+                   //     mSelectedImage = bitmap;
 
                         runImgTextDetection(bitmap);
 

@@ -8,5 +8,7 @@ public interface LikedItemsPresenter {
 
    // void onGettingThegoogleSignInResult(int code, int requestCode, Intent data);
 
-     void LoginRelatedWork();
+    void deleteLikedItem(String docId);
+
+    void getLikedItemsData();
 }

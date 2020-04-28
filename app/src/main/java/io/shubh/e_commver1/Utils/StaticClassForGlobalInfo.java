@@ -17,3 +17,5 @@ public final class StaticClassForGlobalInfo {
 
     public static ArrayList<Category> categoriesList;
 }
+
+

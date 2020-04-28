@@ -26,9 +26,9 @@ import java.util.List;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.Models.ItemsForSale;
-import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 
-public class SearchResultsActivity extends AppCompatActivity implements InterfaceForClickCallbackFromCtgrAdaptr {
+public class SearchResultsActivity extends AppCompatActivity implements InterfaceForClickCallbackFromAnyAdaptr {
 
     String searchQuery;
     RecyclerView recyclerView;
@@ -325,6 +325,11 @@ public class SearchResultsActivity extends AppCompatActivity implements Interfac
 
     @Override
     public void onClickOnDeleteFromLikedItemsBt(String docId) {
+
+    }
+
+    @Override
+    public void onClickOnItem(String docId) {
 
     }
 }

@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.PaymentRelatedFragments.View;
+package io.shubh.e_commver1.PaymentFragments.View;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -22,9 +22,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.PaymentRelatedFragments.Interactor.PaymentInteractorImplt;
-import io.shubh.e_commver1.PaymentRelatedFragments.Presenter.PaymentPresenter;
-import io.shubh.e_commver1.PaymentRelatedFragments.Presenter.PaymentPresenterImplt;
+import io.shubh.e_commver1.PaymentFragments.Interactor.PaymentInteractorImplt;
+import io.shubh.e_commver1.PaymentFragments.Presenter.PaymentPresenter;
+import io.shubh.e_commver1.PaymentFragments.Presenter.PaymentPresenterImplt;
 import io.shubh.e_commver1.R;
 
 

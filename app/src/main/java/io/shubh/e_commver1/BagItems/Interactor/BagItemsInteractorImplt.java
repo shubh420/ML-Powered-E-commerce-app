@@ -34,9 +34,6 @@ public class BagItemsInteractorImplt implements BagItemsInteractor {
     @Override
     public void getbagItemsDataWithArgAsCallbackFunction(SeparateCallbackToPresnterAfterGettingTheObjectList l) {
 
-        Log.i(TAG, "getbagitem called ");
-
-
         Query query = db.collection("bag or cart items")
                 .whereEqualTo("user id", StaticClassForGlobalInfo.UId)
                 .orderBy("time of upload", Query.Direction.DESCENDING);
@@ -52,8 +49,6 @@ public class BagItemsInteractorImplt implements BagItemsInteractor {
                             if (task.getResult() != null) {
                                 if (task.getResult().size() != 0) {
                                     list = task.getResult().toObjects(BagItem.class);
-
-                                    Log.i(TAG, "getbagitem retrived ..size of list" + list.size());
 
                                     getTheItemObjectIndivisually(0, list, l);
                                 } else {

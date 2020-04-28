@@ -1,11 +1,13 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.Adapters;
 
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.viewpager.widget.PagerAdapter;
 
-public class CustomPagerAdapter extends PagerAdapter {
+import io.shubh.e_commver1.R;
+
+public class CustomPagerAdapterForSearchFragment extends PagerAdapter {
 
     public Object instantiateItem(ViewGroup collection, int position) {
 

@@ -21,21 +21,20 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 
 public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
     private Context context;
     private boolean ifInitiatedFromSelelrdashboard = false;
-    private InterfaceForClickCallbackFromCtgrAdaptr interfaceForClickCallbackFromCtgrAdaptr;
+    private InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr;
     /* private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromCtgrAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard) {
+    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
         this.ifInitiatedFromSelelrdashboard = ifInitiatedFromSelelrdashboard;

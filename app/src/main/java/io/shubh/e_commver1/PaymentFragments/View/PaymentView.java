@@ -1,4 +1,4 @@
-package io.shubh.e_commver1.PaymentRelatedFragments.View;
+package io.shubh.e_commver1.PaymentFragments.View;
 
 import android.content.Context;
 

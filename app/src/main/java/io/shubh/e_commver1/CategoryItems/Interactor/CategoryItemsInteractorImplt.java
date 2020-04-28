@@ -199,11 +199,6 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
 
                                     itemsList.addAll(list);
 
-                                    Log.i("***SizeOfo/pOf2ndCall:", String.valueOf(itemsList.size()));
-                                    for (int i = 0; i < itemsList.size(); i++) {
-                                        Log.i("******id", String.valueOf(itemsList.get(i).getItem_id()));
-                                        Log.i("******name", itemsList.get(i).getName());
-                                    }
                                     idodLastItemRetrived = itemsList.get(itemsList.size() - 1).getItem_id();
 
                                     checkIfTheseItemsExistInSavedItemsList(itemsList, true, ctgrName, ifItsALoadMorecall);

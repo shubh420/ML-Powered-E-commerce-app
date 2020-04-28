@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.KeyEvent;
@@ -12,12 +13,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.appbar.AppBarLayout;
 
 import java.util.List;
 
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForBagItemsList;
+import io.shubh.e_commver1.Adapters.ReclrAdapterClassForLikedItemsList;
 import io.shubh.e_commver1.LikedItems.Interactor.LikedItemsInteractorImplt;
 import io.shubh.e_commver1.LikedItems.Presenter.LikedItemsPresenter;
 import io.shubh.e_commver1.LikedItems.Presenter.LikedItemsPresenterImplt;
@@ -25,10 +29,7 @@ import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.LikedItem;
 import io.shubh.e_commver1.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class LikedItemsFragment extends Fragment implements LikedItemsView  {
+public class LikedItemsFragment extends Fragment implements LikedItemsView ,InterfaceForClickCallbackFromLikedItemsAdapter  {
 
     View containerViewGroup;
     LayoutInflater inflater;
@@ -36,7 +37,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView  {
 
 
     RecyclerView recyclerView;
-    ReclrAdapterClassForBagItemsList adapter;
+    ReclrAdapterClassForLikedItemsList adapter;
     List<LikedItem> likedItemList;
     int postionFromItemtoDelete;
     ShimmerFrameLayout mShimmerViewContainer;
@@ -74,7 +75,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView  {
 
         //logic work start here
       //
-        //  mPresenter.getBagItemsData();
+          mPresenter.getLikedItemsData();
     }
 
 
@@ -86,6 +87,54 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView  {
                 onBackButtonPressed();
             }
         });
+    }
+
+    @Override
+    public void showItemsInRecyclerView(List<LikedItem> likedItemList) {
+
+
+        this.likedItemList = likedItemList;
+        //------------recycler setting up
+        recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.rclrViewFrBagItemsList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new ReclrAdapterClassForLikedItemsList(getContext(),this, likedItemList);
+        recyclerView.setAdapter(adapter);
+
+        AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (recyclerView.canScrollVertically(-1)) {
+                    appBarLayout.setElevation(50f);
+                } else {
+                    appBarLayout.setElevation(0f);
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void updateReclrViewListAfterDeletionOfItem() {
+
+        likedItemList.remove(postionFromItemtoDelete);
+
+        adapter.notifyItemRemoved(postionFromItemtoDelete);
+        adapter.notifyItemRangeChanged(postionFromItemtoDelete, likedItemList.size());
+
+    }
+
+
+
+    @Override
+    public void showEmptyListMessage() {
+        showToast("No Items Found");
+
+        //TODO - either show a custom toast msg here  or show a graphiv in image view on the center of the screen
+
     }
 
 
@@ -126,7 +175,21 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView  {
 
     @Override
     public void showProgressBar(boolean b) {
+        if (b == true) {
 
+            if (recyclerView != null) {
+                recyclerView.setVisibility(View.GONE);
+            }
+            mShimmerViewContainer.startShimmerAnimation();
+            mShimmerViewContainer.setVisibility(View.VISIBLE);
+        } else {
+            if (recyclerView != null) {
+                recyclerView.setVisibility(View.VISIBLE);
+            }
+            mShimmerViewContainer.stopShimmerAnimation();
+            mShimmerViewContainer.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
@@ -136,6 +199,18 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView  {
 
     @Override
     public void showToast(String msg) {
-
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
+
+
+    @Override
+    public void onDeleteItemClick(String docId, int position) {
+        mPresenter.deleteLikedItem(docId);
+        this.postionFromItemtoDelete = position;
+    }
+}
+interface InterfaceForClickCallbackFromLikedItemsAdapter {
+   // void onrecyclrItemClick(BagItem bagItem);
+
+    void onDeleteItemClick(String docId , int position);
 }

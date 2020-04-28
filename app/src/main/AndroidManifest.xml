@@ -55,6 +55,11 @@
         <meta-data
             android:name="com.razorpay.ApiKey"
             android:value="rzp_test_tiSVcFM2GqxK6a"          />
+
+// download the required local model(s) at install-time.
+        <meta-data
+            android:name="com.google.firebase.ml.vision.DEPENDENCIES"
+            android:value="label" />
     </application>
 
 </manifest>

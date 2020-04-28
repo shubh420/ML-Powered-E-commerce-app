@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:clickable="true"
-    tools:context=".PaymentRelatedFragments.PaymentStatusFragment">
+    tools:context=".PaymentFragments.PaymentStatusFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -1,24 +1,33 @@
 package io.shubh.e_commver1.LikedItems.Interactor;
 
+import java.util.List;
+
+import io.shubh.e_commver1.Models.LikedItem;
 
 public interface LikedItemsInteractor {
 
     interface CallbacksToPresnter {
-        void onFinishedCheckingSomething1();
+       // void onFinishedCheckingSomething1();
 
-        void onFinishedCheckingSomething2();
+       // void onFinishedCheckingSomething2();
 
     }
-    interface SeparateCallbackToPresnterForSystemUpdate {
+    interface SeparateCallbackToPresnterAfterGettingLikedItemList {
 
-        void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck);
+        void onFinished(boolean callbackResultOfTheCheck, List<LikedItem> likedItemList);
     }
+    interface SeparateCallbackToPresnterAfterDeletingLikedItem {
+
+        void onFinished(boolean callbackResultOfTheCheck);
+    }
+
 
     void init(CallbacksToPresnter mPresenter);
 
 
-    void checkSomethingInDatabase();
+    void getLikedItemsDataWithArgAsCallbackFunction(SeparateCallbackToPresnterAfterGettingLikedItemList l);
 
-    void checkSomethingInDatabaseWithArgAsCallbackFunction(LikedItemsInteractor.SeparateCallbackToPresnterForSystemUpdate l);
+    void deleteLikedItemWithArgAsCallbackFunction(String docId, SeparateCallbackToPresnterAfterDeletingLikedItem l);
+
 }
 

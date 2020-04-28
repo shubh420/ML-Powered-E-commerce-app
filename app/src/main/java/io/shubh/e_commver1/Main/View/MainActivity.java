@@ -41,9 +41,11 @@ import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.Models.Order;
-import io.shubh.e_commver1.PaymentRelatedFragments.View.PaymentFragment;
+import io.shubh.e_commver1.Notification.View.NotificationFragment;
+import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
+import io.shubh.e_commver1.SearchPage.SearchFragment;
 import io.shubh.e_commver1.SellerConfirmationFragment;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Utils.Utils;
@@ -122,6 +124,15 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             }
         });
 
+        ImageButton btNotification = (ImageButton) findViewById(R.id.btNotification);
+        btNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, new NotificationFragment())
+                        .commit();
+            }
+        });
     }
 
 
@@ -130,8 +141,12 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         cv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                finish();
+                /*startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                finish();*/
+
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, new SearchFragment())
+                        .commit();
 
             }
         });
@@ -177,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
 
         LinearLayout btDrwrLiked = (LinearLayout) findViewById(R.id.btDrwrLiked);
-        myOrderBt.setOnClickListener(new View.OnClickListener() {
+        btDrwrLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

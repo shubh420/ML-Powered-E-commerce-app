@@ -1,5 +1,6 @@
 package io.shubh.e_commver1.ItemsDetailsTakingFragment.View;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
@@ -35,6 +36,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,18 +201,49 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         btCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                behavior_bttm_sheet_which_select_img.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                if (allowedImagesAmountForPickup != 0) {
-                    startActivityForResult(cameraIntent, CAPTURE_IMAGE_FROM_CAMERA);
+                //checking if we have camera permission
+                if (TedPermission.isGranted(getContext(), Manifest.permission.CAMERA)) {
+                    behavior_bttm_sheet_which_select_img.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (allowedImagesAmountForPickup != 0) {
+                        startActivityForResult(cameraIntent, CAPTURE_IMAGE_FROM_CAMERA);
+                    } else {
+                        showToast("Images Limit of 5 crossed");
+                    }
                 } else {
-                    showToast("Images Limit of 5 crossed");
+                    //call for getting permission
+                    getCameraPermissions();
                 }
+
             }
         });
 
     }
+
+    private void getCameraPermissions() {
+            PermissionListener permissionlistener = new PermissionListener() {
+                @Override
+                public void onPermissionGranted() {
+                    showToast("Permission Granted");
+                }
+
+                @Override
+                public void onPermissionDenied(List<String> deniedPermissions) {
+                    showToast("Permission Denied\n" + deniedPermissions.toString());
+                }
+
+
+            };
+
+        TedPermission.with(getContext())
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.CAMERA)
+                .check();
+    }
+
 
     @Override
 
@@ -288,6 +322,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+
 
     @Override
     public void decrementAllowedImagesPickUpAmount(int decrmntThisAmount) {

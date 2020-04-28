@@ -55,7 +55,6 @@ public class CategoryItemsPresenterImplt implements CategoryItemsPresenter, Cate
             //tell the fragment to show no results found
             categoryItemsView.onNoItemsFoundResult(ctgrName , ifItsALoadMoreCallResult) ;
         }
-
     }
 
     @Override

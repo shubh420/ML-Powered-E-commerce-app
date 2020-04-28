@@ -80,12 +80,15 @@ updateBuyer(subOrderItem,nextStatusNoToUpdate,l);
                     notif.put("content", "Seller Has updated order status for item "+ subOrderItem.getItemName());
                     notif.put("image url",subOrderItem.getImageUrl());
                     notif.put("token", token);
+                    notif.put("has it been read", false);
+                    Long time =System.currentTimeMillis() / 1000L;
+                    notif.put("time of upload", time);
                     notif.put("type", "2"); //type - 1 means its for seller ..so open that fragment and type - 3 means its for buyer
 
                     //     notif.put("topic", "notificationsForSellers");
 
                     db.collection("users").document(subOrderItem.getBuyerId())
-                            .collection("notifications").document(String.valueOf(System.currentTimeMillis() / 1000L))
+                            .collection("notifications").document(String.valueOf(time))
                             .set(notif)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

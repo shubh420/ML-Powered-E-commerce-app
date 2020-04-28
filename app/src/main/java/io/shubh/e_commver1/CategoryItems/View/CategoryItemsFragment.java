@@ -30,11 +30,10 @@ import java.util.List;
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractorImplt;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenter;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenterImplt;
-import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 
@@ -45,7 +44,7 @@ import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
  * Use the {@link CategoryItemsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CategoryItemsFragment extends Fragment implements CategoryItemsView, InterfaceForClickCallbackFromCtgrAdaptr {
+public class CategoryItemsFragment extends Fragment implements CategoryItemsView, InterfaceForClickCallbackFromAnyAdaptr {
 
     private static final String ARG_PARAM1_Category_Name = "param1";
     // private static final String ARG_PARAM2_Level_Of_Category_Name = "param2";
@@ -179,7 +178,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         recyclerView.setLayoutManager(gridLayoutManager);
 
         itemsList = new ArrayList<>();
-        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromCtgrAdaptr) this, getContext(), itemsList, false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), itemsList, false);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);
@@ -691,6 +690,11 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
     @Override
     public void onClickOnDeleteFromLikedItemsBt(String docId) {
         mPresenter.deleteTheItemFromLikedItems(docId);
+    }
+
+    @Override
+    public void onClickOnItem(String docId) {
+
     }
 
 

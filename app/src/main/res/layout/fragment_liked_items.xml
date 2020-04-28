@@ -4,13 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".LikedItems.View.LikedItemsFragment">
+    tools:context=".LikedItems.View.LikedItemsFragment"
+    android:background="?attr/colorPrimary">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="?attr/colorPrimary">
 
 
         <com.google.android.material.appbar.AppBarLayout
@@ -26,7 +27,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimary"
                 android:elevation="0dp"
 
                 android:gravity="center_vertical"
@@ -48,7 +49,7 @@
                     android:padding="9dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
-                    android:tint="#757575"
+                    android:tint="?attr/colorForObjects"
 
                     />
 
@@ -67,12 +68,14 @@
                 android:layout_marginBottom="5dp"
                 android:paddingRight="15dp"
                 android:text="Liked Items"
-                android:textColor="#A60C0C0C"
-                android:textSize="35sp" />
+                android:textColor="?attr/colorPrimaryText"
+                android:textSize="35sp"
+
+                />
         </com.google.android.material.appbar.AppBarLayout>
 
         <include
-            layout="@layout/shimmer_layout_file_fr_include_in_bag_items_list"
+            layout="@layout/shimmer_layout_file_fr_include_in_liked_items_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -88,7 +91,7 @@
             android:paddingTop="5dp"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"
-            android:paddingBottom="60dp"
+            android:paddingBottom="10dp"
 
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

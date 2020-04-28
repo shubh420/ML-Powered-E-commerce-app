@@ -61,7 +61,7 @@
                 android:layout_toLeftOf="@id/id_bt_save_fR_rclr_item_ctgr_item_list"
                 android:ellipsize="end"
                 android:text="Rs .420"
-                android:textColor="#A60C0C0C"
+                android:textColor="?attr/colorSecondaryText"
                 android:textSize="13sp"
                 android:layout_marginLeft="3dp"/>
 
@@ -77,7 +77,7 @@
                 android:maxLines="1"
 
                 android:text="Title"
-                android:textColor="#D30C0C0C"
+                android:textColor="?attr/colorPrimaryText"
                 android:layout_marginLeft="3dp"
                 android:textSize="15dp" />
 

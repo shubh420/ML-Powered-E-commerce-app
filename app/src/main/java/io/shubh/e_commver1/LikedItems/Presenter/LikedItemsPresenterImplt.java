@@ -1,7 +1,12 @@
 package io.shubh.e_commver1.LikedItems.Presenter;
 
+import java.util.List;
+
+import io.shubh.e_commver1.BagItems.Interactor.BagItemsInteractor;
 import io.shubh.e_commver1.LikedItems.Interactor.LikedItemsInteractor;
 import io.shubh.e_commver1.LikedItems.View.LikedItemsView;
+import io.shubh.e_commver1.Models.BagItem;
+import io.shubh.e_commver1.Models.LikedItem;
 
 public class LikedItemsPresenterImplt implements LikedItemsPresenter, LikedItemsInteractor.CallbacksToPresnter {
 
@@ -9,43 +14,65 @@ public class LikedItemsPresenterImplt implements LikedItemsPresenter, LikedItems
     private LikedItemsInteractor mInteractor;
 
 
-    public LikedItemsPresenterImplt(LikedItemsView mView , LikedItemsInteractor mSplashInteractor) {
-       this.mView=mView;
-       this.mInteractor = mSplashInteractor;
+    public LikedItemsPresenterImplt(LikedItemsView mView, LikedItemsInteractor mSplashInteractor) {
+        this.mView = mView;
+        this.mInteractor = mSplashInteractor;
 
-       mInteractor.init(this);
-
+        mInteractor.init(this);
 
 
     }
 
-
     @Override
-    public void LoginRelatedWork() {
+    public void getLikedItemsData() {
 
 
-        mInteractor.checkSomethingInDatabaseWithArgAsCallbackFunction( new LikedItemsInteractor.SeparateCallbackToPresnterForSystemUpdate(){
+        mView.showProgressBar(true);
+
+        mInteractor.getLikedItemsDataWithArgAsCallbackFunction(new LikedItemsInteractor.SeparateCallbackToPresnterAfterGettingLikedItemList() {
             @Override
-            public void onFinishedCheckingSystemUpdate(boolean callbackResultOfTheCheck) {
+            public void onFinished(boolean callbackResultOfTheCheck, List<LikedItem> likedItemList) {
 
-              if(callbackResultOfTheCheck==true){
-                  //system upadte available ..so throw a dialog asking to download update
-              }else{
-                  //system upadte not available ..so continue
-              }
+                if (callbackResultOfTheCheck == true) {
+                    //system upadte available ..so throw a dialog asking to download update
+                    if (likedItemList.size() != 0) {
+
+                        mView.showProgressBar(false);
+                        mView.showItemsInRecyclerView(likedItemList);
+                    } else {
+                        mView.showProgressBar(false);
+                        mView.showEmptyListMessage();
+                    }
+
+
+                } else {
+                    //system upadte not available ..so continue
+                    mView.showProgressBar(false);
+                    mView.showToast("Some Problem Ocuured");
+                }
             }
         });
+
     }
 
 
     @Override
-    public void onFinishedCheckingSomething1() {
-//this is call from interactor
+    public void deleteLikedItem(String docId) {
+
+        mInteractor.deleteLikedItemWithArgAsCallbackFunction(docId, new LikedItemsInteractor.SeparateCallbackToPresnterAfterDeletingLikedItem() {
+                    @Override
+                    public void onFinished(boolean callbackResultOfTheCheck) {
+                        if(callbackResultOfTheCheck==true){
+                            mView.updateReclrViewListAfterDeletionOfItem();
+                        }else{
+                            mView.showToast("Some Problem Ocuured");
+                        }
+                    }
+                }
+
+        );
+
     }
 
-    @Override
-    public void onFinishedCheckingSomething2() {
 
-        //this is call from interactor
-    }
 }

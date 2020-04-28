@@ -385,14 +385,14 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical"
                 android:padding="10dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/"
+                    android:fontFamily="sans-serif-medium"
                     android:text="Recently Sold Items"
                     android:textColor="@color/colorBlackForSubHeaderTvs"
                     android:textSize="23sp" />

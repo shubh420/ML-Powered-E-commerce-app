@@ -32,10 +32,10 @@ import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractorImplt;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenter;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenterImplt;
-import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromCtgrAdaptr;
+import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 
 
-public class SellerDashboardFragment extends Fragment  implements SellerDashboardView , InterfaceForClickCallbackFromCtgrAdaptr {
+public class SellerDashboardFragment extends Fragment  implements SellerDashboardView , InterfaceForClickCallbackFromAnyAdaptr {
 
     View containerViewGroup;
     LayoutInflater inflater;
@@ -145,6 +145,8 @@ mPresenter.getSellerData();
             }
         });
 
+
+        showProgressBar(false);
     }
 
     @Override
@@ -252,6 +254,11 @@ mPresenter.getSellerData();
 
     @Override
     public void onClickOnDeleteFromLikedItemsBt(String docId) {
+
+    }
+
+    @Override
+    public void onClickOnItem(String docId) {
 
     }
 }

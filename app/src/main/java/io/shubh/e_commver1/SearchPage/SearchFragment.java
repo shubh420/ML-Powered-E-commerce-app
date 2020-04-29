@@ -78,7 +78,7 @@ import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SearchPage.View.SearchResultsFragment;
 import io.shubh.e_commver1.SearchResultsActivity;
-import io.shubh.e_commver1.Utils.TensorflowMlkitObjectDetection;
+
 
 /**
  * A simple {@link Fragment} subclass.

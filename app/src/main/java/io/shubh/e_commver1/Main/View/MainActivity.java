@@ -22,6 +22,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
@@ -333,9 +334,13 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             drawerLayout.closeDrawer(Gravity.LEFT);
           /*  Intent in = new Intent(MainActivity.this, seller_items_list.class);
             startActivity(in);*/
+            SellerConfirmationFragment sellerConfirmationFragment= new SellerConfirmationFragment();
+            sellerConfirmationFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout, new SellerConfirmationFragment())
+                    .add(R.id.drawerLayout,sellerConfirmationFragment)
                     .commit();
+
 
             //animation for sliding activity
             //  overridePendingTransition(R.anim.right_in, R.anim.left_out);

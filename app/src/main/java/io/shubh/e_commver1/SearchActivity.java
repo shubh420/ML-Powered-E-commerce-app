@@ -25,16 +25,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.ml.common.FirebaseMLException;
-import com.google.firebase.ml.custom.FirebaseModelDataType;
-import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
-import com.google.firebase.ml.custom.FirebaseModelInputs;
-import com.google.firebase.ml.custom.FirebaseModelInterpreter;
-import com.google.firebase.ml.custom.FirebaseModelManager;
-import com.google.firebase.ml.custom.FirebaseModelOptions;
-import com.google.firebase.ml.custom.FirebaseModelOutputs;
-import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
-import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
-import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
+
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
@@ -59,46 +50,46 @@ import io.shubh.e_commver1.Main.View.MainActivity;
 
 public class SearchActivity extends AppCompatActivity {
 
-    int pageNoForMlFeature;
+/*    int pageNoForMlFeature;
 
     String TAG = "SearchActivity";
 
 
 
     private FirebaseModelInterpreter mInterpreter;
-    /**
+    *//**
      * Name of the model file hosted with Firebase.
-     */
+     *//*
     private static final String HOSTED_MODEL_NAME = "cloud_model_1";
     private static final String LOCAL_MODEL_ASSET = "mobilenet_v1_1.0_224_quant.tflite";
-    /**
+    *//**
      * Number of results to show in the UI.
-     */
+     *//*
     private static final int RESULTS_TO_SHOW = 3;
-    /**
+    *//**
      * Dimensions of inputs.
-     */
+     *//*
     private static final int DIM_BATCH_SIZE = 1;
     private static final int DIM_PIXEL_SIZE = 3;
     private static final int DIM_IMG_SIZE_X = 224;
     private static final int DIM_IMG_SIZE_Y = 224;
 
-    /* Preallocated buffers for storing image data. */
+    *//* Preallocated buffers for storing image data. *//*
     private final int[] intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
     private Bitmap mSelectedImage;
 
-    /**
+    *//**
      * Data configuration of input & output data of model.
-     */
+     *//*
     private FirebaseModelInputOutputOptions mDataOptions;
 
-    /**
+    *//**
      * Labels corresponding to the output of the vision model.
-     */
+     *//*
     private List<String> mLabelList;
-    /**
+    *//**
      * Name of the label file stored in Assets.
-     */
+     *//*
     private static final String LABEL_PATH = "labels.txt";
 
     private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
@@ -110,7 +101,7 @@ public class SearchActivity extends AppCompatActivity {
                                 o2) {
                             return (o1.getValue()).compareTo(o2.getValue());
                         }
-                    });
+                    });*/
 
     private Uri imageUri;
     TextView tv_output;

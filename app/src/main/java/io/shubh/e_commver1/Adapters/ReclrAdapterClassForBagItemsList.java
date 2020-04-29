@@ -194,12 +194,16 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
                 @Override
                 public void onClick(View view) {
 
+
                     ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
                     itemDetailFragment.passData(dataForItemArrayList.get(position).getItemObject());
 
                     ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout, itemDetailFragment)
+                            .add(R.id.drawerLayout, itemDetailFragment,"ItemDetailFragment")
+                            .addToBackStack(null)
                             .commit();
+
+
 
                 }
             });

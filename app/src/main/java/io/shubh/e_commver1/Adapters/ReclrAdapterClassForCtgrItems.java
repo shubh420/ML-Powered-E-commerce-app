@@ -118,18 +118,13 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
                 ItemDetailFragment itemDetailFragment = new ItemDetailFragment();
                 itemDetailFragment.passData(dataForItemArrayList.get(position));
 
-                Log.i("!!!!!", context.getClass().getSimpleName());
-                //todo -fix the below scene
-                if (context.getClass().getSimpleName().equals("SearchResultsActivity")) {
+                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, itemDetailFragment,"ItemDetailFragment")
+                            .addToBackStack(null)
+                            .commit();
 
-                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                            .add(R.id.ll_search_results_container, itemDetailFragment)
-                            .commit();
-                } else {
-                    ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout, itemDetailFragment)
-                            .commit();
-                }
+
+
 
 
             }

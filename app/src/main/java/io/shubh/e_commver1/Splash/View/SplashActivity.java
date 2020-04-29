@@ -1,5 +1,6 @@
 package io.shubh.e_commver1.Splash.View;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -68,6 +69,7 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     private void DoUiWork() {
         splashimageicon=(ImageView)findViewById(R.id.imagesplash);
 
@@ -80,12 +82,8 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
-
                 //no code her cause it delays the animation start
-
             }
-
             @Override
             public void onAnimationEnd(Animation animation) {
                 new Handler().postDelayed(new Runnable() {
@@ -117,6 +115,7 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(Color.parseColor("#8BC34A"));
+                window.setNavigationBarDividerColor(getResources().getColor(R.color.colorSecondary));
             }
     }
 

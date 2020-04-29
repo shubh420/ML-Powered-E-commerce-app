@@ -119,7 +119,8 @@ dataForItemArrayList.get(position).getItemObject().setItemLiked(true);
                     itemDetailFragment.passData(dataForItemArrayList.get(position).getItemObject());
 
                     ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout, itemDetailFragment)
+                            .add(R.id.drawerLayout, itemDetailFragment ,"ItemDetailFragment")
+                           .addToBackStack(null)
                             .commit();
 
                 }

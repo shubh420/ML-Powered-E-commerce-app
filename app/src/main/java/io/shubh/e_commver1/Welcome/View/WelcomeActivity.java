@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 import io.shubh.e_commver1.Welcome.Interactor.WelcomeInteractorImplt;
 import io.shubh.e_commver1.Welcome.Presenter.WelcomePresenter;
 import io.shubh.e_commver1.Welcome.Presenter.WelcomePresenterImplt;
@@ -164,10 +165,18 @@ public class  WelcomeActivity extends AppCompatActivity implements WelcomeView {
         snackbar.show();*/
     }
 
+
+    @Override
+    public void onBackPressed() {
+        //todo-for now on back press i m intent to main
+              /*  finishAffinity();
+                System.exit(0);*/
+              switchActivity(1);
+        }
+
     @Override
     public void showToast(String msg) {
-        Toast.makeText(WelcomeActivity.this, msg, Toast.LENGTH_LONG).show    ();
-
+        Utils.showToast(msg,WelcomeActivity.this);
     }
 
     @Override

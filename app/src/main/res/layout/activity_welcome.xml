@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
         android:layout_toRightOf="@id/id_fr_tv_welcome_text"
             android:layout_below="@id/id_fr_tv_welcome_text"
-            android:text="IPEC"
+            android:text="ML Powered"
 
             android:textSize="30sp"
             android:textStyle="bold" />

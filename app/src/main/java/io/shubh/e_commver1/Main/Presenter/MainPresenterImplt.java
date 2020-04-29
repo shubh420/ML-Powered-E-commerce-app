@@ -47,6 +47,8 @@ public class MainPresenterImplt implements MainPresenter, MainInteractor.Callbac
 
     private void getAllCatgrFromFirestoreAndStoreItInStaticGlobalInfoClass() {
 
+        //Todo - shift this code to splash activty in later versions
+
         mInteractor.getAllCatgrFromFirestoreWithArgAsCallbackFunction(new MainInteractor.SeparateCallbackToPresnterAfterGettingcategories() {
             @Override
             public void onFinishedGettingCategories(ArrayList<Category> categoriesList) {

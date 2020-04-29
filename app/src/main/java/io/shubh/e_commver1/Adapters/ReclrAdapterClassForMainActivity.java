@@ -1,6 +1,7 @@
 package io.shubh.e_commver1.Adapters;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
 import com.bumptech.glide.Glide;
 
@@ -73,10 +75,14 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
             @Override
             public void onClick(View view) {
 
-                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
+               CategoryItemsFragment categoryItemsFragment=  CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title(), dataForItemArrayList.get(position).getItem_title());
+                categoryItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                categoryItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
+                ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title(), dataForItemArrayList.get(position).getItem_title()))
+                        .add(R.id.drawerLayout, categoryItemsFragment,"CategoryItemsFragment")
+                       .addToBackStack(null)
                         .commit();
 
           //      drawerLayoutForTpBePassedToFragments.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);

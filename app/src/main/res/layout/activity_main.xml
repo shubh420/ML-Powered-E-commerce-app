@@ -247,7 +247,7 @@
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="25dp"
             android:elevation="10dp"
             android:innerRadius="0dp"
             android:shape="ring"
@@ -293,7 +293,7 @@ android:fontFamily="sans-serif-condensed-medium"
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="18dp"
             android:background="@android:color/darker_gray" />
 
         <!--       <View

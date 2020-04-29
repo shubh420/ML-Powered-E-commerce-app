@@ -174,7 +174,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
                 if (i == BottomSheetBehavior.STATE_HIDDEN) {
-                    getFragmentManager().beginTransaction().remove(ItemDetailFragment.this).commit();
+                    getFragmentManager().beginTransaction().remove(ItemDetailFragment.this).addToBackStack(null).commit();
                 }
             }
 

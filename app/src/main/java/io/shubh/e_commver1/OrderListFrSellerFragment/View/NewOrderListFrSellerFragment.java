@@ -116,7 +116,7 @@ public class NewOrderListFrSellerFragment extends Fragment implements NewOrderLi
             ImageView ivItemImage = (ImageView) inflatedVarietyBox.findViewById(R.id.ivItemImage);
             // iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_radio_button_unchecked_svg));
 
-            Glide.with(getContext()).load(subOrderItems.get(i).getImageUrl()).centerCrop().into(ivItemImage);
+            Glide.with(getActivity().getApplicationContext()).load(subOrderItems.get(i).getImageUrl()).centerCrop().into(ivItemImage);
 
             tvOrdreNo.setText("Item Id " + subOrderItems.get(i).getItemId() +
                     " from order no " + subOrderItems.get(i).getParentOrderId());

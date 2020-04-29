@@ -99,7 +99,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ReclrAdapterClassForLikedItemsList(getContext(),this, likedItemList);
+        adapter = new ReclrAdapterClassForLikedItemsList(getContext(),getActivity().getApplicationContext(),this, likedItemList);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);

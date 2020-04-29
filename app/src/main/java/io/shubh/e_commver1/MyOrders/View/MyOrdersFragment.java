@@ -102,7 +102,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ReclrAdapterClassForOrderItemsList(this ,getContext(), orderItemlist);
+        adapter = new ReclrAdapterClassForOrderItemsList(this ,getContext() , getActivity().getApplicationContext(), orderItemlist);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);

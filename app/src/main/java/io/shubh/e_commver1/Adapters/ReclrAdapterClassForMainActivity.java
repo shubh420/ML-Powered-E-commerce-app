@@ -26,13 +26,13 @@ public class ReclrAdapterClassForMainActivity extends RecyclerView.Adapter<Reclr
 
     private ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItemArrayList;
     private Context context;
-    private DrawerLayout drawerLayoutForTpBePassedToFragments;
+          private     Context applicationContext;
 
 
-    public ReclrAdapterClassForMainActivity(Context context, ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItems, DrawerLayout drawerLayout) {
+    public ReclrAdapterClassForMainActivity(Context context, Context applicationContext, ArrayList<ClassForMainActvityItemReclrDATAObject> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
-        drawerLayoutForTpBePassedToFragments=drawerLayout;
+        this.applicationContext = applicationContext;
     }
 
 
@@ -66,7 +66,7 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
 
         holder.tv_item_Title.setText(dataForItemArrayList.get(position).getItem_title());
 
-        Glide.with(context).load(dataForItemArrayList.get(position).getItem_image_url())
+        Glide.with(applicationContext).load(dataForItemArrayList.get(position).getItem_image_url())
                 .override(300, 300).centerCrop().into(holder.iv_item_image);
 
         holder.cv_item.setOnClickListener(new View.OnClickListener() {
@@ -76,10 +76,10 @@ iv_item_image=(ImageView) view.findViewById(R.id.id_iv_fR_main_item_ctgr_item_li
                 ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
 
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title(), dataForItemArrayList.get(position).getItem_title(), drawerLayoutForTpBePassedToFragments))
+                        .add(R.id.drawerLayout, CategoryItemsFragment.newInstance(dataForItemArrayList.get(position).getItem_title(), dataForItemArrayList.get(position).getItem_title()))
                         .commit();
 
-                drawerLayoutForTpBePassedToFragments.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+          //      drawerLayoutForTpBePassedToFragments.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
 
 

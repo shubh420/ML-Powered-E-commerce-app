@@ -30,14 +30,17 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
     private List<BagItem> dataForItemArrayList;
     private Context context;
     BagItemsFragment bagItemsFragment;
+    Context applicationContext;
    /* private CategoryItemsFragment categoryItemsFragment;
     private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForBagItemsList(Context context, BagItemsFragment bagItemsFragment, List<BagItem> dataForItems) {
+    public ReclrAdapterClassForBagItemsList(Context context,Context applicationContext, BagItemsFragment bagItemsFragment, List<BagItem> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
         this.bagItemsFragment = bagItemsFragment;
+        this.applicationContext = applicationContext;
+
        /* this.categoryItemsFragment = categoryItemsFragment;
         this.activity = activity;*/
     }
@@ -104,7 +107,7 @@ public class ReclrAdapterClassForBagItemsList extends RecyclerView.Adapter<Reclr
 
             holder.tvItemAmount.setText(String.valueOf(itemAmount[0]));
             holder.tvItemPrice.setText("₹" + itemPrice * itemAmount[0]);
-            Glide.with(context).load(dataForItemArrayList.get(position).getItemObject().getListOfImageURLs().get(0)).centerCrop().into(holder.ivItemImage);
+            Glide.with(applicationContext).load(dataForItemArrayList.get(position).getItemObject().getListOfImageURLs().get(0)).centerCrop().into(holder.ivItemImage);
 
             holder.btPlusItemAmount.setOnClickListener(new View.OnClickListener() {
                 @Override

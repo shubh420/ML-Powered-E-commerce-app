@@ -84,20 +84,20 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
     int pageNoForNewDataToFetchOnReclrScrollToBottom = 1;
     ShimmerFrameLayout mShimmerViewContainer;
-    static DrawerLayout drawerLayoutSttatic;
+
 
     public CategoryItemsFragment() {
         // Required empty public constructor
     }
 
 
-    public static CategoryItemsFragment newInstance(String param1, String param2, DrawerLayout drawerLayout) {
+    public static CategoryItemsFragment newInstance(String param1, String param2) {
         CategoryItemsFragment fragment = new CategoryItemsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1_Category_Name, param1);
         args.putString(ARG_PARAM2_Category_Path, param2);
         fragment.setArguments(args);
-        drawerLayoutSttatic = drawerLayout;
+
         return fragment;
     }
 
@@ -132,17 +132,12 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
         callForPresenterToGetCtgrItems(false);
 
-        //below line disables the drawer layout open on slide in the fragment
-        disableDrawerOpenOnSwipe();
 
         // Inflate the layout for this fragment
         return containerViewGroup;
     }
 
-    private void disableDrawerOpenOnSwipe() {
 
-        drawerLayoutSttatic.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
 
 
     private void DoUiWork() {
@@ -178,7 +173,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         recyclerView.setLayoutManager(gridLayoutManager);
 
         itemsList = new ArrayList<>();
-        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), itemsList, false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this,getContext(), getActivity().getApplicationContext(), itemsList, false);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);
@@ -671,10 +666,10 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         //since the fragment is about to be destroyed..I will check if this fragemnt is the ony one opened or not
         //if its the only one opened ..that means after closing it the mainactivty will appear ..so I have to enable the drawer layout open on swipe for the activty
 
-        List<Fragment> fragments = getFragmentManager().getFragments();
+        /*List<Fragment> fragments = getFragmentManager().getFragments();
         if (fragments.size() == 1) {
             drawerLayoutSttatic.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }
+        }*/
 
         //now closing this activty
         getFragmentManager().beginTransaction().remove(CategoryItemsFragment.this).commit();

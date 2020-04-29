@@ -91,7 +91,7 @@ public class NotificationFragment extends Fragment implements NotificationView ,
      //   recyclerView.setLayoutManager(gridLayoutManager);
 
         notifcationObjects = new ArrayList<>();
-        adapter = new ReclrAdapterClassForNotificationObjects((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), notifcationObjects);
+        adapter = new ReclrAdapterClassForNotificationObjects((InterfaceForClickCallbackFromAnyAdaptr) this, getContext() ,getActivity().getApplicationContext(), notifcationObjects);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);

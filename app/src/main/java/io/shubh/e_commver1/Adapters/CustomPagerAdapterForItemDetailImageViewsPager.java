@@ -18,9 +18,11 @@ import io.shubh.e_commver1.R;
 public class CustomPagerAdapterForItemDetailImageViewsPager extends PagerAdapter {
     private Context context;
     List<String> listOfImageURLs;
+    Context applicationContext;
 
-    public CustomPagerAdapterForItemDetailImageViewsPager(Context context,List<String> listOfImageURLs) {
+    public CustomPagerAdapterForItemDetailImageViewsPager(Context context,Context applicationContext,List<String> listOfImageURLs) {
         this.context = context;
+        this.applicationContext = applicationContext;
         this.listOfImageURLs=listOfImageURLs;
     }
 
@@ -29,7 +31,7 @@ public class CustomPagerAdapterForItemDetailImageViewsPager extends PagerAdapter
         View view = LayoutInflater.from(context).inflate(R.layout.inflate_imageview_pager_item, null);
         ImageView imageView = view.findViewById(R.id.iv);
 
-        Glide.with(context).load(listOfImageURLs.get(position)).centerCrop().into(imageView);
+        Glide.with(applicationContext).load(listOfImageURLs.get(position)).centerCrop().into(imageView);
         //  imageView.setImageDrawable(context.getResources().getDrawable(getImageAt(position)));
         container.addView(view);
         return view;

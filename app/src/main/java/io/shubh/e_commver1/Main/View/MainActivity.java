@@ -20,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
@@ -32,6 +34,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.razorpay.PaymentResultListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
@@ -45,15 +48,14 @@ import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SearchPage.SearchFragment;
-import io.shubh.e_commver1.SellerConfirmationFragment;
+import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Utils.Utils;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForMainActivity;
 
-public class MainActivity extends AppCompatActivity implements MainView, PaymentResultListener {
+public class MainActivity extends AppCompatActivity implements MainView, PaymentResultListener, FragmentManager.OnBackStackChangedListener {
 
     MainPresenter mPresenter;
 
@@ -68,12 +70,21 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
     ShimmerFrameLayout mShimmerViewContainer;
     DrawerLayout drawerLayout;
 
+    String currentFragment;
+    //this below code listens to the fragment manager and tells which fragment is currently visible
+    FragmentManager fragmentManager;
+    int activeFragmnetCount =0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //this below code listens to the fragment manager and tells which fragment is currently visible
+        //TIP- always use getSupportFragmentManager in each activity and fragment
+        fragmentManager =getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(this);
 
         DoUiWork();
 
@@ -83,19 +94,42 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
     }
 
 
+
     private void DoUiWork() {
 
 
         mShimmerViewContainer = findViewById(R.id.shimmer_view_container);
 
+        //this below code listens to the fragment manager and tells which fragment is currently visible
+        //RULE- always use getSupportFragmentManager in each activity and fragment
+        //RULE - always use getApplicationContext in Glide.with() ..because else glide puts its fragment in backstack and it messess active fragment count
+         fragmentManager =getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(this);
+
         navigationDrawerSetUp();
         setSearchViewWork();
-
-
-        
     }
 
+    @Override
+    public void onBackStackChanged() {
+        //this below code listens to the fragment manager and tells which fragment is currently visible
+        List<Fragment> f = fragmentManager.getFragments();
+        if(f.size()!=0) {
+            Fragment frag = f.get(f.size() - 1);
+            currentFragment = frag.getClass().getSimpleName();
+        }
+        activeFragmnetCount =f.size();
 
+        //todo - below code
+      /*  if(activeFragmnetCount==0){
+            //means we are on main activty ..
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }else {
+            //means a fragment is open ..so disable the drawer open on swipe from left edge of the screen
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        }*/
+
+    }
 
 
     @Override
@@ -117,8 +151,14 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         btBagItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, new BagItemsFragment())
+
+               BagItemsFragment bagItemsFragment = new BagItemsFragment();
+                bagItemsFragment.setEnterTransition(new Slide(Gravity.LEFT));
+                bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, bagItemsFragment)
+                        .addToBackStack(null)
                         .commit();
 
 
@@ -129,8 +169,14 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         btNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, new NotificationFragment())
+
+                NotificationFragment notificationFragment = new NotificationFragment();
+                notificationFragment.setEnterTransition(new Slide(Gravity.LEFT));
+                notificationFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, notificationFragment)
+                       .addToBackStack(null)
                         .commit();
             }
         });
@@ -142,11 +188,14 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         cv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                finish();*/
 
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, new SearchFragment())
+                SearchFragment searchFragment = new SearchFragment();
+                searchFragment.setEnterTransition(new Slide(Gravity.LEFT));
+                searchFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout,searchFragment)
+                        .addToBackStack(null)
                         .commit();
 
             }
@@ -271,22 +320,14 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+
 //-----------------------------
         ImageButton menu = (ImageButton) findViewById(R.id.id_fr_menu_bt);
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //below logic is commentisized because one the drawer is open ..then any touch outside of drwer will closes the drawer ...
-              /* if(is_nav_drawer_open == false){
-                   is_nav_drawer_open=true;
-                   drawerLayout.openDrawer(Gravity.LEFT);
-
-               }else if(is_nav_drawer_open == true){
-                   is_nav_drawer_open=false;
-                   drawerLayout.closeDrawer(Gravity.LEFT);
-
-               }*/
                 drawerLayout.openDrawer(Gravity.LEFT);
 
             }
@@ -307,17 +348,38 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
     @Override
     public void onBackPressed() {
-        //below code is for "click two time to exit the application"
-        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
-            finishAffinity();
-            System.exit(0);
-        } else {
-            Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
-        }
-        mBackPressed = System.currentTimeMillis();
 
-        //just adding an animatiion here whic makes it go with animation sliding to right
+        if (activeFragmnetCount == 0) { //if no fragment is opened then ..just exut the application ..else clode the fragment
+
+            //below code is for "click two time to exit the application"
+            if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
+                finishAffinity();
+                System.exit(0);
+            } else {
+                Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+            }
+            mBackPressed = System.currentTimeMillis();
+
+        /*//just adding an animatiion here whic makes it go with animation sliding to right
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
+*/
+        }else{
+            switch (currentFragment) {
+                case "SellerConfirmationFragment":
+                    SellerConfirmationFragment sellerConfirmationFragment = (SellerConfirmationFragment) fragmentManager.findFragmentByTag("SellerConfirmationFragment");
+                    sellerConfirmationFragment.closeFragment();
+
+                    return;
+                case "FragmentTwo":
+                    // your code here
+                    return;
+                default://use deafult to close fragments
+                   // fragmentManager.popBackStackImmediate(); //cant use this it messes the animation because  .addToBackStack(null)
+                    //to an fargment wile adding it means that while poopping it from stack it will reverse all that happened wile adding it ..
+                    //so my animation was enter from left and close from right..while popping it ..it reverse the animation of opening one rather than going fro closing one
+                    //so I m removing each one of them than having a default
+            }
+        }
 
     }
 
@@ -325,63 +387,67 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
     @Override
     public void switchActivity(int i) {
         // progressBar.setVisibility(android.view.View.GONE);
+        drawerLayout.closeDrawer(Gravity.LEFT);
 
         if (i == 1) {
             Intent in = new Intent(MainActivity.this, MainActivity.class);
             startActivity(in);
         } else if (i == 2) {
 
-            drawerLayout.closeDrawer(Gravity.LEFT);
-          /*  Intent in = new Intent(MainActivity.this, seller_items_list.class);
-            startActivity(in);*/
             SellerConfirmationFragment sellerConfirmationFragment= new SellerConfirmationFragment();
+            sellerConfirmationFragment.setEnterTransition(new Slide(Gravity.LEFT));
             sellerConfirmationFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout,sellerConfirmationFragment)
+           fragmentManager.beginTransaction()
+                    .add(R.id.drawerLayout,sellerConfirmationFragment ,"SellerConfirmationFragment")
+                   .addToBackStack(null)
                     .commit();
 
-
-            //animation for sliding activity
-            //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (i == 3) {
-    /*        Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
-            startActivity(in);*/
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout, new SellerConfirmationFragment())
+
+            SellerConfirmationFragment sellerConfirmationFragment= new SellerConfirmationFragment();
+            sellerConfirmationFragment.setEnterTransition(new Slide(Gravity.LEFT));
+            sellerConfirmationFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+            fragmentManager.beginTransaction()
+                    .add(R.id.drawerLayout,sellerConfirmationFragment ,"SellerConfirmationFragment")
+                    .addToBackStack(null)
                     .commit();
 
 
-            //animation for sliding activity
-            //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else if (i == 4) {
-    /*        Intent in = new Intent(MainActivity.this, seller_confirmation_activity.class);
-            startActivity(in);*/
-
-            drawerLayout.closeDrawer(Gravity.LEFT);
 
             AddressSelectionFragment addressSelectionFragment = new AddressSelectionFragment();
             addressSelectionFragment.setLocalVariables(false, new Order());
+            addressSelectionFragment.setEnterTransition(new Slide(Gravity.LEFT));
+            addressSelectionFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-            getSupportFragmentManager().beginTransaction()
+            fragmentManager.beginTransaction()
                     .add(R.id.drawerLayout, addressSelectionFragment)
+                    .addToBackStack(null)
                     .commit();
 
 
-            //animation for sliding activity
-            //  overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        } else if (i == 5) {
-            drawerLayout.closeDrawer(Gravity.LEFT);
 
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout, new MyOrdersFragment())
+        } else if (i == 5) {
+            MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
+            myOrdersFragment.setEnterTransition(new Slide(Gravity.LEFT));
+            myOrdersFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+            fragmentManager.beginTransaction()
+                    .add(R.id.drawerLayout, myOrdersFragment)
+                    .addToBackStack(null)
                     .commit();
 
         }else if (i == 6) {
-            drawerLayout.closeDrawer(Gravity.LEFT);
+
+            LikedItemsFragment likedItemsFragment = new LikedItemsFragment();
+            likedItemsFragment.setEnterTransition(new Slide(Gravity.LEFT));
+            likedItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout, new LikedItemsFragment())
+                    .add(R.id.drawerLayout, likedItemsFragment)
+                    .addToBackStack(null)
                     .commit();
 
         }
@@ -450,7 +516,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this, listOfDataObjectsForAdapter, drawerLayout);
+        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this,getApplicationContext(), listOfDataObjectsForAdapter);
         recyclerView.setAdapter(adapter);
 
 
@@ -515,43 +581,5 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
     }
 
-/*    @Override
-    protected void onStart() {
-        super.onStart();
 
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-
-    public void lockDrawer() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-
-    public void unlockDrawer() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }*/
-  /*  @Override
-    protected void onStop() {
-        super.onStop();
-        //the activty is not visible ..means an activity/fragment has opened over it
-        //and the drawer still opens on sliding in rhe fragment ..so deisabling it
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //the activty is not visible ..means an activity/fragment has opened over it
-        //and the drawer still opens on sliding in rhe fragment ..so deisabling it
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-
-    }*/
 }

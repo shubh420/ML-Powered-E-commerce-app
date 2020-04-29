@@ -175,7 +175,7 @@ mPresenter.getSellerData();
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(this, getContext(), list ,true);
+        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(this,getContext(), getActivity().getApplicationContext(), list ,true);
         recyclerView.setAdapter(adapter);
         recyclerView.setVisibility(View.VISIBLE);
     }

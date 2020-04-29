@@ -141,7 +141,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
 
         ViewPager viewPager = (ViewPager) containerViewGroup.findViewById(R.id.pager2);
-        CustomPagerAdapterForItemDetailImageViewsPager adapter = new CustomPagerAdapterForItemDetailImageViewsPager(getContext(), item.getListOfImageURLs());
+        CustomPagerAdapterForItemDetailImageViewsPager adapter = new CustomPagerAdapterForItemDetailImageViewsPager(getContext(),getActivity().getApplicationContext(), item.getListOfImageURLs());
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) containerViewGroup.findViewById(R.id.tab_layout);

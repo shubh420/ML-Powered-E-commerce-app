@@ -123,7 +123,7 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), itemList, false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this,getContext(), getActivity().getApplicationContext(), itemList, false);
         recyclerView.setAdapter(adapter);
 
 

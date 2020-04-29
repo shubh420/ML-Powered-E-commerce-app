@@ -24,14 +24,17 @@ import io.shubh.e_commver1.R;
 public class ReclrAdapterClassForOrderItemsList extends RecyclerView.Adapter<ReclrAdapterClassForOrderItemsList.ViewHolder> {
     private List<Order> dataForItemArrayList;
     private Context context;
-    private MyOrdersFragment myOrdersFragment
+    private MyOrdersFragment myOrdersFragment;
+    Context applicationContext;
     // BagItemsFragment bagItemsFragment;
    /* private CategoryItemsFragment categoryItemsFragment;
     private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForOrderItemsList(MyOrdersFragment myOrdersFragment, Context context, List<Order> dataForItems) {
+    public ReclrAdapterClassForOrderItemsList(MyOrdersFragment myOrdersFragment, Context context,    Context applicationContext, List<Order> dataForItems) {
         this.context = context;
+        this.applicationContext = applicationContext;
+
         this.dataForItemArrayList = dataForItems;
         this.myOrdersFragment =myOrdersFragment;
         //    this.bagItemsFragment = bagItemsFragment;
@@ -79,7 +82,7 @@ public class ReclrAdapterClassForOrderItemsList extends RecyclerView.Adapter<Rec
             holder.llContainerFrInlatedItems.addView(inflatedVarietyBox);
 
             ImageView ivItemImage = (ImageView) inflatedVarietyBox.findViewById(R.id.ivItemImage);
-            Glide.with(context).load(dataForItemArrayList.get(position).getSubOrderItems().get(i).getImageUrl()).centerCrop().into(ivItemImage);
+            Glide.with(applicationContext).load(dataForItemArrayList.get(position).getSubOrderItems().get(i).getImageUrl()).centerCrop().into(ivItemImage);
 
             TextView tvItemStatus = (TextView) inflatedVarietyBox.findViewById(R.id.tvItemStatus);
             TextView tvItemPrice = (TextView) inflatedVarietyBox.findViewById(R.id.tvItemPrice);

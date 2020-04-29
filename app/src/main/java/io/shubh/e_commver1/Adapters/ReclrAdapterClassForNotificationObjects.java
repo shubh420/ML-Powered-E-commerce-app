@@ -28,13 +28,15 @@ import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 public class ReclrAdapterClassForNotificationObjects extends RecyclerView.Adapter<ReclrAdapterClassForNotificationObjects.ViewHolder> {
     private List<NotifcationObject> dataForItemArrayList;
     private Context context;
+    Context applicationContext;
   //  private boolean ifInitiatedFromSelelrdashboard = false;
     private InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr;
     /* private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForNotificationObjects(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context, List<NotifcationObject> dataForItems) {
+    public ReclrAdapterClassForNotificationObjects(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context,     Context applicationContext,List<NotifcationObject> dataForItems) {
         this.context = context;
+        this.applicationContext = applicationContext;
         this.dataForItemArrayList = dataForItems;
       //  this.ifInitiatedFromSelelrdashboard = ifInitiatedFromSelelrdashboard;
         this.interfaceForClickCallbackFromCtgrAdaptr = interfaceForClickCallbackFromCtgrAdaptr;
@@ -76,7 +78,7 @@ public class ReclrAdapterClassForNotificationObjects extends RecyclerView.Adapte
         holder.tvContent.setText( dataForItemArrayList.get(position).getContent());
         holder.tvTime.setText(getDateFromUnix( dataForItemArrayList.get(position).getTime()));
 
-        Glide.with(context).load(dataForItemArrayList.get(position).getImage_url()).centerCrop().into(holder.iv);
+        Glide.with(applicationContext).load(dataForItemArrayList.get(position).getImage_url()).centerCrop().into(holder.iv);
 
         //todo-  change the color of the holder item  if the notif item hasnt already been read..do this later when app used for real purpose
       //  if(dataForItemArrayList.get(position).isHasItBeenRead()== true){

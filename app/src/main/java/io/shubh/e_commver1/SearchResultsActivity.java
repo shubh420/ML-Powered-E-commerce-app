@@ -297,8 +297,8 @@ public class SearchResultsActivity extends AppCompatActivity implements Interfac
         recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(this, SearchResultsActivity.this, list_of_data_objects__for_adapter,false);
-        recyclerView.setAdapter(adapter);
+       // ReclrAdapterClassForCtgrItems adapter = new ReclrAdapterClassForCtgrItems(this, getApplicationContext(), list_of_data_objects__for_adapter,false);
+       // recyclerView.setAdapter(adapter);
 
 
       /*  if (list_of_data_objects__for_adapter.size() == 0) {

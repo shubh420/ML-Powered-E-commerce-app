@@ -31,11 +31,13 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
     private Context context;
     private boolean ifInitiatedFromSelelrdashboard = false;
     private InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr;
+    Context applicationContext;
     /* private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard) {
+    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context,Context applicationContext, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard) {
         this.context = context;
+        this.applicationContext = applicationContext;
         this.dataForItemArrayList = dataForItems;
         this.ifInitiatedFromSelelrdashboard = ifInitiatedFromSelelrdashboard;
         this.interfaceForClickCallbackFromCtgrAdaptr = interfaceForClickCallbackFromCtgrAdaptr;
@@ -76,7 +78,7 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
         holder.tv_item_Title.setText(dataForItemArrayList.get(position).getName());
         holder.tv_item_price.setText("₹" + dataForItemArrayList.get(position).getItem_price());
 
-        Glide.with(context).load(dataForItemArrayList.get(position).getListOfImageURLs().get(0)).centerCrop().into(holder.iv_item_image);
+        Glide.with(applicationContext).load(dataForItemArrayList.get(position).getListOfImageURLs().get(0)).centerCrop().into(holder.iv_item_image);
 
         if (dataForItemArrayList.get(position).isItemLiked() == true) {
             holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.ic_heart2_svg));

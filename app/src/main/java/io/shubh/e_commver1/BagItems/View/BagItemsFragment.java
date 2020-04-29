@@ -157,7 +157,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ReclrAdapterClassForBagItemsList(getContext(), this, bagItemlist);
+        adapter = new ReclrAdapterClassForBagItemsList(getContext(),getActivity().getApplicationContext(), this, bagItemlist);
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);

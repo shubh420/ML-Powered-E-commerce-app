@@ -28,15 +28,17 @@ public class ReclrAdapterClassForLikedItemsList extends RecyclerView.Adapter<Rec
     private List<LikedItem> dataForItemArrayList;
     private Context context;
     LikedItemsFragment callback ;
+    Context applicationContext;
    // BagItemsFragment bagItemsFragment;
    /* private CategoryItemsFragment categoryItemsFragment;
     private FragmentActivity activity*/;
 
 
-    public ReclrAdapterClassForLikedItemsList(Context context, LikedItemsFragment callback, List<LikedItem> dataForItems) {
+    public ReclrAdapterClassForLikedItemsList(Context context,Context applicationContext, LikedItemsFragment callback, List<LikedItem> dataForItems) {
         this.context = context;
         this.dataForItemArrayList = dataForItems;
         this.callback = callback;
+        this.applicationContext = applicationContext;
        // this.bagItemsFragment = bagItemsFragment;
        /* this.categoryItemsFragment = categoryItemsFragment;
         this.activity = activity;*/
@@ -94,7 +96,7 @@ public class ReclrAdapterClassForLikedItemsList extends RecyclerView.Adapter<Rec
             holder.tvCtgr.setText(dataForItemArrayList.get(position).getItemObject().getCategory().replace("//","/"));
 
             holder.tvItemPrice.setText("₹" + dataForItemArrayList.get(position).getItemObject().getItem_price());
-            Glide.with(context).load(dataForItemArrayList.get(position).getItemObject().getListOfImageURLs().get(0)).centerCrop().into(holder.ivItemImage);
+            Glide.with(applicationContext).load(dataForItemArrayList.get(position).getItemObject().getListOfImageURLs().get(0)).centerCrop().into(holder.ivItemImage);
 
 dataForItemArrayList.get(position).getItemObject().setItemLiked(true);
 

@@ -1,9 +1,7 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.SellerDashboard;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.KeyEvent;
@@ -12,15 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import java.util.List;
-
-import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
+import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
 
 
@@ -41,9 +32,6 @@ public class SellerConfirmationFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         containerViewGroup = inflater.inflate(R.layout.fragment_seller_confirmation, container, false);
-
-        attachOnBackBtPressedlistener();
-
 
         Button btLater = (Button) containerViewGroup.findViewById(R.id.bt_later);
         btLater.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +70,7 @@ public class SellerConfirmationFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                onBackButtonPressed();
+              closeFragment();
 
             }
         });
@@ -91,35 +79,9 @@ public class SellerConfirmationFragment extends Fragment {
         return containerViewGroup;
     }
 
-
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
+    public  void closeFragment() {
+        getFragmentManager().beginTransaction().remove(SellerConfirmationFragment.this)
+                .addToBackStack(null)
+                .commit();
     }
-
-    private void onBackButtonPressed() {
-        //since the fragment is about to be destroyed..I will check if this fragemnt is the ony one opened or not
-        //if its the only one opened ..that means after closing it the mainactivty will appear ..so I have to enable the drawer layout open on swipe for the activty
-
-       /* List<Fragment> fragments = getFragmentManager().getFragments();
-        if(fragments.size()==1){
-            drawerLayoutSttatic.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }*/
-
-        //now closing this activty
-        getFragmentManager().beginTransaction().remove(SellerConfirmationFragment.this).commit();
-    }
-
 }

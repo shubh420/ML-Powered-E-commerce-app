@@ -1,6 +1,7 @@
 package io.shubh.e_commver1.Adapters;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
 import com.bumptech.glide.Glide;
 
@@ -88,8 +90,14 @@ public class ReclrAdapterClassForNotificationObjects extends RecyclerView.Adapte
                 public void onClick(View view) {
                     if(dataForItemArrayList.get(position).getType().equals("1")){
 
+                        SellerDashboardFragment sellerDashboardFragment = new SellerDashboardFragment();
+                        sellerDashboardFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                        sellerDashboardFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
                         ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                                .add(R.id.drawerLayout, new SellerDashboardFragment())
+                                //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
+                                .add(R.id.drawerLayout,sellerDashboardFragment,"SellerDashboardFragment")
+                                .addToBackStack(null)
                                 .commit();
 
                     }else  if(dataForItemArrayList.get(position).getType().equals("2")){

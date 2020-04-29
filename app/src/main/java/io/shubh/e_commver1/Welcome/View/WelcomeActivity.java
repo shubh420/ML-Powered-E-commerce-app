@@ -43,7 +43,11 @@ public class  WelcomeActivity extends AppCompatActivity implements WelcomeView {
 
         db = FirebaseFirestore.getInstance();
 
-
+//todo- provide this activty putextra infor ...and extract it here..in later updates
+        //todo -it would be boolean..for Intented from splash activty or else
+        // on from splash ..on the success of login ..intent to mainactivty
+        //on from else..on success of login ..just close this activty or if this is later converted to frag ..justr close it
+        //so that can user can resume from the point  of using of the feature which required to login
 
 
 
@@ -146,7 +150,7 @@ public class  WelcomeActivity extends AppCompatActivity implements WelcomeView {
 
     @Override
     public void ShowSnackBarWithAction(String msg, String actionName) {
-        LinearLayout ll_Root = (LinearLayout)findViewById(R.id.layoutsplash);
+      /*  LinearLayout ll_Root = (LinearLayout)findViewById(R.id.layoutsplash);
         Snackbar snackbar = Snackbar
                 .make(ll_Root , msg, BaseTransientBottomBar.LENGTH_INDEFINITE)
                 .setAction(actionName, new android.view.View.OnClickListener() {
@@ -157,7 +161,7 @@ public class  WelcomeActivity extends AppCompatActivity implements WelcomeView {
                     }
                 });
 
-        snackbar.show();
+        snackbar.show();*/
     }
 
     @Override

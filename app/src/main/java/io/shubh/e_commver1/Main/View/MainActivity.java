@@ -1,11 +1,14 @@
 package io.shubh.e_commver1.Main.View;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,10 +18,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.ColorInt;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -31,6 +36,8 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.onurkagan.ksnack_lib.KSnack.KSnack;
+import com.onurkagan.ksnack_lib.KSnack.KSnackBarEventListener;
 import com.razorpay.PaymentResultListener;
 
 import java.util.ArrayList;
@@ -39,6 +46,7 @@ import java.util.List;
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
 import io.shubh.e_commver1.LikedItems.View.LikedItemsFragment;
+import io.shubh.e_commver1.LoginActivity;
 import io.shubh.e_commver1.MyOrders.View.MyOrdersFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;
@@ -50,10 +58,12 @@ import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchPage.SearchFragment;
 import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
+import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Utils.Utils;
 import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForMainActivity;
+
 
 public class MainActivity extends AppCompatActivity implements MainView, PaymentResultListener, FragmentManager.OnBackStackChangedListener {
 
@@ -73,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
     String currentFragment;
     //this below code listens to the fragment manager and tells which fragment is currently visible
     FragmentManager fragmentManager;
-    int activeFragmnetCount =0;
+    int activeFragmnetCount = 0;
 
 
     @Override
@@ -83,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
         //this below code listens to the fragment manager and tells which fragment is currently visible
         //TIP- always use getSupportFragmentManager in each activity and fragment
-        fragmentManager =getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(this);
 
         DoUiWork();
@@ -94,7 +104,6 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
     }
 
 
-
     private void DoUiWork() {
 
 
@@ -103,22 +112,24 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         //this below code listens to the fragment manager and tells which fragment is currently visible
         //RULE- always use getSupportFragmentManager in each activity and fragment
         //RULE - always use getApplicationContext in Glide.with() ..because else glide puts its fragment in backstack and it messess active fragment count
-         fragmentManager =getSupportFragmentManager();
+        //RULE - always use  .addToBackStack(null) on any transaction whether rmove or add..doing this invokes this onBackStackChanged listener and helps the main activity know about fragmnet transactions (not sub fragments thgo)
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.addOnBackStackChangedListener(this);
 
         navigationDrawerSetUp();
         setSearchViewWork();
     }
 
+    //RULE - always use  .addToBackStack(null) on any transaction whether rmove or add..doing this invokes this onBackStackChanged listener and helps the main activity know about fragmnet transactions (not sub fragments thgo)
     @Override
     public void onBackStackChanged() {
         //this below code listens to the fragment manager and tells which fragment is currently visible
         List<Fragment> f = fragmentManager.getFragments();
-        if(f.size()!=0) {
+        if (f.size() != 0) {
             Fragment frag = f.get(f.size() - 1);
             currentFragment = frag.getClass().getSimpleName();
         }
-        activeFragmnetCount =f.size();
+        activeFragmnetCount = f.size();
 
         //todo - below code
       /*  if(activeFragmnetCount==0){
@@ -151,16 +162,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         btBagItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-               BagItemsFragment bagItemsFragment = new BagItemsFragment();
-                bagItemsFragment.setEnterTransition(new Slide(Gravity.LEFT));
-                bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
-
-                fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, bagItemsFragment)
-                        .addToBackStack(null)
-                        .commit();
-
+                if (Utils.isUserLoggedIn()) {
+                    switchActivity(8);
+                } else {
+                    Utils.showKsnackForLogin( MainActivity.this);
+                }
 
             }
         });
@@ -170,14 +176,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             @Override
             public void onClick(View view) {
 
-                NotificationFragment notificationFragment = new NotificationFragment();
-                notificationFragment.setEnterTransition(new Slide(Gravity.LEFT));
-                notificationFragment.setExitTransition(new Slide(Gravity.RIGHT));
-
-                fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, notificationFragment)
-                       .addToBackStack(null)
-                        .commit();
+                if (Utils.isUserLoggedIn()) {
+                    switchActivity(7);
+                } else {
+                    Utils.showKsnackForLogin( MainActivity.this);
+                }
             }
         });
     }
@@ -189,15 +192,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             @Override
             public void onClick(View view) {
 
-                SearchFragment searchFragment = new SearchFragment();
-                searchFragment.setEnterTransition(new Slide(Gravity.LEFT));
-                searchFragment.setExitTransition(new Slide(Gravity.RIGHT));
-
-                fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout,searchFragment)
-                        .addToBackStack(null)
-                        .commit();
-
+                switchActivity(3);
             }
         });
 
@@ -209,8 +204,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         myProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
-                finish();
+
                 //do nothing
             }
         });
@@ -220,9 +214,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         switchToSellerbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                mPresenter.checkIfUserIsASellerOrNot();
-
+                if (Utils.isUserLoggedIn()) {
+                    mPresenter.checkIfUserIsASellerOrNot();
+                } else {
+                    Utils.showKsnackForLogin( MainActivity.this);
+                }
             }
         });
 
@@ -232,10 +228,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             @Override
             public void onClick(View view) {
 
-                if(Utils.isUserLoggedIn()) {
+                if (Utils.isUserLoggedIn()) {
                     switchActivity(5);
-                }else{
-//todo-show login ask toast here
+                } else {
+                    Utils.showKsnackForLogin( MainActivity.this);
                 }
             }
         });
@@ -246,10 +242,24 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             @Override
             public void onClick(View view) {
 
-                if(Utils.isUserLoggedIn()) {
+                if (Utils.isUserLoggedIn()) {
                     switchActivity(6);
-                }else{
-//todo-show login ask toast here
+                } else {
+                    Utils.showKsnackForLogin( MainActivity.this);
+
+                }
+            }
+        });
+
+        LinearLayout btDrwrBag = (LinearLayout) findViewById(R.id.id_fr_nav_bt_cart);
+        btDrwrBag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Utils.isUserLoggedIn()) {
+                    switchActivity(8);
+                } else {
+                    Utils.showKsnackForLogin( MainActivity.this);
 
                 }
             }
@@ -259,15 +269,19 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 //------------------------------------
 //doinf a bit changes in ui first ..setting logou icon if user is logged in and vice versa
 
-        TextView tv_fr_button_signin_in_navdr = (TextView) findViewById(R.id.id_fr_tv_nav_login_);
+    /*    TextView tv_fr_button_signin_in_navdr = (TextView) findViewById(R.id.id_fr_tv_nav_login_);
         ImageView iv_fr_icon_button_signin_in_navdr = (ImageView) findViewById(R.id.id_fr_iv_nav_login_icon);
         LinearLayout Login_or_logout_button = (LinearLayout) findViewById(R.id.id_fr_nav_bt_login_or_logout);
+*/
+
+        LinearLayout Login_or_logout_button = (LinearLayout) findViewById(R.id.id_fr_ll_as_bt__Login);
+        TextView tvLoginBt = (TextView) findViewById(R.id.tvLoginBt);
 
         if (Utils.isUserLoggedIn() == true) {
-            tv_fr_button_signin_in_navdr.setText("Logout");
-            iv_fr_icon_button_signin_in_navdr.setImageResource(R.drawable.logout_icon_);
+            tvLoginBt.setText("Logout");
+           // iv_fr_icon_button_signin_in_navdr.setImageResource(R.drawable.logout_icon_);
         } else {
-            //by default both have login text and image ..so no changes
+            tvLoginBt.setText("Login");
         }
         //doing some ui work now....the default height for this button linearlayout is different from others button because ll here is depending on child's heighth  and its icon aint android studio rather imported from web so just copying the height of prev button nad setting to it
         //  iv_fr_icon_button_signin_in_navdr.setLayoutParams( new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,switchToSellerbutton.getHeight()));
@@ -285,13 +299,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                     startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                     finish();
 
-                    //animation for sliding activity
-                    overridePendingTransition(R.anim.right_out, R.anim.left_in);
                 } else {
                     startActivity(new Intent(MainActivity.this, WelcomeActivity.class));
                     finish();
 
-                    overridePendingTransition(R.anim.right_out, R.anim.left_in);
                 }
 
             }
@@ -320,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        // drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 
 //-----------------------------
         ImageButton menu = (ImageButton) findViewById(R.id.id_fr_menu_bt);
@@ -356,25 +367,30 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 finishAffinity();
                 System.exit(0);
             } else {
-                Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+            showToast("Tap back button once more to exit");
             }
             mBackPressed = System.currentTimeMillis();
 
         /*//just adding an animatiion here whic makes it go with animation sliding to right
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
 */
-        }else{
+        } else {
             switch (currentFragment) {
                 case "SellerConfirmationFragment":
                     SellerConfirmationFragment sellerConfirmationFragment = (SellerConfirmationFragment) fragmentManager.findFragmentByTag("SellerConfirmationFragment");
                     sellerConfirmationFragment.closeFragment();
-
                     return;
-                case "FragmentTwo":
-                    // your code here
+                case "NotificationFragment":
+                    NotificationFragment notificationFragment = (NotificationFragment) fragmentManager.findFragmentByTag("NotificationFragment");
+                    notificationFragment.closeFragment();
+                    return;
+                case "SellerDashboardFragment":
+                    SellerDashboardFragment sellerDashboardFragment = (SellerDashboardFragment) fragmentManager.findFragmentByTag("SellerDashboardFragment");
+                    sellerDashboardFragment.closeFragment();
                     return;
                 default://use deafult to close fragments
-                   // fragmentManager.popBackStackImmediate(); //cant use this it messes the animation because  .addToBackStack(null)
+                    // fragmentManager.popBackStackImmediate(); //cant use this it messes the animation because  .addToBackStack(null)
                     //to an fargment wile adding it means that while poopping it from stack it will reverse all that happened wile adding it ..
                     //so my animation was enter from left and close from right..while popping it ..it reverse the animation of opening one rather than going fro closing one
                     //so I m removing each one of them than having a default
@@ -389,74 +405,92 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         // progressBar.setVisibility(android.view.View.GONE);
         drawerLayout.closeDrawer(Gravity.LEFT);
 
-        if (i == 1) {
-            Intent in = new Intent(MainActivity.this, MainActivity.class);
-            startActivity(in);
-        } else if (i == 2) {
+        switch (i) {
+            case 1:
+                Intent in = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(in);
+                return;
+            case 2:
+                SellerConfirmationFragment sellerConfirmationFragment = new SellerConfirmationFragment();
+                sellerConfirmationFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                sellerConfirmationFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-            SellerConfirmationFragment sellerConfirmationFragment= new SellerConfirmationFragment();
-            sellerConfirmationFragment.setEnterTransition(new Slide(Gravity.LEFT));
-            sellerConfirmationFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, sellerConfirmationFragment, "SellerConfirmationFragment")
+                        .addToBackStack(null)
+                        .commit();
+                return;
+            case 3:
+                SearchFragment searchFragment = new SearchFragment();
+                searchFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                searchFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-           fragmentManager.beginTransaction()
-                    .add(R.id.drawerLayout,sellerConfirmationFragment ,"SellerConfirmationFragment")
-                   .addToBackStack(null)
-                    .commit();
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, searchFragment)
+                        .addToBackStack(null)
+                        .commit();
 
-        } else if (i == 3) {
+                return;
+            case 4:
+                AddressSelectionFragment addressSelectionFragment = new AddressSelectionFragment();
+                addressSelectionFragment.setLocalVariables(false, new Order());
+                addressSelectionFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                addressSelectionFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-            SellerConfirmationFragment sellerConfirmationFragment= new SellerConfirmationFragment();
-            sellerConfirmationFragment.setEnterTransition(new Slide(Gravity.LEFT));
-            sellerConfirmationFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, addressSelectionFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return;
+            case 5:
+                MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
+                myOrdersFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                myOrdersFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-            fragmentManager.beginTransaction()
-                    .add(R.id.drawerLayout,sellerConfirmationFragment ,"SellerConfirmationFragment")
-                    .addToBackStack(null)
-                    .commit();
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, myOrdersFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return;
+            case 6:
+                LikedItemsFragment likedItemsFragment = new LikedItemsFragment();
+                likedItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                likedItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, likedItemsFragment)
+                        .addToBackStack(null)
+                        .commit();
+                return;
+            case 7:
+                NotificationFragment notificationFragment = new NotificationFragment();
+                notificationFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                notificationFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-        } else if (i == 4) {
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, notificationFragment, "NotificationFragment")
+                        .addToBackStack(null)
+                        .commit();
 
-            AddressSelectionFragment addressSelectionFragment = new AddressSelectionFragment();
-            addressSelectionFragment.setLocalVariables(false, new Order());
-            addressSelectionFragment.setEnterTransition(new Slide(Gravity.LEFT));
-            addressSelectionFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                return;
+            case 8:
+                BagItemsFragment bagItemsFragment = new BagItemsFragment();
+                bagItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-            fragmentManager.beginTransaction()
-                    .add(R.id.drawerLayout, addressSelectionFragment)
-                    .addToBackStack(null)
-                    .commit();
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, bagItemsFragment)
+                        .addToBackStack(null)
+                        .commit();
 
-
-
-        } else if (i == 5) {
-            MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
-            myOrdersFragment.setEnterTransition(new Slide(Gravity.LEFT));
-            myOrdersFragment.setExitTransition(new Slide(Gravity.RIGHT));
-
-            fragmentManager.beginTransaction()
-                    .add(R.id.drawerLayout, myOrdersFragment)
-                    .addToBackStack(null)
-                    .commit();
-
-        }else if (i == 6) {
-
-            LikedItemsFragment likedItemsFragment = new LikedItemsFragment();
-            likedItemsFragment.setEnterTransition(new Slide(Gravity.LEFT));
-            likedItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
-
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.drawerLayout, likedItemsFragment)
-                    .addToBackStack(null)
-                    .commit();
+                return;
 
         }
+
     }
 
     @Override
     public Context getContext(boolean getActvityContext) {
-
-
         if (getActvityContext == true) {
             return this;
         }
@@ -479,24 +513,25 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
     @Override
     public void ShowSnackBarWithAction(String msg, String actionName) {
-        LinearLayout ll_Root = (LinearLayout) findViewById(R.id.layoutsplash);
+    /*  //  LinearLayout ll_Root = (LinearLayout) findViewById(R.id.drawerLayout);
         Snackbar snackbar = Snackbar
-                .make(ll_Root, msg, BaseTransientBottomBar.LENGTH_INDEFINITE)
+                .make(drawerLayout, msg, BaseTransientBottomBar.LENGTH_INDEFINITE)
                 .setAction(actionName, new android.view.View.OnClickListener() {
                     @Override
                     public void onClick(android.view.View view) {
                         //    mPresenter.LoginRelatedWork();
-
+                        Intent in = new Intent(MainActivity.this, WelcomeActivity.class);
+                        startActivity(in);
                     }
                 });
 
-        snackbar.show();
+        snackbar.show();*/
     }
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 
+Utils.showToast(msg ,MainActivity.this);
     }
 
     @Override
@@ -516,7 +551,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
 
         //data_list_for_adapter = list_of_data_objects__for_adapter;
-        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this,getApplicationContext(), listOfDataObjectsForAdapter);
+        ReclrAdapterClassForMainActivity adapter = new ReclrAdapterClassForMainActivity(MainActivity.this, getApplicationContext(), listOfDataObjectsForAdapter);
         recyclerView.setAdapter(adapter);
 
 
@@ -535,8 +570,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
 
         if (listOfDataObjectsForAdapter.size() == 0) {
-            Toast.makeText(this, "No Categories found", Toast.LENGTH_SHORT).show();
-        }
+showToast("No Categories found");        }
     }
 
 
@@ -565,7 +599,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
             fragment.onPaymentSuccessCallbackFromMainActivty(s);
         } catch (Error e) {
-            Log.e("###", "onPaymentSuccess: "+e.getMessage() );
+            Log.e("MainActivty", "onPaymentSuccess: " + e.getMessage());
         }
     }
 
@@ -575,7 +609,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
             fragment.onPaymentFailiureCallbackFromMainActivty(s);
         } catch (Error e) {
-            Log.e("###", "onPaymentSuccess: "+e.getMessage() );
+            Log.e("MainActivty", "onPaymentSuccess: " + e.getMessage());
 
         }
 

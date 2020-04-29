@@ -8,7 +8,7 @@ import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 
 public interface MainView {
 
-    void switchActivity(int i);
+    void switchActivity(int i );
 
     Context getContext(boolean getActvityContext);
 

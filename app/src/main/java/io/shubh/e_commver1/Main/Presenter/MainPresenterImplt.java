@@ -135,7 +135,7 @@ public class MainPresenterImplt implements MainPresenter, MainInteractor.Callbac
                        mainView.switchActivity(2);
                        mainView.showProgressBarOfDrwrBtSwitchToSeller(false);
                    } else {
-                       mainView.switchActivity(3);
+                       mainView.switchActivity(2);
                        mainView.showProgressBarOfDrwrBtSwitchToSeller(false);
                    }
                }

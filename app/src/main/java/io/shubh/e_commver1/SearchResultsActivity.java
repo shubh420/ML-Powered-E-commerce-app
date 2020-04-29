@@ -313,8 +313,7 @@ public class SearchResultsActivity extends AppCompatActivity implements Interfac
         startActivity(in);
 
 
-        //just adding an animatiion here whic makes it go with animation sliding to right
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+
 
     }
 

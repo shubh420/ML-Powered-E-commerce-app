@@ -3,7 +3,9 @@ package io.shubh.e_commver1.SellerDashboard;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,9 +40,14 @@ public class SellerConfirmationFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                SellerDashboardFragment sellerDashboardFragment = new SellerDashboardFragment();
+             sellerDashboardFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+             sellerDashboardFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
                 getFragmentManager().beginTransaction()
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, new SellerDashboardFragment())
+                        .add(R.id.drawerLayout,sellerDashboardFragment,"SellerDashboardFragment")
+                        .addToBackStack(null)
                         .commit();
 
                 //I have commented the below code because I m using tokens instead of topics for now

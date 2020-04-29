@@ -31,6 +31,7 @@ import io.shubh.e_commver1.Notification.Interactor.NotificationInteractorImplt;
 import io.shubh.e_commver1.Notification.Presenter.NotificationPresenter;
 import io.shubh.e_commver1.Notification.Presenter.NotificationPresenterImplt;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 
 /**
@@ -80,7 +81,7 @@ public class NotificationFragment extends Fragment implements NotificationView ,
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
 
         //---setups here
-        attachOnBackBtPressedlistener();
+
         setUpToolbar();
 
         recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_notif_items_list);
@@ -118,7 +119,7 @@ public class NotificationFragment extends Fragment implements NotificationView ,
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
     }
@@ -194,28 +195,10 @@ public class NotificationFragment extends Fragment implements NotificationView ,
 
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(NotificationFragment.this).commit();
-
-
+    public  void closeFragment() {
+        getFragmentManager().beginTransaction().remove(NotificationFragment.this)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

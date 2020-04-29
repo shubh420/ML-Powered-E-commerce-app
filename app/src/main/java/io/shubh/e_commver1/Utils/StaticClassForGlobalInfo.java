@@ -14,8 +14,11 @@ public final class StaticClassForGlobalInfo {
     public static String UserName;
     public static String UserEmail;
     public static String UId;
+    public static int  theme =1;//1 -light theme ,1- dark theme
 
     public static ArrayList<Category> categoriesList;
+
+
 }
 
 

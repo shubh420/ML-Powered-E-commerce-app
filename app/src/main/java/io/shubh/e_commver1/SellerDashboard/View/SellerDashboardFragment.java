@@ -27,6 +27,7 @@ import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.Models.Order;
+import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractorImplt;
@@ -63,7 +64,6 @@ mPresenter.getSellerData();
     }
 
     private void doUiWork() {
-        attachOnBackBtPressedlistener();
 
         Button btAddNewItem = (Button) containerViewGroup.findViewById(R.id.btAddNewItem);
         btAddNewItem.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +85,7 @@ mPresenter.getSellerData();
             @Override
             public void onClick(View view) {
 
-                onBackButtonPressed();
+                closeFragment();
             }
         });
 
@@ -181,34 +181,10 @@ mPresenter.getSellerData();
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-        //since the fragment is about to be destroyed..I will check if this fragemnt is the ony one opened or not
-        //if its the only one opened ..that means after closing it the mainactivty will appear ..so I have to enable the drawer layout open on swipe for the activty
-
-       /* List<Fragment> fragments = getFragmentManager().getFragments();
-        if(fragments.size()==1){
-            drawerLayoutSttatic.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }*/
-
-        //now closing this activty
-        getFragmentManager().beginTransaction().remove(SellerDashboardFragment.this).commit();
+    public  void closeFragment() {
+        getFragmentManager().beginTransaction().remove(SellerDashboardFragment.this)
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override

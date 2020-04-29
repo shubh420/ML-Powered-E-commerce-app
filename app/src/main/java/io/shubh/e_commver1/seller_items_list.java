@@ -211,7 +211,7 @@ public class seller_items_list extends AppCompatActivity {
                 startActivity(in);
 
                 //animation for sliding activity
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+           //     overridePendingTransition(R.anim.right_in, R.anim.left_out);
             }
         });
     }
@@ -224,7 +224,7 @@ public class seller_items_list extends AppCompatActivity {
 
 
         //just adding an animatiion here whic makes it go with animation sliding to right
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+      //  overridePendingTransition(R.anim.left_in, R.anim.right_out);
 
     }
 }

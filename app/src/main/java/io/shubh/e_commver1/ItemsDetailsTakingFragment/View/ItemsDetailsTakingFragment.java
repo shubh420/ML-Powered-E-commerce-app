@@ -1,13 +1,16 @@
 package io.shubh.e_commver1.ItemsDetailsTakingFragment.View;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,6 +24,8 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
@@ -48,6 +53,7 @@ import io.shubh.e_commver1.ItemsDetailsTakingFragment.Presenter.ItemsDetailsTaki
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 // ItemsDetailsTaking
@@ -84,6 +90,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     //below is false by default because most items doesnt need Variety,Only items like clothes ,shoes have variety have of size
     boolean isAddVarietyFeatureAlreadyEnabled = false;
     boolean stateOfVisibility = true;
+    boolean isItemUploading = false;
+
+    TextView tvInfoOfBttmSheet;
+
 
     public ItemsDetailsTakingFragment() {
         // Required empty public constructor
@@ -108,13 +118,31 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     private void DoUiWork() {
 
+        themeNavAndStatusBar(getActivity());
+        ImageButton btCloseFrag = (ImageButton)containerViewGroup.findViewById(R.id.id_fr_menu_bt);
+        btCloseFrag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeFragment();
+            }
+        });
 
-        attachOnBackBtPressedlistener();
         setUpImagePickingDialogueBottomSheetAndImgBttnForIt();
         setUpCtgrSelectionBox();
         setUpVarietyGivingOPtionAndVisibilityOption();
         setUpUploadBtUIAndLogicWork();
 
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void themeNavAndStatusBar(Activity activity)
+    {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP)
+            return;
+
+        Window w = activity.getWindow();
+        w.setNavigationBarColor(Color.parseColor("#70EE03"));
+        w.setStatusBarColor(Color.parseColor("#5C8F30"));
     }
 
 
@@ -223,19 +251,19 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     }
 
     private void getCameraPermissions() {
-            PermissionListener permissionlistener = new PermissionListener() {
-                @Override
-                public void onPermissionGranted() {
-                    showToast("Permission Granted");
-                }
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                showToast("Permission Granted");
+            }
 
-                @Override
-                public void onPermissionDenied(List<String> deniedPermissions) {
-                    showToast("Permission Denied\n" + deniedPermissions.toString());
-                }
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                showToast("Permission Denied\n" + deniedPermissions.toString());
+            }
 
 
-            };
+        };
 
         TedPermission.with(getContext())
                 .setPermissionListener(permissionlistener)
@@ -324,7 +352,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     }
 
 
-
     @Override
     public void decrementAllowedImagesPickUpAmount(int decrmntThisAmount) {
         allowedImagesAmountForPickup = allowedImagesAmountForPickup - decrmntThisAmount;
@@ -385,7 +412,10 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     @Override
     public void onFinishedUploadingItem() {
-        onBackButtonPressed();
+
+        isItemUploading=false;
+        Utils.showCustomToastForFragments("Item Uploaded Sucessfully", getContext());
+        closeFragment();
     }
 
 
@@ -773,6 +803,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         View inflatedBottomSheetdialog = inflater.inflate(R.layout.bottom_sheet_fr_information, rootView, false);
         rootView.addView(inflatedBottomSheetdialog);
 
+         tvInfoOfBttmSheet = (TextView) inflatedBottomSheetdialog.findViewById(R.id.tvInfoOfBttmSheet);
+
         behavior_bttm_sheet_which_shows_info = BottomSheetBehavior.from(inflatedBottomSheetdialog);
 
         behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -797,13 +829,13 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
                 // React to dragging events
             }
         });
-//------------Todo - set content to below bottomshett later for both the below purposes
+
         ImageButton btShowBttmSheetFrInfrOnVariety = (ImageButton) containerViewGroup.findViewById(R.id.bt_show_btm_sheet_fr_info);
         btShowBttmSheetFrInfrOnVariety.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_EXPANDED);
-                //  Todo - change content of the bottom sheet to shoe thir releb]vent infor
+                 tvInfoOfBttmSheet.setText("Add Variety to Item like Color green and red for a Shirt ,Or different sizes for a Shoe");
             }
         });
 
@@ -828,7 +860,8 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
             @Override
             public void onClick(View view) {
                 behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_EXPANDED);
-                //  Todo - change content of the bottom sheet to shoe thir releb]vent infor
+                tvInfoOfBttmSheet.setText("This toggle makes the item show/hidden in tha app catalogue for users to see.This is useful when item is out of stock ,or You dont want incoming orders due to some reasons");
+
             }
         });
     }
@@ -934,7 +967,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         LinearLayout llContainerFrIvs = (LinearLayout) containerViewGroup.findViewById(R.id.ll_container_fr_ivs);
         for (int i = 0; i < llContainerFrIvs.getChildCount(); i++) {
             //  RelativeLayout inflatedIvRlContainer = (RelativeLayout) llContainerFrIvs.getChildAt(i);
-            CardView cv =(CardView)llContainerFrIvs.getChildAt(i);
+            CardView cv = (CardView) llContainerFrIvs.getChildAt(i);
             ImageView iv = (ImageView) cv.findViewById(R.id.id_fr_slected_image);
             bitmaps.add(((BitmapDrawable) iv.getDrawable()).getBitmap());
         }
@@ -959,6 +992,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         boolean visible = stateOfVisibility;
 
         //=============================now pass all this data to presenter
+        isItemUploading = true;
         mPresenter.makeItemObjectAndUpload(bitmaps, itemName, itemPrice, itemDescrp, ctgr, rootctgr, subctgr, subsubctgr, nameOfVariety, varieties, visible);
     }
 
@@ -975,27 +1009,21 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
 
     //-------------------------------------------------------------------
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
+    public void closeFragment() {
+
+        if (isItemUploading != true) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .addToBackStack(null).remove(ItemsDetailsTakingFragment.this).commit();
+            Window w = getActivity().getWindow();
+            if(StaticClassForGlobalInfo.theme==1) {
+                w.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryLight));
+                w.setStatusBarColor(getResources().getColor(R.color.colorPrimaryLight));
+            }else{
+                w.setNavigationBarColor(getResources().getColor(R.color.colorPrimaryDark));
+                w.setStatusBarColor(getResources().getColor(R.color.colorPrimaryDark));
             }
-        });
-    }
-
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(ItemsDetailsTakingFragment.this).commit();
+        }
     }
 
     @Override
@@ -1010,11 +1038,13 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     @Override
     public void showProgressBar(boolean b) {
+
+
         View dim_background_of_bottom_sheet = (View) containerViewGroup.findViewById(R.id.touch_to_dismiss_bottom_sheet_dim_background);
-       dim_background_of_bottom_sheet.setVisibility(View.VISIBLE);
+        dim_background_of_bottom_sheet.setVisibility(View.VISIBLE);
         dim_background_of_bottom_sheet.setClickable(true);
 
-        ImageView iv_loading_gif = (ImageView)containerViewGroup.findViewById(R.id.iv_loading_gif);
+        ImageView iv_loading_gif = (ImageView) containerViewGroup.findViewById(R.id.iv_loading_gif);
         CardView container_iv_loading_gif = (CardView) containerViewGroup.findViewById(R.id.cv_container_loaading_iv);
         container_iv_loading_gif.setVisibility(View.VISIBLE);
         Glide.with(getActivity().getApplicationContext()).load(R.drawable.shopping_loader).into(iv_loading_gif);
@@ -1030,7 +1060,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        Utils.showCustomToastForFragments(msg, getContext());
     }
 
 }

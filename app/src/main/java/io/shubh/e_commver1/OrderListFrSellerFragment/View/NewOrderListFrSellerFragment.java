@@ -33,6 +33,7 @@ import io.shubh.e_commver1.OrderListFrSellerFragment.Interactor.NewOrderListFrSe
 import io.shubh.e_commver1.OrderListFrSellerFragment.Presenter.NewOrderListFrSellerPresenter;
 import io.shubh.e_commver1.OrderListFrSellerFragment.Presenter.NewOrderListFrSellerPresenterImplt;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -374,7 +375,7 @@ pb1.setVisibility(View.VISIBLE);
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
 
@@ -382,32 +383,11 @@ pb1.setVisibility(View.VISIBLE);
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+    public void closeFragment() {
 
-                    if(behavior.getState()==BottomSheetBehavior.STATE_EXPANDED){
-                        behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                    }else{
-                        onBackButtonPressed();
-                    }
-
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(io.shubh.e_commver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment.this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null).remove(NewOrderListFrSellerFragment.this).commit();
 
 
     }
@@ -435,7 +415,7 @@ pb1.setVisibility(View.VISIBLE);
 
     @Override
     public void showToast(String msg) {
-
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
 

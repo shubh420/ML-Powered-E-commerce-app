@@ -26,6 +26,7 @@ import io.shubh.e_commver1.PaymentFragments.Interactor.PaymentInteractorImplt;
 import io.shubh.e_commver1.PaymentFragments.Presenter.PaymentPresenter;
 import io.shubh.e_commver1.PaymentFragments.Presenter.PaymentPresenterImplt;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 public class PaymentFragment extends Fragment implements PaymentView {
@@ -39,6 +40,7 @@ public class PaymentFragment extends Fragment implements PaymentView {
     int totalPaymentAmount;
     Button btStartPayment;
 
+    boolean isPaymnetProcessing = false;
     String TAG = "####";
 
 
@@ -57,7 +59,7 @@ public class PaymentFragment extends Fragment implements PaymentView {
 
         //always do presenter related work at last in Oncreate
         mPresenter = new PaymentPresenterImplt(this, new PaymentInteractorImplt() {
-        });
+        },getContext());
 
         doUIWork();
 
@@ -70,7 +72,7 @@ public class PaymentFragment extends Fragment implements PaymentView {
         setUpToolbar();
 
         //Todo-disable all back clicks in this fragment
-       // attachOnBackBtPressedlistener();
+        // attachOnBackBtPressedlistener();
     }
 
     private void setUpToolbar() {
@@ -78,7 +80,7 @@ public class PaymentFragment extends Fragment implements PaymentView {
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
 
@@ -167,8 +169,9 @@ public class PaymentFragment extends Fragment implements PaymentView {
                 @Override
                 public void onClick(View view) {
 
-                    //TODo- give an intent to main activty..or rather close all fragments
-
+                    //clears the whole fragment stack
+                    getActivity().getSupportFragmentManager()
+                            .popBackStack(null, getActivity().getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
                 }
             });
 
@@ -215,38 +218,26 @@ public class PaymentFragment extends Fragment implements PaymentView {
     @Override
     public void updateProgressTv(int i) {
         TextView tvProgressPercent = (TextView) containerViewGroup.findViewById(R.id.tvProgressPercent);
-        tvProgressPercent.setText(String.valueOf(i) +"%");
+        tvProgressPercent.setText(String.valueOf(i) + "%");
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
+    public void closeFragment() {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(PaymentFragment.this).commit();
-
+        if (isPaymnetProcessing != true) {
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .addToBackStack(null).remove(PaymentFragment.this).commit();
+        }
 
     }
 
     @Override
     public void showProgressBar(boolean b) {
 
-        if(b==true) {
+        if (b == true) {
+            isPaymnetProcessing = true;
+
             btStartPayment.setVisibility(View.GONE);
             RelativeLayout rlDimBg = (RelativeLayout) containerViewGroup.findViewById(R.id.rlDimBg);
             rlDimBg.setVisibility(View.VISIBLE);
@@ -257,11 +248,11 @@ public class PaymentFragment extends Fragment implements PaymentView {
             container_iv_loading_gif.setVisibility(View.VISIBLE);
             Glide.with(getActivity().getApplicationContext()).load(R.drawable.shopping_loader).into(iv_loading_gif);
 
-        }else {
+        } else {
             btStartPayment.setVisibility(View.VISIBLE);
             RelativeLayout rlDimBg = (RelativeLayout) containerViewGroup.findViewById(R.id.rlDimBg);
             rlDimBg.setVisibility(View.GONE);
-             CardView container_iv_loading_gif = (CardView) containerViewGroup.findViewById(R.id.cv_container_loaading_iv);
+            CardView container_iv_loading_gif = (CardView) containerViewGroup.findViewById(R.id.cv_container_loaading_iv);
             container_iv_loading_gif.setVisibility(View.GONE);
 
         }
@@ -270,14 +261,13 @@ public class PaymentFragment extends Fragment implements PaymentView {
     @Override
     public void switchActivity(int i) {
 
-    //todo --give code nbelow    if i == 1 switch to main activity
+        //todo --give code nbelow    if i == 1 switch to main activity
     }
 
     @Override
     public Context getContext(boolean getActvityContext) {
         return null;
     }
-
 
 
     @Override
@@ -287,7 +277,7 @@ public class PaymentFragment extends Fragment implements PaymentView {
 
     @Override
     public void showToast(String msg) {
-
+        Utils.showCustomToastForFragments(msg, getContext());
     }
 }
 

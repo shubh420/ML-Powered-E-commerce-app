@@ -35,6 +35,7 @@ import io.shubh.e_commver1.MyOrders.Interactor.MyOrdersInteractorImplt;
 import io.shubh.e_commver1.MyOrders.Presenter.MyOrdersPresenter;
 import io.shubh.e_commver1.MyOrders.Presenter.MyOrdersPresenterImplt;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 
 public class MyOrdersFragment extends Fragment implements MyOrdersView ,InterfaceForSubOrderItemClickcCallback{
 
@@ -75,7 +76,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
 
         //---setups here
-        attachOnBackBtPressedlistener();
+
         setUpToolbar();
 
         doBottomSheetWork();
@@ -89,7 +90,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
     }
@@ -273,26 +274,11 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
+    public void closeFragment() {
 
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(MyOrdersFragment.this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null).remove(MyOrdersFragment.this).commit();
 
 
     }
@@ -333,6 +319,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
     @Override
     public void showToast(String msg) {
 
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
 

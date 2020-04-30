@@ -36,6 +36,7 @@ import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
+import io.shubh.e_commver1.Utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -125,7 +126,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         ;
 
         this.inflater = inflater;
-        attachOnBackBtPressedlistener();
+
 
         DoUiWork();
 
@@ -202,7 +203,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
     }
@@ -640,39 +641,18 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
+        Utils.showCustomToastForFragments(msg,getContext());
 
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
 
-    private void onBackButtonPressed() {
-        //since the fragment is about to be destroyed..I will check if this fragemnt is the ony one opened or not
-        //if its the only one opened ..that means after closing it the mainactivty will appear ..so I have to enable the drawer layout open on swipe for the activty
+    public void closeFragment() {
 
-        /*List<Fragment> fragments = getFragmentManager().getFragments();
-        if (fragments.size() == 1) {
-            drawerLayoutSttatic.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-        }*/
-
-        //now closing this activty
-        getFragmentManager().beginTransaction().remove(CategoryItemsFragment.this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .remove(CategoryItemsFragment.this).commit();
     }
 
 

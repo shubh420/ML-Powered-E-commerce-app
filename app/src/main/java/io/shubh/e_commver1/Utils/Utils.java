@@ -1,10 +1,15 @@
 package io.shubh.e_commver1.Utils;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.ColorInt;
 
@@ -79,4 +84,20 @@ public final class Utils {
 
         }
     }
+
+    public static void showCustomToastForFragments(String msg , Context context ) {
+        Toast toast = new Toast(context);
+        toast.setDuration(Toast.LENGTH_LONG);
+
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.inflate_custom_toast, null);
+        toast.setView(view);
+        TextView tvToast = (TextView) view.findViewById(R.id.tvToast);
+        tvToast.setText(msg);
+
+        toast.show();
+
+    }
+
+
 }

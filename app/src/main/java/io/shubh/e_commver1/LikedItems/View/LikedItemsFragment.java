@@ -28,6 +28,7 @@ import io.shubh.e_commver1.LikedItems.Presenter.LikedItemsPresenterImplt;
 import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.LikedItem;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 
 public class LikedItemsFragment extends Fragment implements LikedItemsView ,InterfaceForClickCallbackFromLikedItemsAdapter  {
 
@@ -70,7 +71,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
 
         //---setups here
-        attachOnBackBtPressedlistener();
+     //   attachOnBackBtPressedlistener();
         setUpToolbar();
 
         //logic work start here
@@ -84,7 +85,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
     }
@@ -138,26 +139,12 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
 
-    private void onBackButtonPressed() {
+    public void closeFragment() {
 
-        getFragmentManager().beginTransaction().remove(LikedItemsFragment.this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null).remove(LikedItemsFragment.this).commit();
 
 
     }
@@ -199,7 +186,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
 

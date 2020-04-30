@@ -16,10 +16,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 import androidx.viewpager.widget.ViewPager;
 
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -128,7 +130,7 @@ public class SearchFragment extends Fragment {
         //initCustomModel();
 
         //---setups here
-        attachOnBackBtPressedlistener();
+        //attachOnBackBtPressedlistener();
 
 
         //  setUpToolbar();
@@ -183,10 +185,15 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
+                searchView.clearFocus();
+
                 SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
                 searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(query));
-                getFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, searchResultsFragment )
+                searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, searchResultsFragment ,"SearchResultsFragment")
+                        .addToBackStack(null)
                         .commit();
 
                 return true;
@@ -434,8 +441,11 @@ public class SearchFragment extends Fragment {
 
                     SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
                     searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(firebaseVisionText.getText()));
-                    getFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout, searchResultsFragment )
+                    searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                    searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, searchResultsFragment,"SearchResultsFragment" )
+                            .addToBackStack(null)
                             .commit();
 
                 }
@@ -539,9 +549,14 @@ public class SearchFragment extends Fragment {
 
                     SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
                     searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(label.getLabel()));
-                    getFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout, searchResultsFragment )
+                    searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                    searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, searchResultsFragment,"SearchResultsFragment" )
+                            .addToBackStack(null)
                             .commit();
+
+
 
                 }
             });
@@ -571,26 +586,11 @@ public class SearchFragment extends Fragment {
     }
 
 
+    public void closeFragment() {
 
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(SearchFragment.this).commit();
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null).remove(SearchFragment.this).commit();
 
 
     }

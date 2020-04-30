@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +36,7 @@ import io.shubh.e_commver1.Models.AdressItem;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 public class AddressSelectionFragment extends Fragment implements AddressSelectionView {
@@ -95,7 +98,6 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
 
         //---setups here
-        attachOnBackBtPressedlistener();
         setUpToolbar();
         setUpAddressTakingBttmSheet();
 
@@ -123,9 +125,12 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
                 order.setAdressItem(selectedAdressItem);
                 PaymentFragment paymentFragment =new PaymentFragment();
                 paymentFragment.setLocalVariables(true,order);
+                paymentFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                paymentFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, paymentFragment ,"payment")
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, paymentFragment ,"PaymentFragment")
+                        .addToBackStack(null)
                         .commit();
 
             }
@@ -139,7 +144,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
 
@@ -353,28 +358,11 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(AddressSelectionFragment.this).commit();
 
 
+    public void closeFragment() {
+        getActivity().getSupportFragmentManager().beginTransaction().remove(AddressSelectionFragment.this)
+                .addToBackStack(null).commit();
     }
 
 
@@ -396,7 +384,8 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
 

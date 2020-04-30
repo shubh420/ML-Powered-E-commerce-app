@@ -102,8 +102,14 @@ public class ReclrAdapterClassForNotificationObjects extends RecyclerView.Adapte
 
                     }else  if(dataForItemArrayList.get(position).getType().equals("2")){
 
+                        MyOrdersFragment myOrdersFragment = new MyOrdersFragment();
+                        myOrdersFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                        myOrdersFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+
                         ((AppCompatActivity) context).getSupportFragmentManager().beginTransaction()
-                                .add(R.id.drawerLayout, new MyOrdersFragment())
+                                .add(R.id.drawerLayout,  myOrdersFragment,"MyOrdersFragment")
+                               .addToBackStack(null)
                                 .commit();
                     }
 

@@ -45,6 +45,9 @@ import java.util.List;
 
 import io.shubh.e_commver1.AddressSelectionPage.View.AddressSelectionFragment;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
+import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
+import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
+import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
 import io.shubh.e_commver1.LikedItems.View.LikedItemsFragment;
 import io.shubh.e_commver1.LoginActivity;
 import io.shubh.e_commver1.MyOrders.View.MyOrdersFragment;
@@ -54,9 +57,11 @@ import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.Notification.View.NotificationFragment;
+import io.shubh.e_commver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
 import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchPage.SearchFragment;
+import io.shubh.e_commver1.SearchPage.View.SearchResultsFragment;
 import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
 import io.shubh.e_commver1.SellerDashboard.View.SellerDashboardFragment;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
@@ -389,6 +394,50 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                     SellerDashboardFragment sellerDashboardFragment = (SellerDashboardFragment) fragmentManager.findFragmentByTag("SellerDashboardFragment");
                     sellerDashboardFragment.closeFragment();
                     return;
+                case "PaymentFragment":
+                    PaymentFragment paymentFragment = (PaymentFragment) fragmentManager.findFragmentByTag("PaymentFragment");
+                    paymentFragment.closeFragment();
+                    return;
+                case "AddressSelectionFragment":
+                    AddressSelectionFragment addressSelectionFragment = (AddressSelectionFragment) fragmentManager.findFragmentByTag("AddressSelectionFragment");
+                    addressSelectionFragment.closeFragment();
+                    return;
+                case "BagItemsFragment":
+                    BagItemsFragment bagItemsFragment = (BagItemsFragment) fragmentManager.findFragmentByTag("BagItemsFragment");
+                    bagItemsFragment.closeFragment();
+                    return;
+                case "CategoryItemsFragment":
+                    CategoryItemsFragment categoryItemsFragment = (CategoryItemsFragment) fragmentManager.findFragmentByTag("CategoryItemsFragment");
+                    categoryItemsFragment.closeFragment();
+                    return;
+                case "ItemDetailFragment":
+                    ItemDetailFragment itemDetailFragment = (ItemDetailFragment) fragmentManager.findFragmentByTag("ItemDetailFragment");
+                    itemDetailFragment.closeFragment();
+                    return;
+                case "ItemsDetailsTakingFragment":
+                    ItemsDetailsTakingFragment itemsDetailsTakingFragment = (ItemsDetailsTakingFragment) fragmentManager.findFragmentByTag("ItemsDetailsTakingFragment");
+                    itemsDetailsTakingFragment.closeFragment();
+                    return;
+                case "LikedItemsFragment":
+                    LikedItemsFragment likedItemsFragment = (LikedItemsFragment) fragmentManager.findFragmentByTag("LikedItemsFragment");
+                    likedItemsFragment.closeFragment();
+                    return;
+                case "MyOrdersFragment":
+                    MyOrdersFragment myOrdersFragment = (MyOrdersFragment) fragmentManager.findFragmentByTag("MyOrdersFragment");
+                    myOrdersFragment.closeFragment();
+                    return;
+                case "NewOrderListFrSellerFragment":
+                    NewOrderListFrSellerFragment newOrderListFrSellerFragment = (NewOrderListFrSellerFragment) fragmentManager.findFragmentByTag("NewOrderListFrSellerFragment");
+                    newOrderListFrSellerFragment.closeFragment();
+                    return;
+                case "SearchFragment":
+                    SearchFragment searchFragment = (SearchFragment) fragmentManager.findFragmentByTag("SearchFragment");
+                    searchFragment.closeFragment();
+                    return;
+                case "SearchResultsFragment":
+                    SearchResultsFragment searchResultsFragment = (SearchResultsFragment) fragmentManager.findFragmentByTag("SearchResultsFragment");
+                    searchResultsFragment.closeFragment();
+                    return;
                 default://use deafult to close fragments
                     // fragmentManager.popBackStackImmediate(); //cant use this it messes the animation because  .addToBackStack(null)
                     //to an fargment wile adding it means that while poopping it from stack it will reverse all that happened wile adding it ..
@@ -426,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 searchFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, searchFragment)
+                        .add(R.id.drawerLayout, searchFragment,"SearchFragment")
                         .addToBackStack(null)
                         .commit();
 
@@ -438,7 +487,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 addressSelectionFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, addressSelectionFragment)
+                        .add(R.id.drawerLayout, addressSelectionFragment,"AddressSelectionFragment")
                         .addToBackStack(null)
                         .commit();
                 return;
@@ -448,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 myOrdersFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, myOrdersFragment)
+                        .add(R.id.drawerLayout, myOrdersFragment,"MyOrdersFragment")
                         .addToBackStack(null)
                         .commit();
                 return;
@@ -457,8 +506,9 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 likedItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
                 likedItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, likedItemsFragment)
+               fragmentManager.beginTransaction()
+                        //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
+                        .add(R.id.drawerLayout, likedItemsFragment,"ItemsDetailsTakingFragment")
                         .addToBackStack(null)
                         .commit();
                 return;
@@ -479,7 +529,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, bagItemsFragment)
+                        .add(R.id.drawerLayout, bagItemsFragment,"BagItemsFragment")
                         .addToBackStack(null)
                         .commit();
 
@@ -596,7 +646,7 @@ showToast("No Categories found");        }
     @Override
     public void onPaymentSuccess(String s) {
         try {
-            PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
+            PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("PaymentFragment");
             fragment.onPaymentSuccessCallbackFromMainActivty(s);
         } catch (Error e) {
             Log.e("MainActivty", "onPaymentSuccess: " + e.getMessage());
@@ -606,7 +656,7 @@ showToast("No Categories found");        }
     @Override
     public void onPaymentError(int i, String s) {
         try {
-            PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("payment");
+            PaymentFragment fragment = (PaymentFragment) getSupportFragmentManager().findFragmentByTag("PaymentFragment");
             fragment.onPaymentFailiureCallbackFromMainActivty(s);
         } catch (Error e) {
             Log.e("MainActivty", "onPaymentSuccess: " + e.getMessage());

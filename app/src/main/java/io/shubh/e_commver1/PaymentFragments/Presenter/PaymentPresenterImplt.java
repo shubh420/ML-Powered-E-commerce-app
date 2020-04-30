@@ -1,8 +1,18 @@
 package io.shubh.e_commver1.PaymentFragments.Presenter;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
 import android.util.Log;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.razorpay.Checkout;
 
@@ -13,18 +23,22 @@ import java.util.ArrayList;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.PaymentFragments.Interactor.PaymentInteractor;
 import io.shubh.e_commver1.PaymentFragments.View.PaymentView;
+import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Splash.View.SplashActivity;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 
 public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteractor.CallbacksToPresnter {
 
     private PaymentView mView;
     private PaymentInteractor mInteractor;
+    private Context context;
     String TAG = "####";
     int totalPaymentAmount;
 
-    public PaymentPresenterImplt(PaymentView mView, PaymentInteractor mSplashInteractor) {
+    public PaymentPresenterImplt(PaymentView mView, PaymentInteractor mSplashInteractor,Context context) {
         this.mView = mView;
         this.mInteractor = mSplashInteractor;
+        this.context = context;
 
         mInteractor.init(this);
 
@@ -143,11 +157,13 @@ public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteracto
                                                                     //since order plced successfully I will just send an notif to seller.
                                                                     //I aint not using a on finished callback ..because it is not required and it will happen in background tho in thread
                                                                     mInteractor.sendNotifToSellerWithArgAsCallbackFunction(order, new PaymentInteractor.SeparateCallbackToPresnterAfterSendNotifToSeller() {
+                                                                        @RequiresApi(api = Build.VERSION_CODES.M)
                                                                         @Override
                                                                         public void onFinished(boolean callbackResultOfTheCheck) {
 
                                                                           if(callbackResultOfTheCheck==true) {
                                                                               mView.showProgressBar(false);
+                                                                              sendNotifToShowTheMsg();
                                                                               mView.showSuccessScreen(true);
                                                                           }else {
                                                                               mView.showToast("Some problem Occured");
@@ -189,6 +205,65 @@ public class PaymentPresenterImplt implements PaymentPresenter, PaymentInteracto
                 }
             }
         });
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void sendNotifToShowTheMsg() {
+        int NotificationID = 2;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String name = "Purchase Successful";
+            String description = "Seller has been notified of the order";
+            int importance = NotificationManager.IMPORTANCE_HIGH; //Important for heads-up notification
+            NotificationChannel channel = new NotificationChannel("1", name, importance);
+            channel.setDescription(description);
+            channel.setShowBadge(true);
+            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        //below intent for when click on notification
+        Intent notificationIntent = new Intent(context, SplashActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        /*Bundle extras = new Bundle();
+        extras.putString("type", "3");
+        notificationIntent.putExtras(extras);*/
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, NotificationID, notificationIntent, 0);
+
+        Intent cancel = new Intent("io.shubh.e_commver1");
+        PendingIntent cancelP = PendingIntent.getBroadcast(context, NotificationID, cancel, PendingIntent.FLAG_CANCEL_CURRENT);
+
+
+        NotificationCompat.Action Viewaction = new NotificationCompat.Action(android.R.drawable.ic_menu_view, "VIEW", pendingIntent);
+        NotificationCompat.Action Dissmissaction = new NotificationCompat.Action(android.R.drawable.ic_delete, "DISSMISS", cancelP);
+
+//todo- dissmiss bt aint working ..make it work using this link https://stackoverflow.com/questions/19739371/dismiss-ongoing-android-notification-via-action-button-without-opening-app
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, "1")
+                .setSmallIcon(R.drawable.shopping_bag_app_icon)
+                //  .setLargeIcon(bitmap)
+                .setContentTitle("Purchase Successful")
+                .setContentText("Seller has been notified of the order")
+                .setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE) //Important for heads-up notification
+                .setPriority(Notification.PRIORITY_MAX)
+                .addAction(Viewaction)
+                .addAction(Dissmissaction);
+
+
+
+
+
+//    mBuilder.setContentIntent(launchIntent);
+
+
+        Notification buildNotification = mBuilder.build();
+        NotificationManager mNotifyMgr = (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+        mNotifyMgr.notify(002, buildNotification);
+
     }
 
     @Override

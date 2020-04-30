@@ -33,6 +33,7 @@ import io.shubh.e_commver1.Notification.Presenter.NotificationPresenterImplt;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
+import io.shubh.e_commver1.Utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -196,15 +197,14 @@ public class NotificationFragment extends Fragment implements NotificationView ,
 
 
     public  void closeFragment() {
-        getFragmentManager().beginTransaction().remove(NotificationFragment.this)
+        getActivity().getSupportFragmentManager().beginTransaction().remove(NotificationFragment.this)
                 .addToBackStack(null)
                 .commit();
     }
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
 

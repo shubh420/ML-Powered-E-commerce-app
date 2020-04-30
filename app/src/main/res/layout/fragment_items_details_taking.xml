@@ -7,9 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_gradient3_fr_item_detail_taking_frag"
 
-    android:fitsSystemWindows="true"
-
-    tools:context=".ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment"
+    tools:context="io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment"
 
     >
 
@@ -179,7 +177,7 @@
                         android:background="@drawable/bg_layout_border"
                         android:hint="Description"
                         android:inputType="textMultiLine"
-                        android:lines="2"
+
                         android:padding="10dp" />
 
                     <!--===============below layout is for ctgr section==================-->
@@ -414,9 +412,10 @@
             android:id="@+id/touch_to_dismiss_bottom_sheet_dim_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#9000"
+
             android:clickable="true"
-            android:visibility="gone" />
+            android:visibility="gone"
+            />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_container_loaading_iv"
@@ -424,6 +423,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone"
+            android:elevation="70dp"
             app:cardCornerRadius="8dp">
 
             <ImageView

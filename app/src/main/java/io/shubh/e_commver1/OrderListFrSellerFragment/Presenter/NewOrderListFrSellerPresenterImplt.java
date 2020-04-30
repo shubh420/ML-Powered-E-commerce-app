@@ -100,9 +100,9 @@ public class NewOrderListFrSellerPresenterImplt implements NewOrderListFrSellerP
         Intent notificationIntent = new Intent(context, SplashActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        Bundle extras = new Bundle();
+       /* Bundle extras = new Bundle();
         extras.putString("type", "2");
-        notificationIntent.putExtras(extras);
+        notificationIntent.putExtras(extras);*/
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, NotificationID, notificationIntent, 0);
 

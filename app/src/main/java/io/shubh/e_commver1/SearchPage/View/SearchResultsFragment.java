@@ -10,7 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,7 @@ import io.shubh.e_commver1.SearchPage.Presenter.SearchResultsPresenter;
 import io.shubh.e_commver1.SearchPage.Presenter.SearchResultsPresenterImplt;
 import io.shubh.e_commver1.SearchPage.SearchFragment;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
+import io.shubh.e_commver1.Utils.Utils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -86,8 +89,8 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
         recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
 
         TextView tvDescp = (TextView) containerViewGroup.findViewById(R.id.tvDescp);
-        for(int i=0 ;i<listOfKeywords.size();i++) {
-            if(listOfKeywords.get(i)!=null) {
+        for (int i = 0; i < listOfKeywords.size(); i++) {
+            if (listOfKeywords.get(i) != null) {
                 tvDescp.append(listOfKeywords.get(i));
             }
         }
@@ -102,9 +105,13 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
             public void onClick(View view) {
                 /*startActivity(new Intent(MainActivity.this, SearchActivity.class));
                 finish();*/
+                SearchFragment searchFragment = new SearchFragment();
+                searchFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                searchFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, new SearchFragment())
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .addToBackStack(null)
+                        .add(R.id.drawerLayout,searchFragment ,"SearchFragment")
                         .commit();
 
             }
@@ -123,7 +130,7 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this,getContext(), getActivity().getApplicationContext(), itemList, false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), getActivity().getApplicationContext(), itemList, false);
         recyclerView.setAdapter(adapter);
 
 
@@ -186,6 +193,11 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
         return wordsList;
     }
 
+    public void closeFragment() {
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .remove(SearchResultsFragment.this).commit();
+    }
 
     @Override
     public void ShowSnackBarWithAction(String msg, String actionName) {
@@ -194,7 +206,7 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Utils.showCustomToastForFragments(msg, getContext());
     }
 
 

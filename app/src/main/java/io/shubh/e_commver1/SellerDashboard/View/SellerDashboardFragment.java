@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,15 +27,18 @@ import java.util.ArrayList;
 
 import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
+import io.shubh.e_commver1.LikedItems.View.LikedItemsFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.SearchPage.SearchFragment;
 import io.shubh.e_commver1.SellerDashboard.Interactor.SellerDashboardInteractorImplt;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenter;
 import io.shubh.e_commver1.SellerDashboard.Presenter.SellerDashboardPresenterImplt;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 public class SellerDashboardFragment extends Fragment  implements SellerDashboardView , InterfaceForClickCallbackFromAnyAdaptr {
@@ -70,13 +75,18 @@ mPresenter.getSellerData();
             @Override
             public void onClick(View view) {
 
-                //TODO- change the below drawer layout to the root layout of this fragment ..and do this same changes
-                // in all the fragments which are opening other fragments
+                ItemsDetailsTakingFragment itemsDetailsTakingFragment = new ItemsDetailsTakingFragment();
+                itemsDetailsTakingFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                itemsDetailsTakingFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, new ItemsDetailsTakingFragment())
+                        .add(R.id.drawerLayout, itemsDetailsTakingFragment,"ItemsDetailsTakingFragment")
+                        .addToBackStack(null)
                         .commit();
+
+
+
             }
         });
 
@@ -119,21 +129,29 @@ mPresenter.getSellerData();
             public void onClick(View view) {
                 NewOrderListFrSellerFragment newOrderListFrSellerFragment = new NewOrderListFrSellerFragment();
                 newOrderListFrSellerFragment.setLocalvariables(newOrdersList ,1);
+                newOrderListFrSellerFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                newOrderListFrSellerFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, newOrderListFrSellerFragment)
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, newOrderListFrSellerFragment,"NewOrderListFrSellerFragment")
+                        .addToBackStack(null)
                         .commit();
+
             }
         });
 
         cvProcessedBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 NewOrderListFrSellerFragment newOrderListFrSellerFragment = new NewOrderListFrSellerFragment();
                 newOrderListFrSellerFragment.setLocalvariables(processedList ,2);
+                newOrderListFrSellerFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                newOrderListFrSellerFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, newOrderListFrSellerFragment)
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .add(R.id.drawerLayout, newOrderListFrSellerFragment,"NewOrderListFrSellerFragment")
+                        .addToBackStack(null)
                         .commit();
             }
         });
@@ -182,7 +200,7 @@ mPresenter.getSellerData();
 
 
     public  void closeFragment() {
-        getFragmentManager().beginTransaction().remove(SellerDashboardFragment.this)
+        getActivity().getSupportFragmentManager().beginTransaction().remove(SellerDashboardFragment.this)
                 .addToBackStack(null)
                 .commit();
     }
@@ -219,7 +237,7 @@ mPresenter.getSellerData();
 
     @Override
     public void showToast(String msg) {
-
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
 

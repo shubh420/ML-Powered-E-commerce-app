@@ -52,6 +52,7 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
         String type;
         if (extras != null) {
             type = extras.getString("type");
+            //1 is for
             Log.i("##", "splash  from notif ..type is "+type);
             // and get whatever type user account id is
         }else{
@@ -69,7 +70,7 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.P)
+  //  @RequiresApi(api = Build.VERSION_CODES.P)
     private void DoUiWork() {
         splashimageicon=(ImageView)findViewById(R.id.imagesplash);
 
@@ -106,7 +107,7 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
         //----------------------------------
        // changing the status bar and system navigation color
                 //system key color change
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(Color.parseColor("#8BC34A"));
         }
 
@@ -115,7 +116,9 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
                 window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(Color.parseColor("#8BC34A"));
-                window.setNavigationBarDividerColor(getResources().getColor(R.color.colorSecondary));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    window.setNavigationBarDividerColor(getResources().getColor(R.color.colorSecondary));
+                }
             }
     }
 

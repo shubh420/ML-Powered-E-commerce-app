@@ -7,12 +7,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.transition.Slide;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,8 @@ import io.shubh.e_commver1.ItemDetailPage.Presenter.ItemDetailPresenter;
 import io.shubh.e_commver1.ItemDetailPage.Presenter.ItemDetailPresenterImplt;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 public class ItemDetailFragment extends Fragment implements ItemDetailView {
@@ -98,7 +102,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
     private void doUiWork() {
 
-        attachOnBackBtPressedlistener();
+        //attachOnBackBtPressedlistener();
         doPagerAndImageViewWork();
         doBottomSheetWork();
         setUpTvs();
@@ -116,7 +120,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
 
@@ -125,8 +129,13 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
             @Override
             public void onClick(View view) {
 
+                BagItemsFragment bagItemsFragment = new BagItemsFragment();
+                bagItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, new BagItemsFragment())
+                        .add(R.id.drawerLayout, bagItemsFragment , "BagItemsFragment")
+                        .addToBackStack(null)
                         .commit();
 
 
@@ -174,7 +183,9 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
             @Override
             public void onStateChanged(@NonNull View view, int i) {
                 if (i == BottomSheetBehavior.STATE_HIDDEN) {
-                    getFragmentManager().beginTransaction().remove(ItemDetailFragment.this).addToBackStack(null).commit();
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction().remove(ItemDetailFragment.this)
+                            .addToBackStack(null).commit();
                 }
             }
 
@@ -185,6 +196,8 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         });
 
     }
+
+
 
 
     private void setUpTvs() {
@@ -330,24 +343,9 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
 
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
 
-    private void onBackButtonPressed() {
+    public void closeFragment() {
 
         TranslateAnimation animate = new TranslateAnimation(0, 0, 0, -rlVpContainer.getHeight());
         animate.setDuration(300);
@@ -452,6 +450,6 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     @Override
     public void showToast(String msg) {
 
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 }

@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +35,7 @@ import io.shubh.e_commver1.BagItems.Presenter.BagItemsPresenterImplt;
 import io.shubh.e_commver1.Models.BagItem;
 import io.shubh.e_commver1.Models.Order;
 import io.shubh.e_commver1.R;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 /**
@@ -83,7 +86,6 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
 
         //---setups here
-        attachOnBackBtPressedlistener();
         setUpToolbar();
 
         //logic work start here
@@ -100,9 +102,12 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
                         Order order =makeOrderObject();
                         AddressSelectionFragment addressSelectionFragment = new AddressSelectionFragment();
                         addressSelectionFragment.setLocalVariables(true, order);
+                        addressSelectionFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                        addressSelectionFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                        getFragmentManager().beginTransaction()
-                                .add(R.id.drawerLayout, addressSelectionFragment)
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .add(R.id.drawerLayout, addressSelectionFragment,"AddressSelectionFragment")
+                                .addToBackStack(null)
                                 .commit();
                     }else{
                         showToast("Delete deactivated items first");
@@ -144,7 +149,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
         btCloseFrag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackButtonPressed();
+                closeFragment();
             }
         });
     }
@@ -192,28 +197,13 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
     }
 
 
-    //below function is for catching back button pressed
-    private void attachOnBackBtPressedlistener() {
-        containerViewGroup.setFocusableInTouchMode(true);
-        containerViewGroup.requestFocus();
-        containerViewGroup.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-
-                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
-                    onBackButtonPressed();
-                    return true;
-                }
-                return false;
-            }
-        });
-    }
-
-    private void onBackButtonPressed() {
-
-        getFragmentManager().beginTransaction().remove(BagItemsFragment.this).commit();
 
 
+    public void closeFragment() {
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .addToBackStack(null)
+                .remove(BagItemsFragment.this).commit();
     }
 
 
@@ -253,7 +243,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
 
     @Override
     public void showToast(String msg) {
-        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+        Utils.showCustomToastForFragments(msg,getContext());
     }
 
     @Override

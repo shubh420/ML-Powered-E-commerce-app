@@ -44,7 +44,7 @@ public class SellerConfirmationFragment extends Fragment {
              sellerDashboardFragment.setEnterTransition(new Slide(Gravity.RIGHT));
              sellerDashboardFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getFragmentManager().beginTransaction()
+                getActivity().getSupportFragmentManager().beginTransaction()
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
                         .add(R.id.drawerLayout,sellerDashboardFragment,"SellerDashboardFragment")
                         .addToBackStack(null)
@@ -87,7 +87,7 @@ public class SellerConfirmationFragment extends Fragment {
     }
 
     public  void closeFragment() {
-        getFragmentManager().beginTransaction().remove(SellerConfirmationFragment.this)
+        getActivity().getSupportFragmentManager().beginTransaction().remove(SellerConfirmationFragment.this)
                 .addToBackStack(null)
                 .commit();
     }

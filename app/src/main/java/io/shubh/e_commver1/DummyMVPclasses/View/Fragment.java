@@ -83,7 +83,7 @@ public class Fragment extends androidx.fragment.app.Fragment implements io.shubh
 
     private void onBackButtonPressed() {
 
-        getFragmentManager().beginTransaction().remove(Fragment.this).commit();
+    //    getFragmentManager().beginTransaction().remove(Fragment.this).commit();
 
 
     }

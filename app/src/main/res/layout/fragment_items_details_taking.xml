@@ -412,9 +412,10 @@
             android:id="@+id/touch_to_dismiss_bottom_sheet_dim_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-
+android:background="?attr/colorPrimaryText"
             android:clickable="true"
             android:visibility="gone"
+            android:alpha=".6"
             />
 
         <androidx.cardview.widget.CardView

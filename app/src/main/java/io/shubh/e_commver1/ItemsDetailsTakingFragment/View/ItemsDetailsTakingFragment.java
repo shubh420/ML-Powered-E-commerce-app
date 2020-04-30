@@ -62,7 +62,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     ItemsDetailsTakingPresenter mPresenter;
     View containerViewGroup;
     BottomSheetBehavior behavior_bttm_sheet_which_select_img;
-    BottomSheetBehavior behavior_bttm_sheet_which_shows_info;
+
     LayoutInflater inflater;
 
     //----------------------------------------------------
@@ -92,7 +92,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
     boolean stateOfVisibility = true;
     boolean isItemUploading = false;
 
-    TextView tvInfoOfBttmSheet;
 
 
     public ItemsDetailsTakingFragment() {
@@ -173,7 +172,6 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
             public void onClick(View view) {
 
                 behavior_bttm_sheet_which_select_img.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
             }
         });
@@ -799,43 +797,14 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
 
 //-------------------------------------setting the bottomSheet which gives explaination about this features
 
-        CoordinatorLayout rootView = (CoordinatorLayout) containerViewGroup.findViewById(R.id.cl_root);
-        View inflatedBottomSheetdialog = inflater.inflate(R.layout.bottom_sheet_fr_information, rootView, false);
-        rootView.addView(inflatedBottomSheetdialog);
 
-         tvInfoOfBttmSheet = (TextView) inflatedBottomSheetdialog.findViewById(R.id.tvInfoOfBttmSheet);
 
-        behavior_bttm_sheet_which_shows_info = BottomSheetBehavior.from(inflatedBottomSheetdialog);
-
-        behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_COLLAPSED);
-
-        View dim_background_of_bottom_sheet = (View) containerViewGroup.findViewById(R.id.touch_to_dismiss_bottom_sheet_dim_background);
-
-        behavior_bttm_sheet_which_shows_info.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                // React to state change
-                if (newState == BottomSheetBehavior.STATE_HIDDEN || newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    dim_background_of_bottom_sheet.setVisibility(View.GONE);
-                    // is_bottom_sheet_expanded = false;
-                } else {
-                    dim_background_of_bottom_sheet.setVisibility(View.VISIBLE);
-                    // is_bottom_sheet_expanded = true;
-                }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
-                // React to dragging events
-            }
-        });
 
         ImageButton btShowBttmSheetFrInfrOnVariety = (ImageButton) containerViewGroup.findViewById(R.id.bt_show_btm_sheet_fr_info);
         btShowBttmSheetFrInfrOnVariety.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_EXPANDED);
-                 tvInfoOfBttmSheet.setText("Add Variety to Item like Color green and red for a Shirt ,Or different sizes for a Shoe");
+showToast("Add Variety to Item like Color green and red for a Shirt ,Or different sizes for a Shoe");
             }
         });
 
@@ -859,8 +828,7 @@ public class ItemsDetailsTakingFragment extends Fragment implements ItemsDetails
         btShowBttmSheetFrInfrOnVisibilty.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                behavior_bttm_sheet_which_shows_info.setState(BottomSheetBehavior.STATE_EXPANDED);
-                tvInfoOfBttmSheet.setText("This toggle makes the item show/hidden in tha app catalogue for users to see.This is useful when item is out of stock ,or You dont want incoming orders due to some reasons");
+showToast("This toggle makes the item show/hidden for users to see in app.This is useful when item is out of stock ,or You dont want incoming orders due to some reasons");
 
             }
         });

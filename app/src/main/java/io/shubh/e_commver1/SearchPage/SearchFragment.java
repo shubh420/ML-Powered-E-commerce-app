@@ -42,6 +42,14 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.ml.common.FirebaseMLException;
 
 
+import com.google.firebase.ml.custom.FirebaseModelDataType;
+import com.google.firebase.ml.custom.FirebaseModelInputOutputOptions;
+import com.google.firebase.ml.custom.FirebaseModelInputs;
+import com.google.firebase.ml.custom.FirebaseModelInterpreter;
+import com.google.firebase.ml.custom.FirebaseModelManager;
+import com.google.firebase.ml.custom.FirebaseModelOptions;
+import com.google.firebase.ml.custom.FirebaseModelOutputs;
+import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
@@ -94,6 +102,18 @@ public class SearchFragment extends Fragment {
     private Bitmap mSelectedImage;
     BottomSheetBehavior behaviorBotttomSheet;
 
+
+    //=
+    /**
+     * An instance of the driver class to run model inference with Firebase.
+     */
+    private FirebaseModelInterpreter mInterpreter;
+    /**
+     * Data configuration of input & output data of model.
+     */
+    private FirebaseModelInputOutputOptions mDataOptions;
+         // Labels corresponding to the output of the vision model.
+    private List<String> mLabelList;
     //  NotificationPresenter mPresenter;
 
 
@@ -127,6 +147,7 @@ public class SearchFragment extends Fragment {
         doPagerWork();
         initViews();
         setupBottomSheet();
+        initCustomModel();
         //initCustomModel();
 
         //---setups here
@@ -523,6 +544,88 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    private void initCustomModel() {
+        mLabelList = loadLabelList(this);
+
+        int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
+        int[] outputDims = {DIM_BATCH_SIZE, mLabelList.size()};
+        try {
+            mDataOptions =
+                    new FirebaseModelInputOutputOptions.Builder()
+                            .setInputFormat(0, FirebaseModelDataType.BYTE, inputDims)
+                            .setOutputFormat(0, FirebaseModelDataType.BYTE, outputDims)
+                            .build();
+            FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions
+                    .Builder()
+                    .requireWifi()
+                    .build();
+            FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder
+                    (HOSTED_MODEL_NAME)
+                    .enableModelUpdates(true)
+                    .setInitialDownloadConditions(conditions)
+                    .setUpdatesDownloadConditions(conditions)  // You could also specify
+                    // different conditions
+                    // for updates
+                    .build();
+            FirebaseLocalModel localModel =
+                    new FirebaseLocalModel.Builder("asset")
+                            .setAssetFilePath(LOCAL_MODEL_ASSET).build();
+            FirebaseModelManager manager = FirebaseModelManager.getInstance();
+            manager.registerRemoteModel(remoteModel);
+            manager.registerLocalModel(localModel);
+            FirebaseModelOptions modelOptions =
+                    new FirebaseModelOptions.Builder()
+                            .setRemoteModelName(HOSTED_MODEL_NAME)
+                            .setLocalModelName("asset")
+                            .build();
+            mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
+        } catch (FirebaseMLException e) {
+            showToast("Error while setting up the model");
+            e.printStackTrace();
+        }
+    }
+
+    private void runModelInference() {
+        if (mInterpreter == null) {
+            Log.e(TAG, "Image classifier has not been initialized; Skipped.");
+            return;
+        }
+        // Create input data.
+        ByteBuffer imgData = convertBitmapToByteBuffer(mSelectedImage, mSelectedImage.getWidth(),
+                mSelectedImage.getHeight());
+
+        try {
+            FirebaseModelInputs inputs = new FirebaseModelInputs.Builder().add(imgData).build();
+            // Here's where the magic happens!!
+            mInterpreter
+                    .run(inputs, mDataOptions)
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            e.printStackTrace();
+                            showToast("Error running model inference");
+                        }
+                    })
+                    .continueWith(
+                            new Continuation<FirebaseModelOutputs, List<String>>() {
+                                @Override
+                                public List<String> then(Task<FirebaseModelOutputs> task) {
+                                    byte[][] labelProbArray = task.getResult()
+                                            .<byte[][]>getOutput(0);
+                                    List<String> topLabels = getTopLabels(labelProbArray);
+                                    mGraphicOverlay.clear();
+                                    GraphicOverlay.Graphic labelGraphic = new LabelGraphic
+                                            (mGraphicOverlay, topLabels);
+                                    mGraphicOverlay.add(labelGraphic);
+                                    return topLabels;
+                                }
+                            });
+        } catch (FirebaseMLException e) {
+            e.printStackTrace();
+            showToast("Error running model inference");
+        }
+
+    }
 
     private void showTheResultsInBottomSheet(List<FirebaseVisionLabel> firebaseVisionLabels) {
 

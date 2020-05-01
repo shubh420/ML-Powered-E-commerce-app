@@ -54,17 +54,7 @@ android:orientation="vertical"
                     android:textSize="28sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvMyItemsAmount"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:gravity="right"
-                    android:text="0"
-                    android:textColor="@color/colorBlackForSubHeaderTvs"
-                    android:textSize="28sp"
-                    android:visibility="gone"/>
+
 
 
             </LinearLayout>
@@ -74,11 +64,41 @@ android:orientation="vertical"
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="Through Mlkit"
+                    android:textColor="@color/colorBlackForSubHeaderTvs"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
                     android:id="@+id/containerForDetectedItemsThroughMl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="left"
+                    android:text="Through Tenserflow"
+                    android:textColor="@color/colorBlackForSubHeaderTvs"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:id="@+id/containerForDetectedItemsThroughTenserflow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+                </LinearLayout>
             </ScrollView>
 
 

@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
@@ -22,13 +21,10 @@ import androidx.viewpager.widget.ViewPager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,6 +45,8 @@ import com.google.firebase.ml.custom.FirebaseModelInterpreter;
 import com.google.firebase.ml.custom.FirebaseModelManager;
 import com.google.firebase.ml.custom.FirebaseModelOptions;
 import com.google.firebase.ml.custom.FirebaseModelOutputs;
+import com.google.firebase.ml.custom.model.FirebaseCloudModelSource;
+import com.google.firebase.ml.custom.model.FirebaseLocalModelSource;
 import com.google.firebase.ml.custom.model.FirebaseModelDownloadConditions;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
@@ -75,19 +73,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
-import io.shubh.e_commver1.Adapters.CustomPagerAdapterForItemDetailImageViewsPager;
 import io.shubh.e_commver1.Adapters.CustomPagerAdapterForSearchFragment;
-import io.shubh.e_commver1.Main.View.MainActivity;
-import io.shubh.e_commver1.Models.BagItem;
-import io.shubh.e_commver1.Models.ItemsForSale;
-import io.shubh.e_commver1.Notification.Interactor.NotificationInteractorImplt;
-import io.shubh.e_commver1.Notification.Presenter.NotificationPresenter;
-import io.shubh.e_commver1.Notification.Presenter.NotificationPresenterImplt;
-import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.R;
-import io.shubh.e_commver1.SearchActivity;
 import io.shubh.e_commver1.SearchPage.View.SearchResultsFragment;
-import io.shubh.e_commver1.SearchResultsActivity;
+import io.shubh.e_commver1.Utils.Utils;
 
 
 /**
@@ -102,19 +91,45 @@ public class SearchFragment extends Fragment {
     private Bitmap mSelectedImage;
     BottomSheetBehavior behaviorBotttomSheet;
 
+    //this below array gets values inside gettoplabel code
+    List<Float> probsForLabelsFromtenserflowModel = new ArrayList<>();
+    //====================================================
 
-    //=
-    /**
-     * An instance of the driver class to run model inference with Firebase.
-     */
     private FirebaseModelInterpreter mInterpreter;
-    /**
-     * Data configuration of input & output data of model.
-     */
+
+    // Name of the model file hosted with Firebase.
+    private static final String HOSTED_MODEL_NAME = "cloud_model_1";
+    private static final String LOCAL_MODEL_ASSET = "mobilenet_v1_1.0_224_quant.tflite";
+
+    // Number of results to show in the UI.
+    private static final int RESULTS_TO_SHOW = 3;
+
+    //Dimensions of inputs.
+    private static final int DIM_BATCH_SIZE = 1;
+    private static final int DIM_PIXEL_SIZE = 3;
+    private static final int DIM_IMG_SIZE_X = 224;
+    private static final int DIM_IMG_SIZE_Y = 224;
+
+    // Preallocated buffers for storing image data. *//*
+    private final int[] intValues = new int[DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y];
+
+    // Data configuration of input & output data of model.
     private FirebaseModelInputOutputOptions mDataOptions;
-         // Labels corresponding to the output of the vision model.
+    // Labels corresponding to the output of the vision model.
     private List<String> mLabelList;
-    //  NotificationPresenter mPresenter;
+    // Name of the label file stored in Assets.
+    private static final String LABEL_PATH = "labels.txt";
+
+    private final PriorityQueue<Map.Entry<String, Float>> sortedLabels =
+            new PriorityQueue<>(
+                    RESULTS_TO_SHOW,
+                    new Comparator<Map.Entry<String, Float>>() {
+                        @Override
+                        public int compare(Map.Entry<String, Float> o1, Map.Entry<String, Float>
+                                o2) {
+                            return (o1.getValue()).compareTo(o2.getValue());
+                        }
+                    });
 
 
     public SearchFragment() {
@@ -208,12 +223,12 @@ public class SearchFragment extends Fragment {
 
                 searchView.clearFocus();
 
-                SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
+                SearchResultsFragment searchResultsFragment = new SearchResultsFragment();
                 searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(query));
                 searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
                 searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, searchResultsFragment ,"SearchResultsFragment")
+                        .add(R.id.drawerLayout, searchResultsFragment, "SearchResultsFragment")
                         .addToBackStack(null)
                         .commit();
 
@@ -354,8 +369,6 @@ public class SearchFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -447,7 +460,43 @@ public class SearchFragment extends Fragment {
 
     }
 
+
+    private List<String> getListOfNameKeywordsFromSentence(String name) {
+
+
+        String[] words = name.split("\\s+");
+        List<String> wordsList = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) {
+            // You may want to check for a non-word character before blindly
+            // performing a replacement
+            // It may also be necessary to adjust the character class
+            words[i] = words[i].replaceAll("[^\\w]", "");//removes any puctuation like ?,!
+
+            wordsList.add(words[i]);
+        }
+
+
+        return wordsList;
+    }
+
+
+    public void closeFragment() {
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .addToBackStack(null).remove(SearchFragment.this).commit();
+
+
+    }
+
+    private void showToast(String message) {
+        Utils.showCustomToastForFragments(message,getContext());
+    }
+
     private void runImgTextDetection(Bitmap bitmap) {
+
+
+
         //the below if is because both the function of mlkit get called at the same time no matter called for what
         if (pageNoForMlFeature == 2) {
 
@@ -480,14 +529,6 @@ public class SearchFragment extends Fragment {
 
     }
 
-
-
-
-    private void showToast(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-
     private void runImageLabeling(Bitmap bitmap) {
 
         if (pageNoForMlFeature == 1) {
@@ -517,8 +558,11 @@ public class SearchFragment extends Fragment {
 
                 public void onSuccess(List<FirebaseVisionLabel> labels) {
 
-                    showTheResultsInBottomSheet(labels);
-               /* for (FirebaseVisionLabel label : labels) {
+                    showTheResultsInBottomSheet(labels, new ArrayList<String>());
+
+
+                    runModelInference();
+                    /* for (FirebaseVisionLabel label : labels) {
 
 //Display the label and confidence score in our TextView//
 
@@ -544,8 +588,10 @@ public class SearchFragment extends Fragment {
         }
     }
 
+    //=========================================================
+
     private void initCustomModel() {
-        mLabelList = loadLabelList(this);
+        mLabelList = loadLabelList();
 
         int[] inputDims = {DIM_BATCH_SIZE, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y, DIM_PIXEL_SIZE};
         int[] outputDims = {DIM_BATCH_SIZE, mLabelList.size()};
@@ -559,7 +605,7 @@ public class SearchFragment extends Fragment {
                     .Builder()
                     .requireWifi()
                     .build();
-            FirebaseRemoteModel remoteModel = new FirebaseRemoteModel.Builder
+            FirebaseCloudModelSource cloudSource = new FirebaseCloudModelSource.Builder
                     (HOSTED_MODEL_NAME)
                     .enableModelUpdates(true)
                     .setInitialDownloadConditions(conditions)
@@ -567,15 +613,15 @@ public class SearchFragment extends Fragment {
                     // different conditions
                     // for updates
                     .build();
-            FirebaseLocalModel localModel =
-                    new FirebaseLocalModel.Builder("asset")
+            FirebaseLocalModelSource localSource =
+                    new FirebaseLocalModelSource.Builder("asset")
                             .setAssetFilePath(LOCAL_MODEL_ASSET).build();
             FirebaseModelManager manager = FirebaseModelManager.getInstance();
-            manager.registerRemoteModel(remoteModel);
-            manager.registerLocalModel(localModel);
+            manager.registerCloudModelSource(cloudSource);
+            manager.registerLocalModelSource(localSource);
             FirebaseModelOptions modelOptions =
                     new FirebaseModelOptions.Builder()
-                            .setRemoteModelName(HOSTED_MODEL_NAME)
+                            .setCloudModelName(HOSTED_MODEL_NAME)
                             .setLocalModelName("asset")
                             .build();
             mInterpreter = FirebaseModelInterpreter.getInstance(modelOptions);
@@ -584,6 +630,23 @@ public class SearchFragment extends Fragment {
             e.printStackTrace();
         }
     }
+
+    //Reads label list from Assets.
+    private List<String> loadLabelList() {
+        List<String> labelList = new ArrayList<>();
+        try (BufferedReader reader =
+                     new BufferedReader(new InputStreamReader(getActivity().getAssets().open
+                             (LABEL_PATH)))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                labelList.add(line);
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to read label list.", e);
+        }
+        return labelList;
+    }
+
 
     private void runModelInference() {
         if (mInterpreter == null) {
@@ -603,6 +666,7 @@ public class SearchFragment extends Fragment {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
+                            Log.e(TAG, e.getMessage());
                             showToast("Error running model inference");
                         }
                     })
@@ -610,14 +674,17 @@ public class SearchFragment extends Fragment {
                             new Continuation<FirebaseModelOutputs, List<String>>() {
                                 @Override
                                 public List<String> then(Task<FirebaseModelOutputs> task) {
+
+
                                     byte[][] labelProbArray = task.getResult()
                                             .<byte[][]>getOutput(0);
                                     List<String> topLabels = getTopLabels(labelProbArray);
-                                    mGraphicOverlay.clear();
-                                    GraphicOverlay.Graphic labelGraphic = new LabelGraphic
-                                            (mGraphicOverlay, topLabels);
-                                    mGraphicOverlay.add(labelGraphic);
+
+                                    List<String> names = extractTheNamesWithoutProbabilityScoreFromTheList(topLabels);
+                                   showTheResultsInBottomSheet(null ,names);
+
                                     return topLabels;
+
                                 }
                             });
         } catch (FirebaseMLException e) {
@@ -627,75 +694,174 @@ public class SearchFragment extends Fragment {
 
     }
 
-    private void showTheResultsInBottomSheet(List<FirebaseVisionLabel> firebaseVisionLabels) {
+    private List<String>  extractTheNamesWithoutProbabilityScoreFromTheList(List<String> labels) {
 
-        LinearLayout containerForDetectedItemsThroughMl = containerViewGroup.findViewById(R.id.containerForDetectedItemsThroughMl);
-        containerForDetectedItemsThroughMl.removeAllViews();
+       // probs.clear();
+        List<String> names = new ArrayList<>();
 
-        if(firebaseVisionLabels.size()==0){
-            showToast("No Object Identified");
-        }
+        for (int i = 0; i < labels.size(); i++) {
+            Log.i("!!!", "label "+labels.get(i));
+            int iend = labels.get(i).indexOf(":"); //this finds the first occurrence of ":"
 
-        for (FirebaseVisionLabel label : firebaseVisionLabels) {
-            View row = inflater.inflate(R.layout.infalte_rows_fr_ml_results_search_frag, containerForDetectedItemsThroughMl, false);
-            containerForDetectedItemsThroughMl.addView(row);
-
-            TextView tvItemName = (TextView) row.findViewById(R.id.tvItemName);
-            TextView tvItemProbability = (TextView) row.findViewById(R.id.tvItemProbability);
-
-            tvItemName.setText(label.getLabel());
-            tvItemProbability.setText(String.valueOf( label.getConfidence()*100.0 +"%"));
-
-            row.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    SearchResultsFragment searchResultsFragment= new SearchResultsFragment();
-                    searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(label.getLabel()));
-                    searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
-                    searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
-                    getActivity().getSupportFragmentManager().beginTransaction()
-                            .add(R.id.drawerLayout, searchResultsFragment,"SearchResultsFragment" )
-                            .addToBackStack(null)
-                            .commit();
-
-
-
-                }
-            });
+            names.add(labels.get(i).substring(0, iend));
+          //  probs.add(labels.get(i).substring( iend ,3));
+            Log.i("!!!", labels.get(i).substring(0, iend));
 
         }
-
+        return names;
 
     }
 
 
-    private List<String> getListOfNameKeywordsFromSentence(String name) {
+    //Gets the top labels in the results
 
+    private synchronized List<String> getTopLabels(byte[][] labelProbArray) {
 
-        String[] words = name.split("\\s+");
-        List<String> wordsList = new ArrayList<>();
-        for (int i = 0; i < words.length; i++) {
-            // You may want to check for a non-word character before blindly
-            // performing a replacement
-            // It may also be necessary to adjust the character class
-            words[i] = words[i].replaceAll("[^\\w]", "");//removes any puctuation like ?,!
+        probsForLabelsFromtenserflowModel.clear();
 
-            wordsList.add(words[i]);
+        for (int i = 0; i < mLabelList.size(); ++i) {
+            sortedLabels.add(
+                    new AbstractMap.SimpleEntry<>(mLabelList.get(i), (labelProbArray[0][i] &
+                            0xff) / 255.0f));
+            if (sortedLabels.size() > RESULTS_TO_SHOW) {
+                sortedLabels.poll();
+            }
         }
+        List<String> result = new ArrayList<>();
+        final int size = sortedLabels.size();
+        for (int i = 0; i < size; ++i) {
+            Map.Entry<String, Float> label = sortedLabels.poll();
+            probsForLabelsFromtenserflowModel.add(label.getValue());
+            result.add(label.getKey() + ":" + label.getValue());
+        }
+        Log.d(TAG, "labels: " + result.toString());
 
-
-        return wordsList;
+        return result;
     }
 
+    //Writes Image data into a {@code ByteBuffer}.
+    private synchronized ByteBuffer convertBitmapToByteBuffer(
+            Bitmap bitmap, int width, int height) {
+        ByteBuffer imgData =
+                ByteBuffer.allocateDirect(
+                        DIM_BATCH_SIZE * DIM_IMG_SIZE_X * DIM_IMG_SIZE_Y * DIM_PIXEL_SIZE);
+        imgData.order(ByteOrder.nativeOrder());
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, DIM_IMG_SIZE_X, DIM_IMG_SIZE_Y,
+                true);
+        imgData.rewind();
+        scaledBitmap.getPixels(intValues, 0, scaledBitmap.getWidth(), 0, 0,
+                scaledBitmap.getWidth(), scaledBitmap.getHeight());
+        // Convert the image to int points.
+        int pixel = 0;
+        for (int i = 0; i < DIM_IMG_SIZE_X; ++i) {
+            for (int j = 0; j < DIM_IMG_SIZE_Y; ++j) {
+                final int val = intValues[pixel++];
+                imgData.put((byte) ((val >> 16) & 0xFF));
+                imgData.put((byte) ((val >> 8) & 0xFF));
+                imgData.put((byte) (val & 0xFF));
+            }
+        }
+        return imgData;
+    }
 
-    public void closeFragment() {
-
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .addToBackStack(null).remove(SearchFragment.this).commit();
+    public static Bitmap getBitmapFromAsset(Context context, String filePath) {
+        AssetManager assetManager = context.getAssets();
 
 
+        InputStream is;
+        Bitmap bitmap = null;
+        try {
+            is = assetManager.open(filePath);
+            bitmap = BitmapFactory.decodeStream(is);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return bitmap;
+    }
+
+    private void showTheResultsInBottomSheet(List<FirebaseVisionLabel> firebaseVisionLabels, List<String> names) {
+
+        if (firebaseVisionLabels != null) {
+            LinearLayout containerForDetectedItemsThroughMl = containerViewGroup.findViewById(R.id.containerForDetectedItemsThroughMl);
+            containerForDetectedItemsThroughMl.removeAllViews();
+
+            if (firebaseVisionLabels.size() == 0) {
+                showToast("No Object Identified from firebase image labeling mlkit");
+            }
+
+            for (FirebaseVisionLabel label : firebaseVisionLabels) {
+                View row = inflater.inflate(R.layout.infalte_rows_fr_ml_results_search_frag, containerForDetectedItemsThroughMl, false);
+                containerForDetectedItemsThroughMl.addView(row);
+
+                TextView tvItemName = (TextView) row.findViewById(R.id.tvItemName);
+                TextView tvItemProbability = (TextView) row.findViewById(R.id.tvItemProbability);
+
+                tvItemName.setText(label.getLabel());
+                tvItemProbability.setText(String.valueOf(label.getConfidence() * 100.0 + "%"));
+
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        SearchResultsFragment searchResultsFragment = new SearchResultsFragment();
+                        searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(label.getLabel()));
+                        searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                        searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .add(R.id.drawerLayout, searchResultsFragment, "SearchResultsFragment")
+                                .addToBackStack(null)
+                                .commit();
+
+
+                    }
+                });
+
+            }
+        }else  if (names != null) {
+            //call is from tenserflow lite model
+            LinearLayout containerForDetectedItemsThroughTenserflow = containerViewGroup.findViewById(R.id.containerForDetectedItemsThroughTenserflow);
+            containerForDetectedItemsThroughTenserflow.removeAllViews();
+
+            if (names.size() == 0) {
+                showToast("No Object Identified from firebase image labeling mlkit");
+            }
+
+            for (int i=0 ;i<names.size() ;i++) {
+                View row = inflater.inflate(R.layout.infalte_rows_fr_ml_results_search_frag, containerForDetectedItemsThroughTenserflow, false);
+                containerForDetectedItemsThroughTenserflow.addView(row);
+
+                TextView tvItemName = (TextView) row.findViewById(R.id.tvItemName);
+                TextView tvItemProbability = (TextView) row.findViewById(R.id.tvItemProbability);
+               // tvItemProbability.setVisibility(View.GONE);
+
+
+
+                tvItemName.setText(names.get(i));
+                tvItemProbability.setText(probsForLabelsFromtenserflowModel.get(i)*100.0+"%");
+
+
+                int finalI = i;
+                row.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        SearchResultsFragment searchResultsFragment = new SearchResultsFragment();
+                        searchResultsFragment.setLocalVariables(getListOfNameKeywordsFromSentence(names.get(finalI)));
+                        searchResultsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                        searchResultsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .add(R.id.drawerLayout, searchResultsFragment, "SearchResultsFragment")
+                                .addToBackStack(null)
+                                .commit();
+
+
+                    }
+                });
+
+            }
+
+        }
     }
 
 

@@ -91,7 +91,7 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
         TextView tvDescp = (TextView) containerViewGroup.findViewById(R.id.tvDescp);
         for (int i = 0; i < listOfKeywords.size(); i++) {
             if (listOfKeywords.get(i) != null) {
-                tvDescp.append(listOfKeywords.get(i));
+                tvDescp.append(" " +listOfKeywords.get(i));
             }
         }
 

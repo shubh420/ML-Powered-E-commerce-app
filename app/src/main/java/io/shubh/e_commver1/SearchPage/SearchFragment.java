@@ -472,7 +472,7 @@ public class SearchFragment extends Fragment {
             // It may also be necessary to adjust the character class
             words[i] = words[i].replaceAll("[^\\w]", "");//removes any puctuation like ?,!
 
-            wordsList.add(words[i]);
+            wordsList.add(words[i].toLowerCase());
         }
 
 

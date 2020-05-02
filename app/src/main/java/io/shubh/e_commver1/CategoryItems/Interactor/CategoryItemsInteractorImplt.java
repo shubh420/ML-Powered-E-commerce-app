@@ -29,6 +29,8 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
 
     int idodLastItemRetrived = 0;
     String ctgrPath = null;
+    boolean isPrevLoadMoreCallCompleted =true ;//This boolean is for the purpose //That recyclr view scroll listener when scrolled last ..is firing multiple load more calls
+    //and all the calls will show same result ..causing duplicates in rcylcr view  ..so this boolean prevents that
 
     @Override
     public void init(CallbacksToPresnter mPresenter) {
@@ -134,112 +136,118 @@ public class CategoryItemsInteractorImplt implements CategoryItemsInteractor {
     @Override
     public void getItemsFromFirebaseWithResultsOnSeparateCallback(String ctgrName, String ctgrPath, String rootCtgr, String subCtgr, String subSubCtgr, boolean ifItsALoadMorecall, ArrayList<ItemsForSale> itemsList) {
 
-        // ArrayList<ItemsForSale> list_of_data_objects__for_adapter = new ArrayList<>();
-        Log.i("****", "2ndcall is made for:" + ctgrPath + "------------------------");
+        if(isPrevLoadMoreCallCompleted==true) {
+            isPrevLoadMoreCallCompleted=false;
+            // ArrayList<ItemsForSale> list_of_data_objects__for_adapter = new ArrayList<>();
+            Log.i("****", "2ndcall is made for:" + ctgrPath + "------------------------");
 
-        this.ctgrPath = ctgrPath;
-        int pageSize = 0;
-        if (ifItsALoadMorecall == true) {
-            pageSize = 6;
-        } else {
-            pageSize = 5;
-        }
+            this.ctgrPath = ctgrPath;
+            int pageSize = 0;
+            if (ifItsALoadMorecall == true) {
+                pageSize = 6;
+            } else {
+                pageSize = 5;
+            }
 
-        Query query = null;
-        if (ctgrPath.indexOf('/') == -1) {
-            //means ctgrpath has ctgr only..no subctgr or subsubctgr
-            //this means we need to get all documents which belong to this ctgr
-            query = db.collection("items for sale")
-                    .whereEqualTo("root category", ctgrPath)
-                    .whereEqualTo("visibility", true)
-                    .orderBy("item id", Query.Direction.ASCENDING)
-                    .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
-                    //for first time I will pass it the very first function,after that the last document i have
-                    //Also the field of orderBy and startafter should be same
-                    .limit(pageSize);
+            Query query = null;
+            if (ctgrPath.indexOf('/') == -1) {
+                //means ctgrpath has ctgr only..no subctgr or subsubctgr
+                //this means we need to get all documents which belong to this ctgr
+                query = db.collection("items for sale")
+                        .whereEqualTo("root category", ctgrPath)
+                        .whereEqualTo("visibility", true)
+                        .orderBy("item id", Query.Direction.ASCENDING)
+                        .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
+                        //for first time I will pass it the very first function,after that the last document i have
+                        //Also the field of orderBy and startafter should be same
+                        .limit(pageSize);
 
-        } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") == -1) {
-            //means ctgrpath has subctgr no subsubctgr
-            //this means we need to get all documents which belong to this subctgr
-            query = db.collection("items for sale")
-                    .whereEqualTo("sub category", ctgrName)
-                    .whereEqualTo("root category", rootCtgr)
-                    .whereEqualTo("visibility", true)
-                    .orderBy("item id", Query.Direction.ASCENDING)
-                    .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
-                    //for first time I will pass it the very first function,after that the last document i have
-                    .limit(pageSize);
-        } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") != -1) {
-            //means ctgrpath has subsubctgr
-            //this means we need to get all documents which belong to this subsubctgr
-            query = db.collection("items for sale")
-                    .whereEqualTo("sub sub category", ctgrName)
-                    .whereEqualTo("root category", rootCtgr)
-                    .whereEqualTo("sub category", subCtgr)
-                    .whereEqualTo("visibility", true)
-                    .orderBy("item id", Query.Direction.ASCENDING)
-                    .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
-                    //for first time I will pass it the very first function,after that the last document i have
-                    .limit(pageSize);
-        }
+            } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") == -1) {
+                //means ctgrpath has subctgr no subsubctgr
+                //this means we need to get all documents which belong to this subctgr
+                query = db.collection("items for sale")
+                        .whereEqualTo("sub category", ctgrName)
+                        .whereEqualTo("root category", rootCtgr)
+                        .whereEqualTo("visibility", true)
+                        .orderBy("item id", Query.Direction.ASCENDING)
+                        .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
+                        //for first time I will pass it the very first function,after that the last document i have
+                        .limit(pageSize);
+            } else if (ctgrPath.indexOf('/') != -1 && ctgrPath.indexOf("//") != -1) {
+                //means ctgrpath has subsubctgr
+                //this means we need to get all documents which belong to this subsubctgr
+                query = db.collection("items for sale")
+                        .whereEqualTo("sub sub category", ctgrName)
+                        .whereEqualTo("root category", rootCtgr)
+                        .whereEqualTo("sub category", subCtgr)
+                        .whereEqualTo("visibility", true)
+                        .orderBy("item id", Query.Direction.ASCENDING)
+                        .startAfter(idodLastItemRetrived)//<------This below function decides after which document ,all other documents need to be fetched
+                        //for first time I will pass it the very first function,after that the last document i have
+                        .limit(pageSize);
+            }
 
-        query
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                //  Log.i("******", String.valueOf(task.getResult().size()));
-
-
-                                if (task.getResult().size() != 0) {
-
-                                    List<ItemsForSale> list = task.getResult().toObjects(ItemsForSale.class);
-
-                                    itemsList.addAll(list);
-
-                                    idodLastItemRetrived = itemsList.get(itemsList.size() - 1).getItem_id();
-
-                                    checkIfTheseItemsExistInSavedItemsList(itemsList, true, ctgrName, ifItsALoadMorecall);
-                                    //below line s shfted to above fnct call result ...if Above is not required then use the below line exactly at below line
-                                   // mPresenter.onFinishedGettingItems(itemsList, true, ctgrName, ifItsALoadMorecall);
+            query
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                isPrevLoadMoreCallCompleted=true;
+                                if (task.getResult() != null) {
+                                    //  Log.i("******", String.valueOf(task.getResult().size()));
 
 
-                                    //adding image urls maually now -TODO make a arraylist field for it in firestore document later
+                                    if (task.getResult().size() != 0) {
 
-                                } else {
 
-                                    if (itemsList.isEmpty()) {
-                                        if (ifItsALoadMorecall == true) {
-                                            //TODO-showToast..of No more items found  ..after scrolling to bottom
-                                            mPresenter.showToast("No more Items found");
-                                        }
-                                    } else {
-                                        Log.i("****", "Size is 0 of 2nd call ,but it has reached the 2nd call so so it has one item so display it");
+                                        List<ItemsForSale> list = task.getResult().toObjects(ItemsForSale.class);
+
+                                        itemsList.addAll(list);
+
+                                        idodLastItemRetrived = itemsList.get(itemsList.size() - 1).getItem_id();
 
                                         checkIfTheseItemsExistInSavedItemsList(itemsList, true, ctgrName, ifItsALoadMorecall);
                                         //below line s shfted to above fnct call result ...if Above is not required then use the below line exactly at below line
-                                      //  mPresenter.onFinishedGettingItems(itemsList, true, ctgrName, ifItsALoadMorecall);
+                                        // mPresenter.onFinishedGettingItems(itemsList, true, ctgrName, ifItsALoadMorecall);
+
+
+                                        //adding image urls maually now -TODO make a arraylist field for it in firestore document later
+
+                                    } else {
+
+                                        if (itemsList.isEmpty()) {
+                                            if (ifItsALoadMorecall == true) {
+                                                //TODO-showToast..of No more items found  ..after scrolling to bottom
+                                                mPresenter.showToast("No more Items found");
+                                            }
+                                        } else {
+                                            Log.i("****", "Size is 0 of 2nd call ,but it has reached the 2nd call so so it has one item so display it");
+
+                                            checkIfTheseItemsExistInSavedItemsList(itemsList, true, ctgrName, ifItsALoadMorecall);
+                                            //below line s shfted to above fnct call result ...if Above is not required then use the below line exactly at below line
+                                            //  mPresenter.onFinishedGettingItems(itemsList, true, ctgrName, ifItsALoadMorecall);
+                                        }
                                     }
+
+
                                 }
 
-
+                            } else {
+                                Log.e("CategoryItemsInteractor", "Error getting documents: ", task.getException());
                             }
-
-                        } else {
-                            Log.e("CategoryItemsInteractor", "Error getting documents: ", task.getException());
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("CategoryItemsInteractor", "Error getting documents: ", e);
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            isPrevLoadMoreCallCompleted=true;
+                            Log.e("CategoryItemsInteractor", "Error getting documents: ", e);
 
 
-                    }
-                });
+                        }
+                    });
+        }
 
     }
 

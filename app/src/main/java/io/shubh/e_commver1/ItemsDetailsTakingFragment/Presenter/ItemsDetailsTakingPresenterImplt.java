@@ -136,13 +136,13 @@ public class ItemsDetailsTakingPresenterImplt implements ItemsDetailsTakingPrese
             // It may also be necessary to adjust the character class
             words[i] = words[i].replaceAll("[^\\w]", "");//removes any puctuation like ?,!
 
-            wordsList.add(words[i]);
+            wordsList.add(words[i].toLowerCase());
         }
 
         //also adding the categories
-        wordsList.add(item.getSub_category());
-        wordsList.add(item.getRoot_category());
-        wordsList.add(item.getSub_sub_category());
+        wordsList.add(item.getSub_category().toLowerCase());
+        wordsList.add(item.getRoot_category().toLowerCase());
+        wordsList.add(item.getSub_sub_category().toLowerCase());
 
         return wordsList;
     }

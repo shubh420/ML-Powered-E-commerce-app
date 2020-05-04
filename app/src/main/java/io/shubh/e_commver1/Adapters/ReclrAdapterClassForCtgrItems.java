@@ -15,16 +15,19 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import io.shubh.e_commver1.DummyMVPclasses.View.Activity;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
+import io.shubh.e_commver1.Utils.Utils;
 
 public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAdapterClassForCtgrItems.ViewHolder> {
     private List<ItemsForSale> dataForItemArrayList;
@@ -32,16 +35,16 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
     private boolean ifInitiatedFromSelelrdashboard = false;
     private InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr;
     Context applicationContext;
-    /* private FragmentActivity activity*/;
+     private FragmentActivity activity;//get activty for showing ksnack for log in
 
 
-    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context,Context applicationContext, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard) {
+    public ReclrAdapterClassForCtgrItems(InterfaceForClickCallbackFromAnyAdaptr interfaceForClickCallbackFromCtgrAdaptr, Context context,Context applicationContext, List<ItemsForSale> dataForItems, boolean ifInitiatedFromSelelrdashboard ,FragmentActivity activity) {
         this.context = context;
         this.applicationContext = applicationContext;
         this.dataForItemArrayList = dataForItems;
         this.ifInitiatedFromSelelrdashboard = ifInitiatedFromSelelrdashboard;
         this.interfaceForClickCallbackFromCtgrAdaptr = interfaceForClickCallbackFromCtgrAdaptr;
-        /*   this.activity = activity;*/
+           this.activity = activity;
 
 
     }
@@ -96,15 +99,19 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
                 @Override
                 public void onClick(View view) {
 
-                   if(dataForItemArrayList.get(position).isItemLiked() ==false) {
-                       animateHeart(holder.edit_bt);
-                       interfaceForClickCallbackFromCtgrAdaptr.onClickOnSaveToLikedItemsBt(String.valueOf(dataForItemArrayList.get(position).getItem_id()));
-                       dataForItemArrayList.get(position).setItemLiked(true);
-                   }else {
-                       holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.ic_heart_svg));
-                       interfaceForClickCallbackFromCtgrAdaptr.onClickOnDeleteFromLikedItemsBt(String.valueOf(dataForItemArrayList.get(position).getItem_id()));
-                       dataForItemArrayList.get(position).setItemLiked(false);
-                   }
+                    if(Utils.isUserLoggedIn()==true) {
+                        if (dataForItemArrayList.get(position).isItemLiked() == false) {
+                            animateHeart(holder.edit_bt);
+                            interfaceForClickCallbackFromCtgrAdaptr.onClickOnSaveToLikedItemsBt(String.valueOf(dataForItemArrayList.get(position).getItem_id()));
+                            dataForItemArrayList.get(position).setItemLiked(true);
+                        } else {
+                            holder.edit_bt.setImageDrawable(context.getDrawable(R.drawable.ic_heart_svg));
+                            interfaceForClickCallbackFromCtgrAdaptr.onClickOnDeleteFromLikedItemsBt(String.valueOf(dataForItemArrayList.get(position).getItem_id()));
+                            dataForItemArrayList.get(position).setItemLiked(false);
+                        }
+                    }else{
+                        Utils.showKsnackForLogin(activity);
+                    }
                 }
             });
         }
@@ -151,7 +158,7 @@ public class ReclrAdapterClassForCtgrItems extends RecyclerView.Adapter<ReclrAda
         AnimationSet animation = new AnimationSet(true);
         animation.addAnimation(alphaAnimation);
         animation.addAnimation(scaleAnimation);
-        animation.setDuration(700);
+        animation.setDuration(400);
         animation.setFillAfter(false);
 
         animation.setAnimationListener(new Animation.AnimationListener() {

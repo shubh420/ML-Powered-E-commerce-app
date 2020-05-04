@@ -30,6 +30,7 @@ import io.shubh.e_commver1.Adapters.ReclrAdapterClassForCtgrItems;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
 import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SearchPage.Interactor.SearchResultsInteractorImplt;
 import io.shubh.e_commver1.SearchPage.Presenter.SearchResultsPresenter;
@@ -130,7 +131,7 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
 
-        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), getActivity().getApplicationContext(), itemList, false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this, getContext(), getActivity().getApplicationContext(), itemList, false,getActivity());
         recyclerView.setAdapter(adapter);
 
 
@@ -194,9 +195,10 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
     }
 
     public void closeFragment() {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .addToBackStack(null)
-                .remove(SearchResultsFragment.this).commit();
+        //clears the whole fragment stack
+        getActivity().getSupportFragmentManager()
+                .popBackStack(null, getActivity().getSupportFragmentManager().POP_BACK_STACK_INCLUSIVE);
+
     }
 
     @Override

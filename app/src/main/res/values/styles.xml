@@ -51,7 +51,7 @@
 
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item><!--this is status bar color used directly by app-->
         <item name="android:navigationBarColor">@color/colorPrimaryDark</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
-        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/colorGreySecondaryForObjectsdark</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
+        <item name="android:navigationBarDividerColor" tools:targetApi="o_mr1">@color/colorGreyForObjectsDark</item><!--this is navigation bar(Bottomost bar having back and home keys) color used directly by app-->
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item><!--this item sets the nav bar keys color as dark..so no need of it in dark teheme-->
         <item name="android:windowLightStatusBar" tools:targetApi="o_mr1">false</item><!--this item sets the status bar icon color as dark..so no need of it in dark teheme-->
 

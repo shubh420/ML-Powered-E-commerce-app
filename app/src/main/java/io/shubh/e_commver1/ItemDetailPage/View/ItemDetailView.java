@@ -16,4 +16,6 @@ public interface ItemDetailView {
     void ShowSnackBarWithAction(String msg, String actionName);
 
     void showToast(String msg);
+
+    void showKsnackBarWithAction();
 }

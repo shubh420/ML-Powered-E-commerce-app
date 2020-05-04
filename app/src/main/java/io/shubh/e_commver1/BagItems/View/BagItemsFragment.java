@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -55,7 +56,7 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
     List<BagItem> bagItemlist;
     int postionFromItemtoDelete;
     ShimmerFrameLayout mShimmerViewContainer;
-
+    RelativeLayout rlCpntainerFrEmptyListMsg;
 
     public BagItemsFragment() {
         // Required empty public constructor
@@ -84,12 +85,14 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
 
         //initializations here
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        rlCpntainerFrEmptyListMsg =(RelativeLayout )containerViewGroup.findViewById(R.id.rlCpntainerFrEmptyListMsg);
+
 
         //---setups here
         setUpToolbar();
 
         //logic work start here
-        mPresenter.getBagItemsData();
+callForPresntrTogetData();
 
         Button btContinue = (Button) containerViewGroup.findViewById(R.id.btContinue);
         btContinue.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +121,11 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
                 }
             }
         });
+    }
+
+    private void callForPresntrTogetData() {
+        rlCpntainerFrEmptyListMsg.setVisibility(View.GONE);
+        mPresenter.getBagItemsData();
     }
 
     private Order makeOrderObject() {
@@ -191,9 +199,9 @@ public class BagItemsFragment extends Fragment implements BagItemsView, Interfac
     @Override
     public void showEmptyListMessage() {
 
-        showToast("No Items Found");
+      //  showToast("No Items Found");
 
-        //TODO - either show a custom toast msg here  or show a graphiv in image view on the center of the screen
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
     }
 
 

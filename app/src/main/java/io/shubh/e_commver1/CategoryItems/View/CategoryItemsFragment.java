@@ -3,7 +3,7 @@ package io.shubh.e_commver1.CategoryItems.View;
 import android.content.Context;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.view.KeyEvent;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,25 +13,32 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Slide;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.appbar.AppBarLayout;
+import com.sak.ultilviewlib.UltimateRefreshView;
+import com.sak.ultilviewlib.interfaces.OnFooterRefreshListener;
+import com.sak.ultilviewlib.interfaces.OnHeaderRefreshListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.shubh.e_commver1.Adapters.BottomListProgressBarAdapter;
+import io.shubh.e_commver1.Adapters.PullToRefreshHeaderAdapter;
+import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
 import io.shubh.e_commver1.CategoryItems.Interactor.CategoryItemsInteractorImplt;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenter;
 import io.shubh.e_commver1.CategoryItems.Presenter.CategoryItemsPresenterImplt;
+import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.Models.Category;
 import io.shubh.e_commver1.Models.ItemsForSale;
+import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.Utils.InterfaceForClickCallbackFromAnyAdaptr;
 import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
@@ -83,9 +90,12 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
     String subSubCtgr;
     String nameOfCtgrForWhichDataIsAlreadyAvailable = "firstCall";
 
+    private UltimateRefreshView mUltimateRefreshView;
+
+
     int pageNoForNewDataToFetchOnReclrScrollToBottom = 1;
     ShimmerFrameLayout mShimmerViewContainer;
-
+    RelativeLayout  rlCpntainerFrEmptyListMsg;
 
     public CategoryItemsFragment() {
         // Required empty public constructor
@@ -131,7 +141,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         DoUiWork();
 
         nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-        callForPresenterToGetCtgrItems(false);
+        callForPresenterToGetCtgrItems(false,false);
 
 
         // Inflate the layout for this fragment
@@ -146,6 +156,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         setUpToolbar();
 
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        rlCpntainerFrEmptyListMsg =(RelativeLayout )containerViewGroup.findViewById(R.id.rlCpntainerFrEmptyListMsg);
 
         //TODO-add fadin animation to tv header on changing text
         //  container_for_directory_tvs =(LinearLayout)findViewById(R.id.id_fr_ll_container_fr_categories);
@@ -173,8 +184,9 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         gridLayoutManager.setOrientation(RecyclerView.VERTICAL); // set Horizontal Orientation
         recyclerView.setLayoutManager(gridLayoutManager);
 
+
         itemsList = new ArrayList<>();
-        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this,getContext(), getActivity().getApplicationContext(), itemsList, false);
+        adapter = new ReclrAdapterClassForCtgrItems((InterfaceForClickCallbackFromAnyAdaptr) this,getContext(), getActivity().getApplicationContext(), itemsList, false,getActivity());
         recyclerView.setAdapter(adapter);
 
         AppBarLayout appBarLayout = (AppBarLayout) containerViewGroup.findViewById(R.id.appBarLayout);
@@ -189,7 +201,52 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                 }
             }
         });
+//-----------------------------setting up top pull to refresh progress bar and bottom load more progress bar
+        mUltimateRefreshView = (UltimateRefreshView) containerViewGroup.findViewById(R.id.refreshView);
+        mUltimateRefreshView.setBaseHeaderAdapter(new PullToRefreshHeaderAdapter(getContext() ,getActivity().getApplicationContext()));
+       // mUltimateRefreshView.setBaseHeaderAdapter();
+     //   mUltimateRefreshView.setBaseFooterAdapter();
+        //sadly its base footer adapter is not working when header is
+     //
 
+        mUltimateRefreshView.setOnHeaderRefreshListener(new OnHeaderRefreshListener() {
+            @Override
+            public void onHeaderRefresh(UltimateRefreshView view) {
+                callForPresenterToGetCtgrItems(false,true);
+            }
+        });
+
+        //its footer on load more animatin is not working as its dupposed to be..so I m using reclrview.onScroll() to dtect when scrolled to last
+        /*mUltimateRefreshView.setBaseFooterAdapter(new BottomListProgressBarAdapter(getContext() ,getActivity().getApplicationContext()));
+        mUltimateRefreshView.setOnFooterRefreshListener(new OnFooterRefreshListener() {
+            @Override
+            public void onFooterRefresh(UltimateRefreshView view) {
+
+                callForPresenterToGetCtgrItems(true,false);
+
+                //showLoadingMoreViewAtBottomOfRcyclr();
+          //      showToast("Loading more items");
+            }
+        });*/
+
+
+        //there is no need for the code like below anymore to detect when the recyclr view is scrolled to bottom
+        //The library of Ultimate refresh view attached to reclr view in above init method does the job...it was supposed to do the job,..but it is not working
+                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+
+                        if (itemsList.isEmpty() == false && itemsList.size() > 5) {
+                            //below is done because this
+                            if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == itemsList.size() - 1) {
+                                //bottom of list!
+                                callForPresenterToGetCtgrItems(true ,false);
+
+                                showToast("Loading more items");
+                            }
+                        }
+                    }
+                });
 //-------------------------------------------------------------------------------------------------
 
         updateHeaderTvAndCtgrStrip();
@@ -204,6 +261,46 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
             @Override
             public void onClick(View view) {
                 closeFragment();
+            }
+        });
+
+        ImageButton btBagItems = (ImageButton) containerViewGroup.findViewById(R.id.btBagItems);
+        btBagItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Utils.isUserLoggedIn()) {
+                    BagItemsFragment bagItemsFragment = new BagItemsFragment();
+                    bagItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                    bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, bagItemsFragment,"BagItemsFragment")
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    Utils.showKsnackForLogin( getActivity());
+                }
+
+            }
+        });
+
+        ImageButton btNotification = (ImageButton)containerViewGroup. findViewById(R.id.btNotification);
+        btNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (Utils.isUserLoggedIn()) {
+                    NotificationFragment notificationFragment = new NotificationFragment();
+                    notificationFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                    notificationFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, notificationFragment, "NotificationFragment")
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    Utils.showKsnackForLogin( getActivity());
+                }
             }
         });
     }
@@ -266,7 +363,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                                         //             emptyTheRecyclerView();
 
                                         nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-                                        callForPresenterToGetCtgrItems(false);
+                                        callForPresenterToGetCtgrItems(false,false);
 
                                     } else {
 
@@ -277,7 +374,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                                         //            emptyTheRecyclerView();
 
                                         nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-                                        callForPresenterToGetCtgrItems(false);
+                                        callForPresenterToGetCtgrItems(false ,false);
                                         //          loadCategorylayoutsInTheSidebarWithAnimation();
                                     }
                                 }
@@ -327,7 +424,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
 
                                         //             emptyTheRecyclerView();
                                         nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-                                        callForPresenterToGetCtgrItems(false);
+                                        callForPresenterToGetCtgrItems(false ,false);
 
                                     }
                                 });
@@ -412,7 +509,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                 updateHeaderTvAndCtgrStrip();
 
                 nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-                callForPresenterToGetCtgrItems(false);
+                callForPresenterToGetCtgrItems(false,false);
 
             }
         });
@@ -430,7 +527,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                 updateHeaderTvAndCtgrStrip();
 
                 nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-                callForPresenterToGetCtgrItems(false);
+                callForPresenterToGetCtgrItems(false ,false);
 
             }
         });
@@ -446,7 +543,7 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                 updateHeaderTvAndCtgrStrip();
 
                 nameOfCtgrforWhichDataIsDetected = mParam1CategoryName;
-                callForPresenterToGetCtgrItems(false);
+                callForPresenterToGetCtgrItems(false,false);
 
             }
         });
@@ -517,21 +614,29 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         }
     }
 
-    private void callForPresenterToGetCtgrItems(boolean ifItsALoadMorecall) {
-       /* if(ifItsALoadMorecall==true) {
-            pageNoForNewDataToFetchOnReclrScrollToBottom++;
-        }*/
-        if (ifItsALoadMorecall == false) {
+    private void callForPresenterToGetCtgrItems(boolean ifItsALoadMorecall ,boolean ifItsAPageRefreshingOrCall) {
+     rlCpntainerFrEmptyListMsg.setVisibility(View.GONE);
+
+        if (ifItsALoadMorecall == true && ifItsAPageRefreshingOrCall == false  ) {
+            //its load more call
+          //  showProgressBar(true);
+        } else  if (ifItsALoadMorecall == false && ifItsAPageRefreshingOrCall == true  ) {
+            //its page refresh call
+          //  showProgressBar(true);
+        }else{
+//in ever other case show shimmer layout ..it can be sub ctgr call through  top header or side bar,,or the first call when the page opens
             showProgressBar(true);
-        } else {
-            //ToDO--- add shimmer layout containig two views
         }
 
         mPresenter.getItemsFromFirebase(mParam1CategoryName, mParam2CategoryPath, rootCtgr, subCtgr, subSubCtgr, ifItsALoadMorecall);
+
     }
 
     @Override
     public void onGettingCtgrItemsFromPrsntr(List<ItemsForSale> retrivedShorterItemList, Boolean listNotEmpty, String ctgrName, boolean ifItsALoadMoreCallResult) {
+
+        mUltimateRefreshView.onHeaderRefreshComplete();
+        mUltimateRefreshView.onFooterRefreshComplete();
 
         //below if catches the situation when differnet ctgrs are clicked rapidly ..so the result of both can
         //in not the order they were clicked ..like the last clicked ctgr result can come first and showed ,then if the
@@ -554,31 +659,25 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
                 }
 
                 nameOfCtgrForWhichDataIsAlreadyAvailable = ctgrName;
+                int lastItemIndexOfPrevShownList=this.itemsList.size();
 
                 this.itemsList.addAll(retrivedShorterItemList);
                 adapter.notifyDataSetChanged();
                 showProgressBar(false);
 
-                recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                    @Override
-                    public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (ifItsALoadMoreCallResult == true) {
+                    //since new items have been inserted ..so scrolling it to show the start of new items
+                    recyclerView.smoothScrollToPosition(lastItemIndexOfPrevShownList+1);
+                }
 
-                        if (itemsList.isEmpty() == false && itemsList.size() > 5) {
-                            //below is done because this
-                            if (gridLayoutManager.findLastCompletelyVisibleItemPosition() == itemsList.size() - 1) {
-                                //bottom of list!
-                                callForPresenterToGetCtgrItems(true);
 
-                                showToast("Loading more items");
-                            }
-                        }
-                    }
-                });
             }
         } else {
             showProgressBar(false);
         }
     }
+
+
 
 
     @Override
@@ -594,6 +693,10 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         if (mParam2CategoryPath.indexOf('/') == -1) {
             ll_container_side_bar.removeAllViews();
         }
+
+//-----------------------------------
+
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
 
     }
 
@@ -623,11 +726,13 @@ public class CategoryItemsFragment extends Fragment implements CategoryItemsView
         if (b == true) {
             //   progressBar.setVisibility(android.view.View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+            mUltimateRefreshView.setVisibility(View.GONE);
             mShimmerViewContainer.startShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.VISIBLE);
         } else {
             //  progressBar.setVisibility(android.view.View.INVISIBLE);
             recyclerView.setVisibility(View.VISIBLE);
+            mUltimateRefreshView.setVisibility(View.VISIBLE);
             mShimmerViewContainer.stopShimmerAnimation();
             mShimmerViewContainer.setVisibility(View.GONE);
 

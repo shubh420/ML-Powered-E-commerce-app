@@ -2,6 +2,7 @@ package io.shubh.e_commver1.ItemDetailPage.View;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -35,16 +37,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
+import com.onurkagan.ksnack_lib.KSnack.KSnack;
 
 import io.shubh.e_commver1.Adapters.CustomPagerAdapterForItemDetailImageViewsPager;
 import io.shubh.e_commver1.BagItems.View.BagItemsFragment;
 import io.shubh.e_commver1.ItemDetailPage.Interactor.ItemDetailInteractorImplt;
 import io.shubh.e_commver1.ItemDetailPage.Presenter.ItemDetailPresenter;
 import io.shubh.e_commver1.ItemDetailPage.Presenter.ItemDetailPresenterImplt;
+import io.shubh.e_commver1.Main.View.MainActivity;
 import io.shubh.e_commver1.Models.ItemsForSale;
 import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.SellerDashboard.SellerConfirmationFragment;
+import io.shubh.e_commver1.Utils.StaticClassForGlobalInfo;
 import io.shubh.e_commver1.Utils.Utils;
+import io.shubh.e_commver1.Welcome.View.WelcomeActivity;
 
 
 public class ItemDetailFragment extends Fragment implements ItemDetailView {
@@ -129,14 +135,19 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
             @Override
             public void onClick(View view) {
 
-                BagItemsFragment bagItemsFragment = new BagItemsFragment();
-                bagItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
-                bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+                if (Utils.isUserLoggedIn()) {
+                    BagItemsFragment bagItemsFragment = new BagItemsFragment();
+                    bagItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                    bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-                getActivity().getSupportFragmentManager().beginTransaction()
-                        .add(R.id.drawerLayout, bagItemsFragment , "BagItemsFragment")
-                        .addToBackStack(null)
-                        .commit();
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .add(R.id.drawerLayout, bagItemsFragment, "BagItemsFragment")
+                            .addToBackStack(null)
+                            .commit();
+                } else {
+                    Utils.showKsnackForLogin( getActivity());
+                }
+
 
 
             }
@@ -150,7 +161,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
 
         ViewPager viewPager = (ViewPager) containerViewGroup.findViewById(R.id.pager2);
-        CustomPagerAdapterForItemDetailImageViewsPager adapter = new CustomPagerAdapterForItemDetailImageViewsPager(getContext(),getActivity().getApplicationContext(), item.getListOfImageURLs());
+        CustomPagerAdapterForItemDetailImageViewsPager adapter = new CustomPagerAdapterForItemDetailImageViewsPager(getContext(), getActivity().getApplicationContext(), item.getListOfImageURLs());
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) containerViewGroup.findViewById(R.id.tab_layout);
@@ -166,16 +177,41 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         RelativeLayout bottomSheet = (RelativeLayout) containerViewGroup.findViewById(R.id.ll_parent_bottom_sheet);
         behavior = BottomSheetBehavior.from(bottomSheet);
 
+
+        int[] loc = new int[2];      // loc will hold the coordinates of your view
+        // fill loc with the coordinates of your view (loc[0] = x, looc[1] = y)..yzzz
+        TabLayout tabLayout = (TabLayout) containerViewGroup.findViewById(R.id.tab_layout);
         DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
-        int heightInPixels = displayMetrics.heightPixels;
-        Log.i("***", "layout hieght =" + heightInPixels);
-        int topMarginForBottomSheetInPixFromDp = (int) (285 * this.getResources().getDisplayMetrics().density + 0.5f);
+        float density = this.getResources().getDisplayMetrics().density;
+        int statusBarHieght = (int) (24 * density);
+
+        tabLayout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            public void onGlobalLayout() {
+                tabLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                tabLayout.getLocationOnScreen(loc);
+                //this above gets the coordinate of the tablayout--loc[1] is the y coordiante of the bottom left corner
+                int topCoordinteOfTheViewInPixels = loc[1];
+
+                int heightOfScreenInPixels = displayMetrics.heightPixels;
+                int bottomMarginFortabLayout = (int) (7 * density + 0.5f);  //7 dp margin
+                int topMarginForBottomSheet = (heightOfScreenInPixels + statusBarHieght) - (topCoordinteOfTheViewInPixels + bottomMarginFortabLayout);
+
+
+                behavior.setPeekHeight(topMarginForBottomSheet);
+            }
+        });
+        int heightOfScreenInPixels = displayMetrics.heightPixels;
+        //this below line is for giving the top margin for toolbar to show when the whole btmsheet is expanded to top
+        bottomSheet.getLayoutParams().height = heightOfScreenInPixels - (int) (65 * density + 0.5f);
+
+
+
+       /* Log.i("***", "layout hieght =" + heightInPixels);
+        int topMarginForBottomSheetInPixFromDp = (int) (290 * this.getResources().getDisplayMetrics().density + 0.5f);
         Log.i("***", "bs hieght =" + (heightInPixels - topMarginForBottomSheetInPixFromDp));
 
-        //this below line is for giving the top margin for toolbar to show when the whole btmsheet is expanded to top
-        bottomSheet.getLayoutParams().height = heightInPixels - (int) (65 * this.getResources().getDisplayMetrics().density + 0.5f);
 
-        behavior.setPeekHeight(heightInPixels - topMarginForBottomSheetInPixFromDp);
+        */
 
 
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
@@ -198,9 +234,8 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     }
 
 
-
-
     private void setUpTvs() {
+
 
         TextView tvItemName = (TextView) containerViewGroup.findViewById(R.id.tvItemName);
         TextView tvItemCtgrPath = (TextView) containerViewGroup.findViewById(R.id.tvItemCtgrPath);
@@ -208,7 +243,14 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
 
         tvItemName.setText(item.getName());
         tvItemCtgrPath.setText(item.getCategory());
-        tvItemDecsrp.setText(item.getDescription());
+        String desc = item.getDescription();
+        if (item.getDescription().indexOf("//") != -1) {
+            desc.replace("//", "/");
+        }
+
+
+        tvItemDecsrp.setText(desc);
+
 
     }
 
@@ -343,8 +385,6 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     }
 
 
-
-
     public void closeFragment() {
 
         TranslateAnimation animate = new TranslateAnimation(0, 0, 0, -rlVpContainer.getHeight());
@@ -382,7 +422,7 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
         AnimationSet animation = new AnimationSet(true);
         animation.addAnimation(alphaAnimation);
         animation.addAnimation(scaleAnimation);
-        animation.setDuration(700);
+        animation.setDuration(400);
         animation.setFillAfter(false);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -450,6 +490,40 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     @Override
     public void showToast(String msg) {
 
-        Utils.showCustomToastForFragments(msg,getContext());
+        Utils.showCustomToastForFragments(msg, getContext());
+    }
+
+    @Override
+    public void showKsnackBarWithAction() {
+        KSnack kSnack = new KSnack(getActivity());
+        kSnack
+                .setAction("View", new View.OnClickListener() { // name and clicklistener
+                    @Override
+                    public void onClick(View v) {
+                        BagItemsFragment bagItemsFragment = new BagItemsFragment();
+                        bagItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                        bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .add(R.id.drawerLayout, bagItemsFragment, "BagItemsFragment")
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                })
+                .setMessage("Bagged it") // message
+                //  .setBackgrounDrawable(R.drawable.background_ex_one) // background drawable
+                .setAnimation(com.onurkagan.ksnack_lib.Animations.Slide.Up.getAnimation(kSnack.getSnackView()), com.onurkagan.ksnack_lib.Animations.Slide.Down.getAnimation(kSnack.getSnackView()))
+                .setDuration(3300); // you can use for auto close.
+
+        if (StaticClassForGlobalInfo.theme == 1) {
+            kSnack.setTextColor(R.color.colorPrimaryLight) // message text color
+                    .setBackColor(R.color.colorPrimaryDark) // background color
+                    .setButtonTextColor(R.color.colorSecondary); // action button text color
+        } else {
+            kSnack.setTextColor(R.color.colorPrimaryDark) // message text color
+                    .setBackColor(R.color.colorPrimaryLight) // background color
+                    .setButtonTextColor(R.color.colorSecondary);
+        }
+        kSnack.show();
     }
 }

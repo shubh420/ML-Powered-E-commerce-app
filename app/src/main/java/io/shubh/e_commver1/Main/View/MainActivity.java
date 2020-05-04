@@ -32,10 +32,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.vision.L;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.mahfa.dnswitch.DayNightSwitch;
+import com.mahfa.dnswitch.DayNightSwitchListener;
 import com.onurkagan.ksnack_lib.KSnack.KSnack;
 import com.onurkagan.ksnack_lib.KSnack.KSnackBarEventListener;
 import com.razorpay.PaymentResultListener;
@@ -56,6 +59,7 @@ import io.shubh.e_commver1.Main.Presenter.MainPresenter;
 import io.shubh.e_commver1.Main.Presenter.MainPresenterImplt;
 import io.shubh.e_commver1.Models.ClassForMainActvityItemReclrDATAObject;
 import io.shubh.e_commver1.Models.Order;
+import io.shubh.e_commver1.MyProfile.MyProfileFragment;
 import io.shubh.e_commver1.Notification.View.NotificationFragment;
 import io.shubh.e_commver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment;
 import io.shubh.e_commver1.PaymentFragments.View.PaymentFragment;
@@ -93,6 +97,13 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // MUST do this before super call or setContentView(...)
+        // pick which theme DAY or NIGHT from settings
+        if(StaticClassForGlobalInfo.theme==1){
+            setTheme( R.style.AppThemeLight);
+        }else{            setTheme( R.style.AppThemeDark); }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -123,7 +134,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
         navigationDrawerSetUp();
         setSearchViewWork();
+        setThemeButton();
     }
+
+
 
     //RULE - always use  .addToBackStack(null) on any transaction whether rmove or add..doing this invokes this onBackStackChanged listener and helps the main activity know about fragmnet transactions (not sub fragments thgo)
     @Override
@@ -170,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if (Utils.isUserLoggedIn()) {
                     switchActivity(8);
                 } else {
-                    Utils.showKsnackForLogin( MainActivity.this);
+                    Utils.showKsnackForLogin(MainActivity.this);
                 }
 
             }
@@ -184,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if (Utils.isUserLoggedIn()) {
                     switchActivity(7);
                 } else {
-                    Utils.showKsnackForLogin( MainActivity.this);
+                    Utils.showKsnackForLogin(MainActivity.this);
                 }
             }
         });
@@ -210,7 +224,11 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
             @Override
             public void onClick(View view) {
 
-                //do nothing
+                if (Utils.isUserLoggedIn()) {
+                    switchActivity(9);
+                } else {
+                    Utils.showKsnackForLogin(MainActivity.this);
+                }
             }
         });
 //=----------------------------------------
@@ -222,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if (Utils.isUserLoggedIn()) {
                     mPresenter.checkIfUserIsASellerOrNot();
                 } else {
-                    Utils.showKsnackForLogin( MainActivity.this);
+                    Utils.showKsnackForLogin(MainActivity.this);
                 }
             }
         });
@@ -236,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if (Utils.isUserLoggedIn()) {
                     switchActivity(5);
                 } else {
-                    Utils.showKsnackForLogin( MainActivity.this);
+                    Utils.showKsnackForLogin(MainActivity.this);
                 }
             }
         });
@@ -250,7 +268,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if (Utils.isUserLoggedIn()) {
                     switchActivity(6);
                 } else {
-                    Utils.showKsnackForLogin( MainActivity.this);
+                    Utils.showKsnackForLogin(MainActivity.this);
 
                 }
             }
@@ -264,7 +282,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 if (Utils.isUserLoggedIn()) {
                     switchActivity(8);
                 } else {
-                    Utils.showKsnackForLogin( MainActivity.this);
+                    Utils.showKsnackForLogin(MainActivity.this);
 
                 }
             }
@@ -284,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
 
         if (Utils.isUserLoggedIn() == true) {
             tvLoginBt.setText("Logout");
-           // iv_fr_icon_button_signin_in_navdr.setImageResource(R.drawable.logout_icon_);
+            // iv_fr_icon_button_signin_in_navdr.setImageResource(R.drawable.logout_icon_);
         } else {
             tvLoginBt.setText("Login");
         }
@@ -372,8 +390,8 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 finishAffinity();
                 System.exit(0);
             } else {
-             //   Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
-            showToast("Tap back button once more to exit");
+                //   Toast.makeText(getBaseContext(), "Tap back button in order to exit", Toast.LENGTH_SHORT).show();
+                showToast("Tap back button once more to exit");
             }
             mBackPressed = System.currentTimeMillis();
 
@@ -438,6 +456,10 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                     SearchResultsFragment searchResultsFragment = (SearchResultsFragment) fragmentManager.findFragmentByTag("SearchResultsFragment");
                     searchResultsFragment.closeFragment();
                     return;
+                case "MyProfileFragment":
+                    MyProfileFragment myProfileFragment = (MyProfileFragment) fragmentManager.findFragmentByTag("MyProfileFragment");
+                    myProfileFragment.closeFragment();
+                    return;
                 default://use deafult to close fragments
                     // fragmentManager.popBackStackImmediate(); //cant use this it messes the animation because  .addToBackStack(null)
                     //to an fargment wile adding it means that while poopping it from stack it will reverse all that happened wile adding it ..
@@ -475,7 +497,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 searchFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, searchFragment,"SearchFragment")
+                        .add(R.id.drawerLayout, searchFragment, "SearchFragment")
                         .addToBackStack(null)
                         .commit();
 
@@ -487,7 +509,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 addressSelectionFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, addressSelectionFragment,"AddressSelectionFragment")
+                        .add(R.id.drawerLayout, addressSelectionFragment, "AddressSelectionFragment")
                         .addToBackStack(null)
                         .commit();
                 return;
@@ -497,7 +519,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 myOrdersFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, myOrdersFragment,"MyOrdersFragment")
+                        .add(R.id.drawerLayout, myOrdersFragment, "MyOrdersFragment")
                         .addToBackStack(null)
                         .commit();
                 return;
@@ -506,9 +528,9 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 likedItemsFragment.setEnterTransition(new Slide(Gravity.RIGHT));
                 likedItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
-               fragmentManager.beginTransaction()
+                fragmentManager.beginTransaction()
                         //both parameters for instantiating the fragment will be same as at rootl level of ctgr tree ,the name of ctgr and path is same
-                        .add(R.id.drawerLayout, likedItemsFragment,"ItemsDetailsTakingFragment")
+                        .add(R.id.drawerLayout, likedItemsFragment, "ItemsDetailsTakingFragment")
                         .addToBackStack(null)
                         .commit();
                 return;
@@ -529,7 +551,18 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
                 bagItemsFragment.setExitTransition(new Slide(Gravity.RIGHT));
 
                 fragmentManager.beginTransaction()
-                        .add(R.id.drawerLayout, bagItemsFragment,"BagItemsFragment")
+                        .add(R.id.drawerLayout, bagItemsFragment, "BagItemsFragment")
+                        .addToBackStack(null)
+                        .commit();
+
+                return;
+            case 9:
+                MyProfileFragment myProfileFragment = new MyProfileFragment();
+                myProfileFragment.setEnterTransition(new Slide(Gravity.RIGHT));
+                myProfileFragment.setExitTransition(new Slide(Gravity.RIGHT));
+
+                fragmentManager.beginTransaction()
+                        .add(R.id.drawerLayout, myProfileFragment, "MyProfileFragment")
                         .addToBackStack(null)
                         .commit();
 
@@ -538,6 +571,40 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         }
 
     }
+
+    private void setThemeButton() {
+        DayNightSwitch dayNightSwitch;
+        View backgroundView;
+
+        dayNightSwitch = (DayNightSwitch)findViewById(R.id.day_night_switch);
+     //   backgroundView = (View)findViewById(R.id.background_view);
+        if(StaticClassForGlobalInfo.theme==1) {
+            dayNightSwitch.setIsNight(false);
+        }else {
+            dayNightSwitch.setIsNight(true);
+        }
+        dayNightSwitch.setDuration(450);
+        dayNightSwitch.setListener(new DayNightSwitchListener() {
+            @Override
+            public void onSwitch(boolean isNight) {
+                if(isNight)
+                {
+                    // decide which theme to use DAY or NIGHT and save it
+                   StaticClassForGlobalInfo.theme=2;
+                   drawerLayout.closeDrawer(Gravity.LEFT);
+                  MainActivity.this.recreate();
+                }
+                else
+                {
+                    StaticClassForGlobalInfo.theme=1;
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    MainActivity.this.recreate();
+                }
+            }
+        });
+    }
+
+
 
     @Override
     public Context getContext(boolean getActvityContext) {
@@ -581,7 +648,7 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
     @Override
     public void showToast(String msg) {
 
-Utils.showToast(msg ,MainActivity.this);
+        Utils.showToast(msg, MainActivity.this);
     }
 
     @Override
@@ -620,7 +687,8 @@ Utils.showToast(msg ,MainActivity.this);
 
 
         if (listOfDataObjectsForAdapter.size() == 0) {
-showToast("No Categories found");        }
+            showToast("No Categories found");
+        }
     }
 
 

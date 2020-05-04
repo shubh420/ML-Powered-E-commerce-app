@@ -48,6 +48,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
     BottomSheetBehavior behavior;
     View inflatedBttmSheet;
     ShimmerFrameLayout mShimmerViewContainer;
+    RelativeLayout rlCpntainerFrEmptyListMsg;
     
     public MyOrdersFragment() {
         // Required empty public constructor
@@ -74,6 +75,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
 
        // initializations here //todo shimmer below
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        rlCpntainerFrEmptyListMsg =(RelativeLayout )containerViewGroup.findViewById(R.id.rlCpntainerFrEmptyListMsg);
 
         //---setups here
 
@@ -81,6 +83,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
 
         doBottomSheetWork();
         //logic work start here
+        rlCpntainerFrEmptyListMsg.setVisibility(View.GONE);
         mPresenter.getOrderItemsData();
 
     }
@@ -319,7 +322,8 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
     @Override
     public void showToast(String msg) {
 
-        Utils.showCustomToastForFragments(msg,getContext());
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
+
     }
 
 

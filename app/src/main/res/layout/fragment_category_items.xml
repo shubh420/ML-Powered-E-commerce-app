@@ -60,7 +60,7 @@
 
 
                 <ImageButton
-                    android:id="@+id/id_fr_my_cart_bt"
+                    android:id="@+id/btBagItems"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="right"
@@ -71,7 +71,7 @@
                     app:srcCompat="@drawable/shopping_cart2" />
 
                 <ImageButton
-                    android:id="@+id/id_fr_notification_bt"
+                    android:id="@+id/btNotification"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="right"
@@ -79,7 +79,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/bell" />
+                    app:srcCompat="@drawable/ic_notification_svg" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -187,7 +187,14 @@
             android:layout_marginLeft="45dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
+        <com.sak.ultilviewlib.UltimateRefreshView
+            android:id="@+id/refreshView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            >
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/id_fr_recycler_view_ctgr_items_list"
             android:layout_width="match_parent"
@@ -195,9 +202,58 @@
             android:paddingLeft="50dp"
 
             android:paddingRight="4dp"
-            android:paddingBottom="50dp"
+            android:paddingBottom="00dp"
 
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </com.sak.ultilviewlib.UltimateRefreshView>
+
+        <RelativeLayout
+            android:id="@+id/rlCpntainerFrEmptyListMsg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="30dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >/
+            <ImageView
+                android:id="@+id/ivEmptyMsg"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:layout_above="@id/itsPurposeIsToPostionOtherLayoutRelativeToCenter"
+               android:src="@drawable/ic_empty_reclr_view_ctgr_svg"
+                android:padding="10dp"
+                />
+            <View
+                android:id="@+id/itsPurposeIsToPostionOtherLayoutRelativeToCenter"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                />
+
+            <TextView
+                android:id="@+id/tv1OfEmptyMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/ivEmptyMsg"
+                android:text="No Items Found"
+                android:textSize="20dp"
+                android:padding="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorPrimaryText"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/tv1OfEmptyMsg"
+                android:text="Become A seller in the app,And sell Items"
+                android:textSize="15dp"
+                android:padding="0dp"
+                android:fontFamily="sans-serif"
+                android:textColor="?attr/colorSecondaryText"
+                />
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:id="@+id/rl_root_container_of_side_strip"

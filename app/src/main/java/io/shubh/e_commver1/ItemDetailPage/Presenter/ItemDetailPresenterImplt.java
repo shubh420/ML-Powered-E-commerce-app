@@ -41,7 +41,8 @@ mview.showProgressBarAtBagItBt(true);
             @Override
             public void onFinishedUploading(boolean callbackResultOfTheUpload) {
                 if(callbackResultOfTheUpload){
-                    mview.showToast("added to bag");
+                   // mview.showToast("added to bag");
+                    mview.showKsnackBarWithAction();
                     mview.showProgressBarAtBagItBt(false);
                     //TODO-make  a snackbar here or a button in a toast wich reads 'view bag items' or just 'view'
                 }else{

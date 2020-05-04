@@ -84,6 +84,8 @@ dependencies {
     implementation 'com.github.onurkagan:KSnack:1.1.2'
     implementation 'com.google.firebase:firebase-ml-model-interpreter:16.2.3'
 
+
+
     implementation('androidx.annotation:annotation:1.0.0-rc02') {
         force = true
     }
@@ -104,6 +106,13 @@ dependencies {
 
     //github library for simplified permission calling
     implementation 'gun0912.ted:tedpermission:2.2.3'
+
+    //this library is for instagram like pull to refresh widget..I would have used normal androidx
+    //swipefresh layout..but it aint has instagram like style and below one has more features
+
+    implementation 'com.reoobter:ultrapullview:1.0.0'
+
+    implementation 'com.github.Mahfa:DayNightSwitch:1.2'
 
 }
 apply plugin: 'com.google.gms.google-services'

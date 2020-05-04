@@ -41,7 +41,7 @@ public final class Utils {
         return isLoggedIn;
     }
 
-    public static void showToast(String msg, Activity activity){
+    public static void showToast(String msg, Activity activity) {
 
 
         KSnack kSnack = new KSnack(activity);
@@ -52,40 +52,51 @@ public final class Utils {
                 .setTextColor(R.color.colorPrimary) // message text color
                 .setBackColor(R.color.colorSecondary) // background color
                 .setButtonTextColor(R.color.colorPrimaryDark) // action button text color
-               // .setBackgrounDrawable(R.drawable.background_ex_one) // background drawable
+                // .setBackgrounDrawable(R.drawable.background_ex_one) // background drawable
                 .setAnimation(Slide.Up.getAnimation(kSnack.getSnackView()), Slide.Down.getAnimation(kSnack.getSnackView()))
                 .setDuration(2000) // you can use for auto close.
                 .show();
     }
 
 
-    public static void showKsnackForLogin( Activity activity) {
+    public static void showKsnackForLogin(Activity activity) {
 
-        if(StaticClassForGlobalInfo.theme==1) {
-            KSnack kSnack = new KSnack(activity);
-            kSnack
-                    .setAction("Login", new View.OnClickListener() { // name and clicklistener
-                        @Override
-                        public void onClick(View v) {
-                            Intent in = new Intent(activity, WelcomeActivity.class);
-                            activity.startActivity(in);
-                            kSnack.dismiss();
-                        }
-                    })
-                    .setMessage("Login Required") // message
-                    .setTextColor(R.color.colorPrimaryLight) // message text color
+        //  if(StaticClassForGlobalInfo.theme==1) {
+        KSnack kSnack = new KSnack(activity);
+        kSnack
+                .setAction("Login", new View.OnClickListener() { // name and clicklistener
+                    @Override
+                    public void onClick(View v) {
+                        Intent in = new Intent(activity, WelcomeActivity.class);
+                        activity.startActivity(in);
+                        kSnack.dismiss();
+                    }
+                })
+                .setMessage("Login Required") // message
+                .setTextColor(R.color.colorPrimaryLight) // message text color
+                .setBackColor(R.color.colorPrimaryDark) // background color
+                .setButtonTextColor(R.color.colorSecondary) // action button text color
+                //  .setBackgrounDrawable(R.drawable.background_ex_one) // background drawable
+                .setAnimation(Slide.Up.getAnimation(kSnack.getSnackView()), Slide.Down.getAnimation(kSnack.getSnackView()))
+                .setDuration(2500); // you can use for auto close.
+
+
+        if (StaticClassForGlobalInfo.theme == 1) {
+            kSnack.setTextColor(R.color.colorPrimaryLight) // message text color
                     .setBackColor(R.color.colorPrimaryDark) // background color
-                    .setButtonTextColor(R.color.colorSecondary) // action button text color
-                  //  .setBackgrounDrawable(R.drawable.background_ex_one) // background drawable
-                    .setAnimation(Slide.Up.getAnimation(kSnack.getSnackView()), Slide.Down.getAnimation(kSnack.getSnackView()))
-                    .setDuration(2500) // you can use for auto close.
-                    .show();
-        }else {
-
+                    .setButtonTextColor(R.color.colorSecondary); // action button text color
+        } else {
+            kSnack.setTextColor(R.color.colorPrimaryDark) // message text color
+                    .setBackColor(R.color.colorPrimaryLight) // background color
+                    .setButtonTextColor(R.color.colorSecondary);
         }
+        kSnack.show();
+        //     }else {
+
+        //  }
     }
 
-    public static void showCustomToastForFragments(String msg , Context context ) {
+    public static void showCustomToastForFragments(String msg, Context context) {
         Toast toast = new Toast(context);
         toast.setDuration(Toast.LENGTH_LONG);
 

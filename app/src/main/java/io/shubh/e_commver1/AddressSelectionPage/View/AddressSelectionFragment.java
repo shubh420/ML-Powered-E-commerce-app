@@ -60,6 +60,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
     int sizeOfAddresList = 0;
 
     AdressItem selectedAdressItem ;
+    RelativeLayout rlCpntainerFrEmptyListMsg;
 
     public AddressSelectionFragment() {
         // Required empty public constructor
@@ -96,6 +97,8 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
 
         //initializations here
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        rlCpntainerFrEmptyListMsg =(RelativeLayout )containerViewGroup.findViewById(R.id.rlCpntainerFrEmptyListMsg);
+
 
         //---setups here
         setUpToolbar();
@@ -104,6 +107,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
         setUpBTContinue();
 
         //logic work start here
+        rlCpntainerFrEmptyListMsg.setVisibility(View.GONE);
         mPresenter.getAddressData();
 
     }
@@ -301,6 +305,7 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
                     }
                 });
             }else{
+                btContinue.setVisibility(View.GONE);
 
                 iv.setImageDrawable(getResources().getDrawable(R.drawable.ic_delete_svg));
 
@@ -397,6 +402,6 @@ public class AddressSelectionFragment extends Fragment implements AddressSelecti
 
     @Override
     public void showEmptyListMessage() {
-
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
     }
 }

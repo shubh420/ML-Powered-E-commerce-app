@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -42,6 +43,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
     List<LikedItem> likedItemList;
     int postionFromItemtoDelete;
     ShimmerFrameLayout mShimmerViewContainer;
+    RelativeLayout rlCpntainerFrEmptyListMsg;
 
     public LikedItemsFragment() {
         // Required empty public constructor
@@ -69,6 +71,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
 
         //initializations here
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        rlCpntainerFrEmptyListMsg =(RelativeLayout )containerViewGroup.findViewById(R.id.rlCpntainerFrEmptyListMsg);
 
         //---setups here
      //   attachOnBackBtPressedlistener();
@@ -76,6 +79,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
 
         //logic work start here
       //
+        rlCpntainerFrEmptyListMsg.setVisibility(View.GONE);
           mPresenter.getLikedItemsData();
     }
 
@@ -132,10 +136,7 @@ public class LikedItemsFragment extends Fragment implements LikedItemsView ,Inte
 
     @Override
     public void showEmptyListMessage() {
-        showToast("No Items Found");
-
-        //TODO - either show a custom toast msg here  or show a graphiv in image view on the center of the screen
-
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
     }
 
 

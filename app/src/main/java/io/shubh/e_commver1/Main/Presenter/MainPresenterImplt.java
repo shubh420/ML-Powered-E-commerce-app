@@ -2,14 +2,10 @@ package io.shubh.e_commver1.Main.Presenter;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import io.shubh.e_commver1.CategoriesObjectClass;
 import io.shubh.e_commver1.Main.Interactor.MainInteractor;
 import io.shubh.e_commver1.Main.View.MainView;
 import io.shubh.e_commver1.Models.Category;
@@ -23,10 +19,6 @@ public class MainPresenterImplt implements MainPresenter, MainInteractor.Callbac
     private MainInteractor mInteractor;
 
     FirebaseFirestore db;
-
-    List<String> categories_names;
-    List<List<CategoriesObjectClass>> super_nested_list_of_categories;
-    List<String> category_order;
 
     ArrayList<ClassForMainActvityItemReclrDATAObject> listOfDataObjectsForAdapter = new ArrayList<>();
 

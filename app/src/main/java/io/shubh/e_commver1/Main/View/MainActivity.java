@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -151,13 +152,13 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         activeFragmnetCount = f.size();
 
         //todo - below code
-      /*  if(activeFragmnetCount==0){
+        if(activeFragmnetCount==0){
             //means we are on main activty ..
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         }else {
             //means a fragment is open ..so disable the drawer open on swipe from left edge of the screen
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        }*/
+        }
 
     }
 
@@ -583,22 +584,39 @@ public class MainActivity extends AppCompatActivity implements MainView, Payment
         }else {
             dayNightSwitch.setIsNight(true);
         }
-        dayNightSwitch.setDuration(450);
+        dayNightSwitch.setDuration(500);
         dayNightSwitch.setListener(new DayNightSwitchListener() {
             @Override
             public void onSwitch(boolean isNight) {
                 if(isNight)
                 {
-                    // decide which theme to use DAY or NIGHT and save it
-                   StaticClassForGlobalInfo.theme=2;
-                   drawerLayout.closeDrawer(Gravity.LEFT);
-                  MainActivity.this.recreate();
+                    StaticClassForGlobalInfo.theme=2;
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            // decide which theme to use DAY or NIGHT and save it
+
+
+                            MainActivity.this.recreate();
+                        }
+                    }, 400);//800=.8sec = 8millisec
+
                 }
                 else
                 {
                     StaticClassForGlobalInfo.theme=1;
                     drawerLayout.closeDrawer(Gravity.LEFT);
-                    MainActivity.this.recreate();
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            MainActivity.this.recreate();
+                        }
+                    }, 400);//800=.8sec = 8millisec
+
                 }
             }
         });

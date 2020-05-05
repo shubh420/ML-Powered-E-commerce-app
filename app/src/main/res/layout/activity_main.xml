@@ -106,14 +106,14 @@
                         android:clickable="false"
                         android:layout_marginLeft="5dp"
                         app:srcCompat="@drawable/ic_search_white"
-                        android:tint="?attr/colorSecondaryText"/>
+                        android:tint="?android:attr/editTextColor"/>
 
                     <TextView
                         android:id="@+id/edt_search_text"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
-android:textColor="?attr/colorSecondaryText"
+android:textColor="?android:attr/textColorSecondary"
 
                         android:layout_weight="1"
                         android:background="@android:color/transparent"

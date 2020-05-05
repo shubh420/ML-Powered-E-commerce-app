@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhiteSecondary"
+    android:background="?attr/colorPrimary"
     tools:context=".BagItems.View.BagItemsFragment"
     android:clickable="true"
     >
@@ -14,7 +14,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        android:background="?attr/colorPrimary">
 
 
         <com.google.android.material.appbar.AppBarLayout
@@ -30,7 +30,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimary"
                 android:elevation="0dp"
 
                 android:gravity="center_vertical"
@@ -52,7 +52,7 @@
                     android:padding="9dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
-                    android:tint="#757575"
+                    android:tint="?attr/colorPrimaryText"
 
                     />
 
@@ -71,7 +71,7 @@
                 android:layout_marginBottom="5dp"
                 android:paddingRight="15dp"
                 android:text="Bag"
-                android:textColor="#A60C0C0C"
+                android:textColor="?attr/colorPrimaryText"
                 android:textSize="35sp" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -146,7 +146,7 @@
         android:background="@drawable/bg_gradient_gradient"
         android:text="Continue"
         android:foreground="?android:attr/selectableItemBackground"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?attr/colorPrimary"
         android:layout_alignParentBottom="true"
         />
 </RelativeLayout>

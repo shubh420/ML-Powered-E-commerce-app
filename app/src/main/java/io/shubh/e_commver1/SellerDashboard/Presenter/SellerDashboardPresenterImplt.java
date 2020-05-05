@@ -83,7 +83,7 @@ public class SellerDashboardPresenterImplt implements SellerDashboardPresenter, 
             }
         }
 
-        mView.showProgressBar(false);
+     //   mView.showProgressBar(false);
         mView.updateTransactionSummaryTvs(subOrderItems ,newOrdersList ,processedList ,returnedOrdersList );
     }
 
@@ -98,7 +98,7 @@ public class SellerDashboardPresenterImplt implements SellerDashboardPresenter, 
                     //system upadte available ..so throw a dialog asking to download update
                     if(list.size()!=0){
 
-                        mView.showProgressBar(false);
+                     //   mView.showProgressBar(false);
                          mView.showItemsInBottomSheet(list);
 
                     }else{

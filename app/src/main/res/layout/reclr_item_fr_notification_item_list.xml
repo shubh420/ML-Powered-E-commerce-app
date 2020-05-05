@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:foreground="?attr/selectableItemBackground"
+    android:background="?attr/colorPrimary"
     android:paddingLeft="6dp"
     android:paddingTop="4dp"
     android:paddingRight="6dp"
@@ -40,8 +41,7 @@
                 android:layout_alignParentTop="true"
                 android:background="@color/colorLoadingImageViewPlaceholder"
                 android:scaleType="fitCenter"
-
-                android:transitionName="MyTransition" />
+ />
 
 
         </androidx.cardview.widget.CardView>

@@ -178,6 +178,8 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
 
     private void displayTimelineAndActionsInBottomSheet( Order order, int finalI) {
 
+        behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+
         //recycyling the layout and code for bottomsheet at seller dashboard
 
         TextView tvHeader = (TextView) inflatedBttmSheet.findViewById(R.id.tvHeader);
@@ -217,31 +219,42 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
 
         if (order.getSubOrderItems().get(finalI).getStatusOfOrder() == 2) {
             tvTimeOfCreation1.setText(getDateFromUnix(order.getTimeOfCreationOfOrder()));
+            tvTimeOfCreation1.setVisibility(View.VISIBLE);
 
         } else if (order.getSubOrderItems().get(finalI).getStatusOfOrder() == 3) {
             tvTimeOfCreation1.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfCreationOfOrder()));
+            tvTimeOfCreation1.setVisibility(View.VISIBLE);
             rl2.setVisibility(View.VISIBLE);
             tvTimeOfCreation2.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfPackagedOfItem()));
+            tvTimeOfCreation2.setVisibility(View.VISIBLE);
 
         } else if (order.getSubOrderItems().get(finalI).getStatusOfOrder() == 4) {
             tvTimeOfCreation1.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfCreationOfOrder()));
+            tvTimeOfCreation1.setVisibility(View.VISIBLE);
 
             rl2.setVisibility(View.VISIBLE);
             tvTimeOfCreation2.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfPackagedOfItem()));
+            tvTimeOfCreation2.setVisibility(View.VISIBLE);
 
             rl3.setVisibility(View.VISIBLE);
             tvTimeOfCreation3.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfShippedOfItem()));
+            tvTimeOfCreation3.setVisibility(View.VISIBLE);
+
         }else if (order.getSubOrderItems().get(finalI).getStatusOfOrder() == 5) {
             tvTimeOfCreation1.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfCreationOfOrder()));
+            tvTimeOfCreation1.setVisibility(View.VISIBLE);
 
             rl2.setVisibility(View.VISIBLE);
             tvTimeOfCreation2.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfPackagedOfItem()));
+            tvTimeOfCreation2.setVisibility(View.VISIBLE);
 
             rl3.setVisibility(View.VISIBLE);
             tvTimeOfCreation3.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfShippedOfItem()));
+            tvTimeOfCreation3.setVisibility(View.VISIBLE);
 
             rl4.setVisibility(View.VISIBLE);
             tvTimeOfCreation3.setText(getDateFromUnix(order.getSubOrderItems().get(finalI).getTimeOfDeliveryOfItem()));
+            tvTimeOfCreation3.setVisibility(View.VISIBLE);
         }
 
 //delivered to
@@ -322,7 +335,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
     @Override
     public void showToast(String msg) {
 
-        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
+
 
     }
 
@@ -330,7 +343,7 @@ public class MyOrdersFragment extends Fragment implements MyOrdersView ,Interfac
 
     @Override
     public void showEmptyListMessage() {
-
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
     }
 
 

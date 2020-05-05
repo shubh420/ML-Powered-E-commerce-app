@@ -14,7 +14,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
 
         >
 
@@ -50,19 +50,22 @@
                         android:layout_height="30dp"
                         android:adjustViewBounds="true"
                         android:clickable="false"
-                        app:srcCompat="@drawable/ic_search_white" />
+                        android:layout_marginLeft="5dp"
+                        app:srcCompat="@drawable/ic_search_white"
+                        android:tint="?attr/colorSecondaryText"/>
 
                     <TextView
                         android:id="@+id/edt_search_text"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
+                        android:textColor="?attr/colorSecondaryText"
 
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:clickable="false"
                         android:gravity="center_vertical"
-                        android:text="Search a product using ML Tech."
+                        android:text="Search using ML Tech."
                         android:textSize="18sp" />
 
 

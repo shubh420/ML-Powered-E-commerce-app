@@ -44,7 +44,7 @@
                     android:fontFamily="@font/adamina"
                     android:paddingTop="6dp"
                     android:text="Create Address"
-                    android:textColor="#A60C0C0C"
+                    android:textColor="?attr/colorPrimaryText"
                     android:textSize="25sp" />
 
                 <LinearLayout
@@ -162,7 +162,7 @@
                 android:background="@drawable/bg_gradient_gradient"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:text="Create"
-                android:textColor="@color/colorPrimary" />
+                android:textColor="?attr/colorPrimary" />
         </LinearLayout>
 
 

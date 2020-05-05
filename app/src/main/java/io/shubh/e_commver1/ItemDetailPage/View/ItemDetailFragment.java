@@ -90,10 +90,11 @@ public class ItemDetailFragment extends Fragment implements ItemDetailView {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //below theme setting is not needed anymore ...the parent them have all these featureds
         //setting the transparent theme dynamicallly and infalting the layout
-        Context contextWrapper = new ContextThemeWrapper(getActivity(), R.style.Theme_AppCompat_Translucent);
-        LayoutInflater localInflater = inflater.cloneInContext(contextWrapper);
-        containerViewGroup = localInflater.inflate(R.layout.fragment_item_detail,
+      /*  Context contextWrapper = new ContextThemeWrapper(getActivity(), R.style.Theme_AppCompat_Translucent);
+        LayoutInflater localInflater = inflater.cloneInContext(contextWrapper);*/
+        containerViewGroup = inflater.inflate(R.layout.fragment_item_detail,
                 container, false);
 
         this.inflater = inflater;

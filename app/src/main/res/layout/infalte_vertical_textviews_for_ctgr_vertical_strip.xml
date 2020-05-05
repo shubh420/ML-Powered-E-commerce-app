@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
 
         android:text="Sub Category"
-        android:textColor="#A64E4D4D"
+        android:textColor="?attr/colorSecondaryText"
         android:textSize="18sp"
         android:textStyle="normal"
         android:layout_marginTop="60dp"

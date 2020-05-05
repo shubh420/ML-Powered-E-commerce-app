@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhiteSecondary"
+    android:background="?attr/colorPrimary"
     android:clickable="true"
     tools:context=".AddressSelectionPage.View.AddressSelectionFragment">
 
@@ -36,7 +36,7 @@
             android:padding="9dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_close_svg"
-            android:tint="#757575"
+            android:tint="?attr/colorPrimaryText"
 
             />
 
@@ -49,7 +49,7 @@
             android:padding="7dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_add_svg"
-            android:tint="#757575"
+            android:tint="?attr/colorPrimaryText"
             android:layout_marginRight="15dp"
             />
 
@@ -69,7 +69,7 @@
         android:paddingTop="13dp"
         android:paddingRight="15dp"
         android:text="Address"
-        android:textColor="#A60C0C0C"
+        android:textColor="?attr/colorPrimaryText"
         android:textSize="35sp" />
 
     <ScrollView
@@ -142,7 +142,7 @@
         android:background="@drawable/bg_gradient_gradient"
         android:foreground="?android:attr/selectableItemBackground"
         android:text="Continue"
-        android:textColor="@color/colorPrimary" />
+        android:textColor="?attr/colorPrimary" />
 
 
     <!--below cooordinatorlayout id for bootomsheet to inflate-->

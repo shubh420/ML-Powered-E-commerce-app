@@ -6,7 +6,7 @@
     android:foreground="?attr/selectableItemBackground"
 android:orientation="vertical"
     android:padding="10dp"
-    android:background="@color/colorSecondaryAtHalfTransparency"
+    android:background="#398CD834"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
     >
@@ -19,7 +19,7 @@ android:orientation="vertical"
         android:text="hbkbbkvgvjj"
         android:textSize="20dp"
         android:textStyle="normal"
-        android:textColor="?colorPrimaryText"/>
+        android:textColor="#8CD834"/>
     <TextView
         android:id="@+id/tvItemProbability"
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@ android:orientation="vertical"
         android:text="hbkbbkvgvjj"
         android:textSize="17dp"
         android:textStyle="normal"
-        android:textColor="?colorSecondaryText"/>
+        android:textColor="?attr/colorPrimaryText"/>
 
 </LinearLayout>
 

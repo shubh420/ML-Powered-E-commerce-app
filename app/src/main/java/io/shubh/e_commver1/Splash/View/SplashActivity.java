@@ -46,6 +46,7 @@ public class SplashActivity extends AppCompatActivity implements Splashview {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
+        //todo -set the theme after retriving after local storage
 
         //todo-when the app is open and then the view bt of notif is clicked then this activty opens but it doesnt load further ..so fix that
         Bundle extras = getIntent().getExtras();
@@ -153,7 +154,7 @@ progressBar.setVisibility(View.VISIBLE);
     public void ShowSnackBarWithAction(String msg, String actionName) {
         LinearLayout ll_Root = (LinearLayout)findViewById(R.id.layoutsplash);
         Snackbar snackbar = Snackbar
-                .make(ll_Root , msg, BaseTransientBottomBar.LENGTH_INDEFINITE)
+                .make(ll_Root , msg, Snackbar.LENGTH_INDEFINITE)
                 .setAction(actionName, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

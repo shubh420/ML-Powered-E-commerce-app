@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhiteSecondary"
+    android:background="?attr/colorPrimary"
     android:clickable="true"
     tools:context=".OrderListFrSellerFragment.View.NewOrderListFrSellerFragment">
     <!--TODo -make all fragments root as clickable-->
@@ -29,7 +29,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorTransparent"
                 android:elevation="0dp"
 
                 android:gravity="center_vertical"
@@ -51,7 +51,7 @@
                     android:padding="9dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
-                    android:tint="#757575"
+                    android:tint="?attr/colorPrimaryText"
 
                     />
 
@@ -70,7 +70,7 @@
                 android:paddingTop="13dp"
                 android:paddingRight="15dp"
                 android:text="New Orders"
-                android:textColor="#A60C0C0C"
+                android:textColor="?attr/colorPrimaryText"
                 android:textSize="35sp" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -88,6 +88,7 @@
                 android:id="@+id/llContainerFrItems"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="?attr/colorPrimary"
                 android:orientation="vertical"/>
         </androidx.core.widget.NestedScrollView>
 

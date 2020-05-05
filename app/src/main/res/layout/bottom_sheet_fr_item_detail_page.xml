@@ -25,15 +25,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimary"
 
             android:padding="25dp">
             <View
-                android:layout_width="90dp"
+                android:layout_width="100dp"
                 android:layout_height="3dp"
                 android:layout_centerHorizontal="true"
-                android:background="@color/colorLightGrayForSubSubHeaderTvs" />
-
+                android:background="@drawable/bg_layout_border"/>
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -52,9 +51,9 @@
 
                         android:ellipsize="end"
                         android:fontFamily="@font/alef"
-                        android:maxLines="2"
+                        android:maxLines="4"
                         android:text="lorem_ipsum"
-                        android:textColor="@color/colorGrayForHeaderTvs"
+                        android:textColor="?attr/colorPrimaryText"
 
                         android:textSize="35sp"
                         android:textStyle="bold" />
@@ -67,10 +66,10 @@
                         android:layout_marginTop="6dp"
                         android:ellipsize="end"
                         android:fontFamily="@font/armata"
-                        android:maxLines="1"
+                        android:maxLines="2"
                         android:text="lorem_ipsum"
                         android:textColor="@color/colorSecondary"
-                        android:textSize="18sp" />
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/tvItemDecsrp"
@@ -82,7 +81,7 @@
                         android:fontFamily="@font/alef"
                         android:maxLines="5"
                         android:text="lorem_ipsum"
-                        android:textColor="@color/colorLightGrayForSubSubHeaderTvs"
+                        android:textColor="?attr/colorSecondaryText"
                         android:textSize="20sp" />
 
                 </LinearLayout>
@@ -93,15 +92,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/bg_gradient_white"
                 android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/rlContainerFrVariety"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
                     android:background="@color/colorTransparent"
                     android:orientation="horizontal"
                     android:visibility="gone">
@@ -112,8 +110,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Variety Name"
-                        android:textColor="@color/colorGrayForHeaderTvs"
+                        android:textColor="?attr/colorPrimaryText"
                         android:textSize="20sp"
+                        android:fontFamily="sans-serif-medium"
                         android:layout_marginLeft="5dp"/>
 
                     <HorizontalScrollView
@@ -128,7 +127,7 @@
                             android:layout_height="wrap_content"
                             android:background="@color/colorTransparent"
                             android:orientation="horizontal"
-                            android:padding="5dp"
+                            android:padding="4dp"
                             android:layout_marginLeft="-8dp"/>
                     </HorizontalScrollView>
                 </RelativeLayout>
@@ -144,15 +143,15 @@
 
                     <ImageButton
                         android:id="@+id/btPlusItemAmount"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_centerVertical="true"
                         android:background="@color/colorTransparent"
                         android:foreground="?android:attr/selectableItemBackground"
                         android:padding="3dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_plus_svg"
-                        android:tint="@color/colorLightGrayForSubHeaderTvs" />
+                        android:tint="?attr/colorPrimaryText" />
 
                     <TextView
                         android:id="@+id/tvItemAmount"
@@ -163,13 +162,13 @@
                         android:layout_marginRight="15dp"
                         android:layout_toRightOf="@id/btPlusItemAmount"
                         android:text="1"
-                        android:textColor="@color/colorLightGrayForSubHeaderTvs"
+                        android:textColor="?attr/colorPrimaryText"
                         android:textSize="27sp" />
 
                     <ImageButton
                         android:id="@+id/btMinusItemAmount"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
                         android:layout_centerVertical="true"
                         android:layout_toRightOf="@id/tvItemAmount"
                         android:background="@color/colorTransparent"
@@ -177,7 +176,7 @@
                         android:padding="3dp"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_minus_svg"
-                        android:tint="@color/colorLightGrayForSubHeaderTvs" />
+                        android:tint="?attr/colorPrimaryText" />
 
                     <TextView
                         android:id="@+id/tvItemPrice"
@@ -187,10 +186,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
                         android:layout_marginRight="15dp"
-                        android:fontFamily="@font/archivo_narrow"
+                        android:fontFamily="sans-serif-medium"
                         android:text="Rs.150"
-                        android:textColor="@color/colorGrayForHeaderTvs"
-                        android:textSize="35sp" />
+                        android:textColor="?attr/colorPrimaryText"
+                        android:textSize="30sp" />
                 </RelativeLayout>
 
                 <LinearLayout
@@ -201,7 +200,8 @@
                     android:background="@color/colorTransparent"
                     android:orientation="horizontal"
                     android:padding="2dp"
-                    android:weightSum="5">
+                    android:weightSum="5"
+                    android:layout_marginBottom="5dp">
 
                     <ImageButton
                         android:id="@+id/ib_like_item"
@@ -213,6 +213,7 @@
                         android:padding="10dp"
                         android:scaleType="fitCenter"
                         android:src="@drawable/ic_heart_svg"
+                        android:foreground="?android:attr/selectableItemBackground"
                         android:tint="@color/colorSecondary" />
 
 
@@ -222,6 +223,8 @@
                             android:layout_width="0dp"
                             android:layout_height="60dp"
                             android:layout_weight="4"
+                            android:foreground="?android:attr/selectableItemBackground"
+
                             android:background="@drawable/bg_gradient_gradient_2_more_round">
 
                             <ImageView
@@ -232,7 +235,8 @@
                                 android:layout_toLeftOf="@id/tv_bt_text"
                                 android:padding="8dp"
                                 android:scaleType="fitCenter"
-                                android:src="@drawable/shopping_bag_app_icon" />
+                                android:src="@drawable/shopping_bag_app_icon"
+                                android:tint="?attr/colorPrimary"/>
                             <ProgressBar
                                 android:id="@+id/progressBarFrBtBagIt"
                                 android:layout_width="55dp"
@@ -240,7 +244,7 @@
                                 android:layout_marginLeft="-50dp"
                                 android:layout_toLeftOf="@id/tv_bt_text"
                                 android:padding="8dp"
-                                android:indeterminateTint="#fff"
+                                android:indeterminateTint="?attr/colorPrimary"
                                 android:visibility="gone" />
 
                             <TextView
@@ -250,7 +254,7 @@
                                 android:layout_centerInParent="true"
                                 android:gravity="center"
                                 android:text="Bag It"
-                                android:textColor="#fff"
+                                android:textColor="?attr/colorPrimary"
                                 android:textSize="28sp" />
 
                         </RelativeLayout>

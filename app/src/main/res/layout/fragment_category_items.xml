@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
+    android:background="?attr/colorPrimary"
     tools:context="io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment">
 
 
@@ -14,8 +15,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-
+        android:background="?attr/colorPrimary"
         >
 
         <com.google.android.material.appbar.AppBarLayout
@@ -32,7 +32,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="?attr/colorPrimary"
                 android:elevation="0dp"
 
                 android:gravity="center_vertical"
@@ -54,7 +54,7 @@
                     android:padding="9dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
-                    android:tint="#757575"
+                    android:tint="?attr/colorPrimaryText"
 
                     />
 
@@ -68,7 +68,8 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/shopping_cart2" />
+                    android:tint="?attr/colorPrimaryText"
+                    app:srcCompat="@drawable/ic_shopping_bag_svg" />
 
                 <ImageButton
                     android:id="@+id/btNotification"
@@ -79,6 +80,7 @@
                     android:background="@null"
                     android:padding="10dp"
                     android:scaleType="centerCrop"
+                    android:tint="?attr/colorPrimaryText"
                     app:srcCompat="@drawable/ic_notification_svg" />
 
             </androidx.appcompat.widget.Toolbar>
@@ -102,7 +104,7 @@
                     android:paddingTop="20dp"
                     android:paddingRight="15dp"
                     android:text="Category"
-                    android:textColor="#A60C0C0C"
+                    android:textColor="?attr/colorPrimaryText"
                     android:textSize="35sp" />
             </LinearLayout>
 
@@ -127,7 +129,7 @@
                         android:paddingLeft="15dp"
                         android:text="Category"
                         android:textAllCaps="false"
-                        android:textColor="#A6222222"
+                        android:textColor="?attr/colorSecondaryText"
                         android:textSize="15sp" />
 
                     <TextView
@@ -137,7 +139,7 @@
                         android:layout_gravity="center"
                         android:paddingLeft="5dp"
                         android:text="/"
-                        android:textColor="#A6222222"
+                        android:textColor="?attr/colorSecondaryText"
                         android:textSize="15sp" />
 
                     <TextView
@@ -147,7 +149,7 @@
                         android:layout_gravity="center"
                         android:paddingLeft="5dp"
                         android:text="Sub-Category"
-                        android:textColor="#A6222222"
+                        android:textColor="?attr/colorSecondaryText"
                         android:textSize="15sp" />
 
                     <TextView
@@ -157,7 +159,7 @@
                         android:layout_gravity="center"
                         android:paddingLeft="5dp"
                         android:text="/"
-                        android:textColor="#A6222222"
+                        android:textColor="?attr/colorSecondaryText"
                         android:textSize="15sp"
 
 
@@ -170,7 +172,7 @@
                         android:layout_gravity="center"
                         android:paddingLeft="5dp"
                         android:text="Sub-Sub-Category"
-                        android:textColor="#A6222222"
+                        android:textColor="?attr/colorSecondaryText"
                         android:textSize="15sp"
 
 
@@ -191,7 +193,7 @@
             android:id="@+id/refreshView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:background="?attr/colorPrimary"
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >

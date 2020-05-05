@@ -58,17 +58,17 @@
                     android:elevation="0dp"
                     android:foreground="?android:attr/selectableItemBackground"
                     android:text="Upload"
-                    android:textColor="#fff" />
+                    android:textColor="@color/colorPrimary" />
             </androidx.appcompat.widget.Toolbar>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:fontFamily="@font/"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="Add an Item"
-                android:textColor="#fff"
+                android:textColor="?attr/colorPrimaryText"
                 android:textSize="40sp" />
 
 
@@ -104,7 +104,8 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:text="Select Images (Max 5)."
-                            android:textColor="@color/colorGrayForHeaderTvs"
+                            android:textColor="?attr/colorPrimaryText"
+                            android:fontFamily="sans-serif-medium"
                             android:textSize="20sp" />
 
                         <androidx.cardview.widget.CardView
@@ -218,7 +219,8 @@
                             android:gravity="center_vertical"
                             android:singleLine="true"
                             android:text="Select a Category"
-                            android:textColor="@color/colorGrayForHeaderTvs"
+                            android:textColor="?attr/colorPrimaryText"
+                            android:fontFamily="sans-serif-medium"
                             android:textSize="20sp" />
 
                     </LinearLayout>
@@ -263,7 +265,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Add Variety"
-                                android:textColor="@color/colorGrayForHeaderTvs"
+                                android:textColor="?attr/colorPrimaryText"
+                                android:fontFamily="sans-serif-medium"
                                 android:textSize="20sp" />
                             <!--below bt is for info about this feature-->
                             <androidx.cardview.widget.CardView
@@ -354,7 +357,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Visibilty"
-                            android:textColor="@color/colorGrayForHeaderTvs"
+                            android:textColor="?attr/colorPrimaryText"
+                            android:fontFamily="sans-serif-medium"
                             android:textSize="20sp" />
                         <!--below bt is for info about this feature-->
                         <androidx.cardview.widget.CardView

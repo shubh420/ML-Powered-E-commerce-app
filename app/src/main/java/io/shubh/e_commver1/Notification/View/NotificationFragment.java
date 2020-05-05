@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -50,6 +51,7 @@ public class NotificationFragment extends Fragment implements NotificationView ,
     ///   GridLayoutManager gridLayoutManager;
     List<NotifcationObject> notifcationObjects;
     ShimmerFrameLayout mShimmerViewContainer;
+    RelativeLayout rlCpntainerFrEmptyListMsg;
 
 
     public NotificationFragment() {
@@ -80,6 +82,8 @@ public class NotificationFragment extends Fragment implements NotificationView ,
 
         //initializations here
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
+        rlCpntainerFrEmptyListMsg =(RelativeLayout )containerViewGroup.findViewById(R.id.rlCpntainerFrEmptyListMsg);
+
 
         //---setups here
 
@@ -111,6 +115,7 @@ public class NotificationFragment extends Fragment implements NotificationView ,
 
 
         showProgressBar(true);
+        rlCpntainerFrEmptyListMsg.setVisibility(View.GONE);
         mPresenter.getNotificationData(false);
     }
 
@@ -170,6 +175,7 @@ public class NotificationFragment extends Fragment implements NotificationView ,
 
     @Override
     public void onNoItemsFoundResult(boolean isItLoadMoreCall) {
+        rlCpntainerFrEmptyListMsg.setVisibility(View.VISIBLE);
         showProgressBar(false);
         notifcationObjects.clear();
         adapter.notifyDataSetChanged();

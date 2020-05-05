@@ -70,6 +70,7 @@ public class ReclrAdapterClassForOrderItemsList extends RecyclerView.Adapter<Rec
     public void onBindViewHolder(@NonNull ReclrAdapterClassForOrderItemsList.ViewHolder holder, int position) {
 
 
+
         holder.tvOrdreNo.setText("Order No "+dataForItemArrayList.get(position).getOrderId());
         holder.tvOrdrePrice.setText("₹"+dataForItemArrayList.get(position).getTotalPrice());
         holder.tvTimeOfCreation.setText(getDateFromUnix(dataForItemArrayList.get(position).getTimeOfCreationOfOrder()));

@@ -104,21 +104,23 @@
                         android:layout_height="30dp"
                         android:adjustViewBounds="true"
                         android:clickable="false"
+                        android:layout_marginLeft="5dp"
                         app:srcCompat="@drawable/ic_search_white"
-                        android:tint="?attr/colorForObjects"/>
+                        android:tint="?attr/colorSecondaryText"/>
 
                     <TextView
                         android:id="@+id/edt_search_text"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
                         android:layout_marginLeft="10dp"
+android:textColor="?attr/colorSecondaryText"
 
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:clickable="false"
                         android:gravity="center_vertical"
-                        android:text="Search a product using ML Tech."
-                        android:textSize="16sp" />
+                        android:text="Search using ML Tech."
+                        android:textSize="17sp" />
 
 
                 </LinearLayout>
@@ -162,8 +164,8 @@
             android:id="@+id/id_fr_recycler_view_main_activity_items_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="7dp"
-            android:paddingRight="7dp"
+            android:paddingLeft="8.5dp"
+            android:paddingRight="8.5dp"
             android:visibility="invisible"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
 

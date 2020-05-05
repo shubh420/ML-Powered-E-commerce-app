@@ -14,7 +14,7 @@
         android:id="@+id/content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
+        android:background="?attr/colorPrimary"
 
         >
 
@@ -32,7 +32,7 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
+                android:background="@color/colorTransparent"
                 android:elevation="0dp"
 
                 android:gravity="center_vertical"
@@ -54,7 +54,7 @@
                     android:padding="9dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_close_svg"
-                    android:tint="#757575"
+                    android:tint="?attr/colorPrimaryText"
 
                     />
 
@@ -79,7 +79,7 @@
                     android:paddingTop="20dp"
                     android:paddingRight="15dp"
                     android:text="Notifications"
-                    android:textColor="#A60C0C0C"
+                    android:textColor="?attr/colorPrimaryText"
                     android:textSize="35sp" />
             </LinearLayout>
 
@@ -102,7 +102,42 @@
 
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+        <RelativeLayout
+            android:id="@+id/rlCpntainerFrEmptyListMsg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" >/
+            <ImageView
+                android:id="@+id/ivEmptyMsg"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:layout_above="@id/itsPurposeIsToPostionOtherLayoutRelativeToCenter"
+                android:src="@drawable/ic_empty_reclr_view_ctgr_svg"
+                android:padding="10dp"
+                />
+            <View
+                android:id="@+id/itsPurposeIsToPostionOtherLayoutRelativeToCenter"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                />
+
+            <TextView
+                android:id="@+id/tv1OfEmptyMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/ivEmptyMsg"
+                android:text="No Items Found"
+                android:textSize="20dp"
+                android:padding="2dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="?attr/colorPrimaryText"
+                />
+
+        </RelativeLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -21,7 +21,7 @@
         <item name="colorForObjects">@color/colorGreyForObjectsLight</item>
         <item name="colorForObjectsSecondary">@color/colorGreySecondaryForObjectsLight</item>
         <item name="colorPrimaryText">@color/colorGreyForBlackTextLight</item>
-        <item name="colorSecondaryText">@color/colorGreyForGreyTextLight</item>
+        <item name="colorSecondaryText">@color/colorLightGrayForSubHeaderTvs</item>
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="colorPrimaryDark">@color/colorPrimaryLight</item><!--this is status bar color used directly by app-->
@@ -69,17 +69,17 @@
 
 
 
-
+<!--below theme is not needed naymore ..the parent theme consists of t5his all-->
 <!--Theme for item details fragment ..given to it dynamically in oncreate view-->
-        <style name="Theme.AppCompat.Translucent">
+    <!--    <style name="Theme.AppCompat.Translucent">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
-        <!--       <item name="android:colorBackgroundCacheHint">@null</item>-->
+        &lt;!&ndash;       <item name="android:colorBackgroundCacheHint">@null</item>&ndash;&gt;
         <item name="android:windowIsTranslucent">true</item>
-        <!--  <item name="android:windowAnimationStyle">@android:style/Animation</item>-->
+        &lt;!&ndash;  <item name="android:windowAnimationStyle">@android:style/Animation</item>&ndash;&gt;
 
 
-    </style>
+    </style>-->
 
 <!--do any chnge to layout of tablayout from here ,but to change the size of dots do that by drawable file thickness attribute-->
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">

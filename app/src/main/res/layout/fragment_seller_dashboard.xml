@@ -26,9 +26,9 @@
             android:layout_height="33dp"
             android:layout_gravity="left"
             android:background="?android:attr/selectableItemBackgroundBorderless"
-            android:padding="9dp"
+            android:padding="4dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_close_svg"
+            android:src="@drawable/ic_back_svg"
             android:tint="?attr/colorPrimaryText"
 
             />
@@ -111,7 +111,10 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:srcCompat="@drawable/profile_avatar_placeholder_large" />
+                        android:tint="?attr/colorForObjects"
+                        app:srcCompat="@drawable/my_profile"
+                        android:padding="5dp"
+                        />
                 </androidx.cardview.widget.CardView>
                     <androidx.cardview.widget.CardView
                         android:layout_width="18dp"

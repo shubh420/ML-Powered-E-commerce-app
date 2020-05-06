@@ -105,7 +105,7 @@
                         android:adjustViewBounds="true"
                         android:clickable="false"
                         android:layout_marginLeft="5dp"
-                        app:srcCompat="@drawable/ic_search_white"
+                        app:srcCompat="@drawable/ic_search_svg"
                         android:tint="?android:attr/editTextColor"/>
 
                     <TextView
@@ -276,8 +276,9 @@ android:textColor="?android:attr/textColorSecondary"
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
-                app:srcCompat="@drawable/profile_avatar_placeholder_large" />
+android:tint="?attr/colorForObjects"
+                app:srcCompat="@drawable/my_profile"
+                android:padding="7dp"/>
         </androidx.cardview.widget.CardView>
 
 

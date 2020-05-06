@@ -1,15 +1,12 @@
 package io.shubh.e_commver1.Main.View;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,14 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -33,15 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.gms.vision.L;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.mahfa.dnswitch.DayNightSwitch;
 import com.mahfa.dnswitch.DayNightSwitchListener;
-import com.onurkagan.ksnack_lib.KSnack.KSnack;
-import com.onurkagan.ksnack_lib.KSnack.KSnackBarEventListener;
 import com.razorpay.PaymentResultListener;
 
 import java.util.ArrayList;
@@ -53,7 +42,6 @@ import io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment;
 import io.shubh.e_commver1.ItemDetailPage.View.ItemDetailFragment;
 import io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment;
 import io.shubh.e_commver1.LikedItems.View.LikedItemsFragment;
-import io.shubh.e_commver1.LoginActivity;
 import io.shubh.e_commver1.MyOrders.View.MyOrdersFragment;
 import io.shubh.e_commver1.Main.Interactor.MainInteractorImplt;
 import io.shubh.e_commver1.Main.Presenter.MainPresenter;

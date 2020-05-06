@@ -22,8 +22,6 @@ import com.google.firebase.iid.InstanceIdResult;
 import java.util.HashMap;
 import java.util.Map;
 
-import io.shubh.e_commver1.MyFirebaseMessagingService;
-
 public class WelcomeInteractorImplt implements WelcomeInteractor {
 
     FirebaseFirestore db ;

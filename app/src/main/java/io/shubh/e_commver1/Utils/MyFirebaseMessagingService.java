@@ -1,4 +1,4 @@
-package io.shubh.e_commver1;
+package io.shubh.e_commver1.Utils;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import io.shubh.e_commver1.R;
 import io.shubh.e_commver1.Splash.View.SplashActivity;
 
 

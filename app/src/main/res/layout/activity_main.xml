@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:fitsSystemWindows="false"
-    tools:context=".Main.View.MainActivity">
+    tools:context="io.shubh.e_comm_ver1.Main.View.MainActivity">
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:clickable="true"
-    tools:context=".SellerDashboard.SellerConfirmationFragment">
+    tools:context="io.shubh.e_comm_ver1.SellerDashboard.SellerConfirmationFragment">
 
     <View
         android:id="@+id/iv_center"

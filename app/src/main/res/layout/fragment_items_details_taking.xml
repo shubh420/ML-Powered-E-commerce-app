@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bg_gradient3_fr_item_detail_taking_frag"
 
-    tools:context="io.shubh.e_commver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment"
+    tools:context="io.shubh.e_comm_ver1.io.shubh.e_comm_ver1.ItemsDetailsTakingFragment.View.ItemsDetailsTakingFragment"
 
     >
 

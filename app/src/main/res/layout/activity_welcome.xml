@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context=".Welcome.View.WelcomeActivity">
+    tools:context="io.shubh.e_comm_ver1.Welcome.View.WelcomeActivity">
 
 
     <RelativeLayout

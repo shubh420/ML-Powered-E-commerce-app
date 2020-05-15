@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:clickable="true"
-    tools:context=".OrderListFrSellerFragment.View.NewOrderListFrSellerFragment">
+    tools:context="io.shubh.e_comm_ver1.OrderListFrSellerFragment.View.NewOrderListFrSellerFragment">
     <!--TODo -make all fragments root as clickable-->
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

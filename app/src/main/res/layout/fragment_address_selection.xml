@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:clickable="true"
-    tools:context=".AddressSelectionPage.View.AddressSelectionFragment">
+    tools:context="io.shubh.e_comm_ver1.AddressSelectionPage.View.AddressSelectionFragment">
 
 
     <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"

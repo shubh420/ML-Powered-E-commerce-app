@@ -8,26 +8,55 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1031952812605:android:f36f798d9cf47f25",
+        "mobilesdk_app_id": "1:1031952812605:android:f99f163eefea6345def854",
         "android_client_info": {
-          "package_name": "io.shubh.e_commver1"
+          "package_name": "bypankaj.minorproject"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1031952812605-bq8o5ge87as07n6tjbp0p9eueheiv74l.apps.googleusercontent.com",
+          "client_id": "1031952812605-aip3hnuqj1r6so5443pasp6kp0jmg9kt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "io.shubh.e_commver1",
-            "certificate_hash": "317d91ca1c72e1e225e7e69b837b4bc6de911823"
+            "package_name": "bypankaj.minorproject",
+            "certificate_hash": "ce32298e7e632673d53c9f3fb6333c459573eb47"
           }
         },
         {
-          "client_id": "1031952812605-gs3v7e72jm8gdrn26erck4476ipcdjbf.apps.googleusercontent.com",
+          "client_id": "1031952812605-t5lbssv58iaqf54aantcprlk0sqi8qo6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDh9thXgqflkGRluzjWOZBbGv-v7fZQpg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031952812605-t5lbssv58iaqf54aantcprlk0sqi8qo6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031952812605:android:e408490418eadfd2def854",
+        "android_client_info": {
+          "package_name": "io.shubh.e_comm_ver1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031952812605-6notd8jrs3s54bdo0mda0fdlp4is6u86.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "io.shubh.e_commver1",
-            "certificate_hash": "e9d6e00a216307351b0e9d9b98b4a3f9665e7c20"
+            "package_name": "io.shubh.e_comm_ver1",
+            "certificate_hash": "ce32298e7e632673d53c9f3fb6333c459573eb47"
           }
         },
         {

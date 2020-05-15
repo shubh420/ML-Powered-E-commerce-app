@@ -5,7 +5,7 @@
     android:id="@+id/layoutsplash"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Splash.View.SplashActivity"
+    tools:context="io.shubh.e_comm_ver1.Splash.View.SplashActivity"
     android:background="#8BC34A"
     android:orientation="vertical">
 
@@ -15,10 +15,10 @@
         android:layout_weight="1">
             <ImageView
                 android:id="@+id/imagesplash"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
 
-                app:srcCompat="@drawable/shopping_bag_app_icon"
+                app:srcCompat="@drawable/ic_launcher_foreground"
                 android:layout_centerInParent="true"/>
     </RelativeLayout>
 

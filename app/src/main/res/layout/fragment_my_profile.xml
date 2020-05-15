@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".MyProfile.MyProfileFragment"
+    tools:context="io.shubh.e_comm_ver1.MyProfile.MyProfileFragment"
     android:background="?attr/colorPrimary"
     android:clickable="true">
 

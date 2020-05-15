@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:clickable="true"
-    tools:context=".PaymentFragments.PaymentStatusFragment">
+    tools:context="io.shubh.e_comm_ver1.PaymentFragments.View.PaymentFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

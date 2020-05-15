@@ -6,7 +6,7 @@
     android:layout_gravity="center_horizontal"
     >
 
-    <io.shubh.e_commver1.Utils.VerticalTextView
+    <io.shubh.e_comm_ver1.Utils.VerticalTextView
         android:id="@+id/vertical_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

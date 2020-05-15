@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:background="?attr/colorPrimary"
-    tools:context="io.shubh.e_commver1.CategoryItems.View.CategoryItemsFragment">
+    tools:context="io.shubh.e_comm_ver1.io.shubh.e_comm_ver1.CategoryItems.View.CategoryItemsFragment">
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

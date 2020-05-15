@@ -1,4 +1,4 @@
-package io.shubh.e_commver1;
+package io.shubh.e_comm_ver1;
 
 import android.content.Context;
 import androidx.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("io.shubh.e_commver1", appContext.getPackageName());
+        assertEquals("io.shubh.e_comm_ver1", appContext.getPackageName());
     }
 }

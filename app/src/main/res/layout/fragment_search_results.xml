@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context=".SearchPage.View.SearchResultsFragment">
+    tools:context="io.shubh.e_comm_ver1.SearchPage.View.SearchResultsFragment">
 
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

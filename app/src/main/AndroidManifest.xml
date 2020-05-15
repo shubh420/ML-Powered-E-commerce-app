@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="io.shubh.e_commver1">
+    package="io.shubh.e_comm_ver1">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--  tools:replace="android:theme"-->
+
     <application
         android:allowBackup="true"
         android:hardwareAccelerated="true"
@@ -14,19 +14,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeLight"
-      tools:replace="android:theme"
-        >
-      <!--   tools:replace="android:theme" this line is required becuase I m using custom theme made by me for application theme in the line
-       android:theme="@style/AppThemeLight" -->
-        <activity android:name=".Splash.View.SplashActivity">
+        tools:replace="android:theme">
+        <activity android:name="io.shubh.e_comm_ver1.Splash.OnboadingActivity"></activity>
+        <!--
+       tools:replace="android:theme" this line is required becuase I m using custom theme made by me for application theme in the line
+       android:theme="@style/AppThemeLight"
+        -->
+        <activity android:name="io.shubh.e_comm_ver1.Splash.View.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Welcome.View.WelcomeActivity" />
-        <activity android:name=".Main.View.MainActivity">
+        <activity android:name="io.shubh.e_comm_ver1.Welcome.View.WelcomeActivity" />
+        <activity android:name="io.shubh.e_comm_ver1.Main.View.MainActivity">
 
             <!--
             <intent-filter>
@@ -35,8 +37,7 @@
             -->
         </activity>
 
-        <service
-            android:name=".Utils.MyFirebaseMessagingService">
+        <service android:name="io.shubh.e_comm_ver1.Utils.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -45,12 +46,9 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_tiSVcFM2GqxK6a"          />
-
-<!-- download the required local model(s) at install-time.-->
+            android:value="rzp_test_tiSVcFM2GqxK6a" /> <!-- download the required local model(s) at install-time. -->
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="label" />

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:clickable="true"
-    tools:context=".SearchPage.SearchFragment">
+    tools:context="io.shubh.e_comm_ver1.SearchPage.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package io.shubh.e_commver1;
+package io.shubh.e_comm_ver1;
 
 import org.junit.Test;
 

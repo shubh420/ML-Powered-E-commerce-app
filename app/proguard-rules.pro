@@ -20,4 +20,9 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+# Keep custom model classes
+-keep class io.shubh.e_comm_ver1.Models.** { *; }
+
 -ignorewarnings
+
+

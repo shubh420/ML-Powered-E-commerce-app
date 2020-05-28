@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
 
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,6 +80,8 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
 
     private void DoUiWork() {
         SearchViewInit();
+
+        attachbackBtPressesListener();
 
         mShimmerViewContainer = containerViewGroup.findViewById(R.id.shimmer_view_container);
         recyclerView = (RecyclerView) containerViewGroup.findViewById(R.id.id_fr_recycler_view_ctgr_items_list);
@@ -224,6 +227,23 @@ public class SearchResultsFragment extends Fragment implements SearchResultsView
     @Override
     public void onClickOnItem(String docId) {
 
+    }
+
+
+    private void attachbackBtPressesListener(){
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                    closeFragment();
+
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }
 

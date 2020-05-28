@@ -6,7 +6,7 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
+# and specify the fully qualifie    d class name to the JavaScript interface
 # class:
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
@@ -19,6 +19,12 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+
+
+# Keep Razorpay sdk classes because the proguard rule is deleting them when making the release version
+-dontwarn com.razorpay.**
+-keep class com.razorpay.** {*;}
 
 # Keep custom model classes
 -keep class io.shubh.e_comm_ver1.Models.** { *; }

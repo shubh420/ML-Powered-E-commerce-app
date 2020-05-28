@@ -21,6 +21,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -162,6 +163,7 @@ public class SearchFragment extends Fragment {
         initViews();
         setupBottomSheet();
         initCustomModel();
+        attachbackBtPressesListener();
         //initCustomModel();
 
         //---setups here
@@ -861,6 +863,22 @@ public class SearchFragment extends Fragment {
             }
 
         }
+    }
+
+    private void attachbackBtPressesListener(){
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+
+                  closeFragment();
+
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 

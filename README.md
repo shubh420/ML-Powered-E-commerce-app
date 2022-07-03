@@ -1,4 +1,4 @@
-# KEYPOINTS OF THE APP:-
+# Fully Fledged E-Commerce Application build using MVC architecture
 
 1.This app is a final year engineering project built solely by me.This app demonstrated the Application of Machine Learning Features like object detection and Text recognition in the field of E commerce.
 
